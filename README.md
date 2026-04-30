@@ -1,3 +1,7 @@
+> [!WARNING]
+> This Repo is no longer in use or getting updates. To view the current project, visit the new github at https://github.com/pyrodactyl-oss/pyrodactyl
+
+
 <p align="center">
     <img src="https://i.imgur.com/R10ivg9.png" alt="Banner with Pyrodactyl Logo">
 </p>
