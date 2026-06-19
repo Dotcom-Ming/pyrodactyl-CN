@@ -37,6 +37,7 @@ class IndexController extends Controller
     return $this->view->make('admin.settings.index', [
       'version' => $this->versionService,
       'languages' => $this->getAvailableLanguages(true),
+      'currentLocale' => $this->settings->get('settings::app:locale', config('app.locale')),
     ]);
   }
 
@@ -48,12 +49,18 @@ class IndexController extends Controller
    */
   public function update(BaseSettingsFormRequest $request): RedirectResponse
   {
-    foreach ($request->normalize() as $key => $value) {
+    $values = $request->normalize();
+
+    foreach ($values as $key => $value) {
       $this->settings->set('settings::' . $key, $value);
     }
 
+    if ($request->user() && isset($values['app:locale'])) {
+      $request->user()->forceFill(['language' => $values['app:locale']])->save();
+    }
+
     $this->kernel->call('queue:restart');
-    $this->alert->success('Panel settings have been updated successfully and the queue worker was restarted to apply these changes.')->flash();
+    $this->alert->success(trans('strings.settings_updated'))->flash();
 
     return redirect()->route('admin.settings');
   }

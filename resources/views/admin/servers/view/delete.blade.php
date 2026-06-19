@@ -57,11 +57,14 @@
 
 @section('footer-scripts')
     @parent
+    @php
+        $deleteTranslations = [
+            'confirm' => trans('strings.admin_delete_server_confirm'),
+            'delete' => trans('strings.admin_delete'),
+        ];
+    @endphp
     <script>
-    const deleteTranslations = @json([
-        'confirm' => trans('strings.admin_delete_server_confirm'),
-        'delete' => trans('strings.admin_delete'),
-    ]);
+    const deleteTranslations = @json($deleteTranslations);
     </script>
     <script>
     $('#deletebtn').click(function (event) {

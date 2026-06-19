@@ -116,22 +116,26 @@
 
 @section('footer-scripts')
   @parent
+  @php
+    $domainTranslations = [
+      'connectionSuccessful' => trans('strings.admin_connection_successful'),
+      'connectionFailed' => trans('strings.admin_connection_failed'),
+      'unexpectedError' => trans('strings.admin_unexpected_error'),
+    ];
+    $domainFieldLabels = [
+      'api_token' => trans('strings.admin_dns_field_api_token'),
+      'account_id' => trans('strings.admin_dns_field_account_id'),
+      'access_key_id' => trans('strings.admin_dns_field_access_key_id'),
+      'secret_access_key' => trans('strings.admin_dns_field_secret_access_key'),
+      'hosted_zone_id' => trans('strings.admin_dns_field_hosted_zone_id'),
+      'region' => trans('strings.admin_dns_field_region'),
+      'zone_id' => trans('strings.admin_dns_field_zone_id'),
+    ];
+  @endphp
   <script>
     $(document).ready(function () {
-      const domainTranslations = @json([
-        'connectionSuccessful' => trans('strings.admin_connection_successful'),
-        'connectionFailed' => trans('strings.admin_connection_failed'),
-        'unexpectedError' => trans('strings.admin_unexpected_error'),
-      ]);
-      const domainFieldLabels = @json([
-        'api_token' => trans('strings.admin_dns_field_api_token'),
-        'account_id' => trans('strings.admin_dns_field_account_id'),
-        'access_key_id' => trans('strings.admin_dns_field_access_key_id'),
-        'secret_access_key' => trans('strings.admin_dns_field_secret_access_key'),
-        'hosted_zone_id' => trans('strings.admin_dns_field_hosted_zone_id'),
-        'region' => trans('strings.admin_dns_field_region'),
-        'zone_id' => trans('strings.admin_dns_field_zone_id'),
-      ]);
+      const domainTranslations = @json($domainTranslations);
+      const domainFieldLabels = @json($domainFieldLabels);
 
       const $providerSelect = $('#dns_provider');
       const $configBox = $('#dns-config-box');

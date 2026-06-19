@@ -103,15 +103,18 @@
 
 @section('footer-scripts')
     @parent
+    @php
+        $databaseTranslations = [
+            'confirmDelete' => trans('strings.admin_delete_database_confirm'),
+            'delete' => trans('strings.admin_delete'),
+            'whoops' => trans('strings.admin_whoops'),
+            'requestError' => trans('strings.admin_request_error'),
+            'requestProcessError' => trans('strings.admin_request_process_error'),
+            'passwordReset' => trans('strings.admin_database_password_reset'),
+        ];
+    @endphp
     <script>
-    const databaseTranslations = @json([
-        'confirmDelete' => trans('strings.admin_delete_database_confirm'),
-        'delete' => trans('strings.admin_delete'),
-        'whoops' => trans('strings.admin_whoops'),
-        'requestError' => trans('strings.admin_request_error'),
-        'requestProcessError' => trans('strings.admin_request_process_error'),
-        'passwordReset' => trans('strings.admin_database_password_reset'),
-    ]);
+    const databaseTranslations = @json($databaseTranslations);
     </script>
     <script>
     $('#pDatabaseHost').select2();

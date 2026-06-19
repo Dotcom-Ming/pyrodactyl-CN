@@ -105,15 +105,18 @@
 @section('footer-scripts')
     @parent
     {!! Theme::js('vendor/lodash/lodash.js') !!}
+    @php
+        $startupTranslations = [
+            'selectNestEgg' => trans('strings.admin_select_nest_egg'),
+            'selectNest' => trans('strings.admin_select_nest'),
+            'defaultStartupUndefined' => trans('strings.admin_default_startup_undefined'),
+            'required' => trans('strings.admin_required'),
+            'startupVariable' => trans('strings.admin_startup_variable'),
+            'inputRules' => trans('strings.admin_input_rules'),
+        ];
+    @endphp
     <script>
-    const startupTranslations = @json([
-        'selectNestEgg' => trans('strings.admin_select_nest_egg'),
-        'selectNest' => trans('strings.admin_select_nest'),
-        'defaultStartupUndefined' => trans('strings.admin_default_startup_undefined'),
-        'required' => trans('strings.admin_required'),
-        'startupVariable' => trans('strings.admin_startup_variable'),
-        'inputRules' => trans('strings.admin_input_rules'),
-    ]);
+    const startupTranslations = @json($startupTranslations);
 
     function escapeHtml(str) {
         var div = document.createElement('div');
