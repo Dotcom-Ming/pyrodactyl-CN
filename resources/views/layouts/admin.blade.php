@@ -185,8 +185,7 @@
         {{ $appVersion }}<br />
         <strong><i class="fa fa-fw fa-clock-o"></i></strong> {{ round(microtime(true) - LARAVEL_START, 3) }}s
       </div>
-      Copyright &copy; 2015 - {{ date('Y') }} <a href="https://pyro.host">Pyro Inc.</a> and <a
-        href="https://pterodactyl.io/">parent collaborators</a>.
+      {!! trans('strings.admin_footer_copyright', ['year' => date('Y')]) !!}
     </footer>
   </div>
   @section('footer-scripts')

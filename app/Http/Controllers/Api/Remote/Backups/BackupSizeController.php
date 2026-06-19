@@ -33,7 +33,7 @@ class BackupSizeController extends Controller
 
         // Check that the server belongs to the node making the request
         if ($server->node_id !== $node->id) {
-            throw new HttpForbiddenException('You do not have permission to access that server.');
+            throw new HttpForbiddenException(trans('exceptions.backup.server_access_denied'));
         }
 
         // Validate the request data

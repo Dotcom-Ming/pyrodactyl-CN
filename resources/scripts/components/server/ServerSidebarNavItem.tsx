@@ -23,17 +23,10 @@ interface ServerSidebarNavItemProps {
  * - Feature limit visibility (databases, backups, allocations)
  * - Network feature with subdomain support check
  */
-const navNameKey: Record<string, string> = {
-    Account: 'strings.account',
-    Home: 'strings.home',
-    Settings: 'strings.settings',
-    Databases: 'strings.databases',
-};
-
 const ServerSidebarNavItem = forwardRef<HTMLAnchorElement, ServerSidebarNavItemProps>(
     ({ route, serverId, onClick }, ref) => {
         const { icon: Icon, name, path, permission, featureLimit, end } = route;
-        const displayName = name ? t(navNameKey[name] ?? name) : name;
+        const displayName = name ? t(name) : name;
 
         // Feature limits from server state
         const featureLimits = ServerContext.useStoreState((state) => state.server.data?.featureLimits);

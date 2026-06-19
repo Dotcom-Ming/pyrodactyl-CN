@@ -50,6 +50,6 @@ You will not be able to use Pterodactyl Panel as expected without fixing your
 database state by running the command above.
 ');
 
-        $this->getOutput()->error('You must correct the error above before continuing.');
+        $this->getOutput()->error(trans('command/messages.app.fix_database_state'));
     }
 }

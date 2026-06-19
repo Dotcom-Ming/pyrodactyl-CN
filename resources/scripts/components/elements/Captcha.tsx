@@ -43,12 +43,12 @@ export default function Captcha({
     };
 
     const handleError = (err: any) => {
-        setError('Captcha verification failed');
+        setError(t('strings.captcha_failed'));
         onErrorRef.current?.(err);
     };
 
     const handleExpired = () => {
-        setError('Captcha expired');
+        setError(t('strings.captcha_expired'));
         onExpiredRef.current?.();
     };
 
@@ -96,7 +96,7 @@ export default function Captcha({
                 }
             } catch (err) {
                 if (mounted) {
-                    setError('Failed to load captcha');
+                    setError(t('strings.captcha_load_failed'));
                 }
             } finally {
                 if (mounted) {
@@ -122,11 +122,11 @@ export default function Captcha({
         };
 
         const handleError = (event: CustomEvent) => {
-            setError('Captcha verification failed');
+            setError(t('strings.captcha_failed'));
         };
 
         const handleExpired = (event: CustomEvent) => {
-            setError('Captcha expired');
+            setError(t('strings.captcha_expired'));
         };
 
         window.addEventListener('captcha:success', handleSuccess as EventListener);

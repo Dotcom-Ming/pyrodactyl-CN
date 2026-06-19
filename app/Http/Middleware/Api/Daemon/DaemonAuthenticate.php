@@ -44,7 +44,7 @@ class DaemonAuthenticate
         $parts = explode('.', $bearer);
         // Ensure that all of the correct parts are provided in the header.
         if (count($parts) !== 2 || empty($parts[0]) || empty($parts[1])) {
-            throw new BadRequestHttpException('The Authorization header provided was not in a valid format.');
+            throw new BadRequestHttpException(trans('exceptions.api.invalid_authorization_header'));
         }
 
         try {
@@ -62,6 +62,6 @@ class DaemonAuthenticate
             // Do nothing, we don't want to expose a node not existing at all.
         }
 
-        throw new AccessDeniedHttpException('You are not authorized to access this resource.');
+        throw new AccessDeniedHttpException(trans('exceptions.api.daemon_access_denied'));
     }
 }

@@ -73,7 +73,7 @@ class AppSettingsCommand extends Command
         );
 
         if (!filter_var($this->variables['APP_SERVICE_AUTHOR'], FILTER_VALIDATE_EMAIL)) {
-            $this->output->error('The service author email provided is invalid.');
+            $this->output->error(trans('command/messages.app.service_author_invalid'));
 
             return 1;
         }

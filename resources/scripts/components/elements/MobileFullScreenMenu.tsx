@@ -150,7 +150,7 @@ const ServerMobileNavItem = ({ route, serverId, onClose }: ServerMobileNavItemPr
 
     const NavContent = (
         <NavigationItem to={to} icon={Icon} end={end} onClick={onClose}>
-            {name}
+            {t(name)}
         </NavigationItem>
     );
 

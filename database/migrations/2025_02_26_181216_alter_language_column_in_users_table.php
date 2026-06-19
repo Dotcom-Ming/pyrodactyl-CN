@@ -11,7 +11,7 @@ return new class extends Migration {
   public function up(): void
   {
     Schema::table('users', function (Blueprint $table) {
-      $table->string('language', 5)->default('en')->change();
+      $table->string('language', 5)->default('zh_CN')->change();
     });
   }
 

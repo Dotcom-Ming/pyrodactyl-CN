@@ -158,6 +158,8 @@ return [
     'remove_authenticator_app_desc' => '移除认证器应用会降低您账户的安全性。',
     'scan_qr_code' => '使用认证器应用扫描上方二维码，或输入上方密钥。然后输入它生成的 6 位验证码。',
     'captcha_failed' => '验证码验证失败，请重试。',
+    'captcha_expired' => '验证码已过期，请重试。',
+    'captcha_load_failed' => '验证码加载失败。',
     'close_menu' => '关闭菜单',
     'toggle_navigation_menu' => '切换导航菜单',
     'console_command_placeholder' => '输入命令...',
@@ -1453,4 +1455,6 @@ return [
     'admin_egg_desc' => '选择将为此服务器提供处理数据的 Egg。',
     'admin_logout_confirm' => '确定要退出登录吗？',
     'admin_generated_password' => '生成的密码',
+    'admin_environment_only_notice' => '您的面板当前配置为仅从环境变量读取设置。若要动态加载设置，请在环境文件中设置 <code>APP_ENVIRONMENT_ONLY=false</code>。',
+    'admin_footer_copyright' => '版权所有 &copy; 2015 - :year <a href="https://pyro.host">Pyro Inc.</a> 与 <a href="https://pterodactyl.io/">上游协作者</a>。',
 ];

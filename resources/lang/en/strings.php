@@ -158,6 +158,8 @@ return [
     'remove_authenticator_app_desc' => 'Removing your authenticator app will make your account less secure.',
     'scan_qr_code' => 'Scan the QR code above using an authenticator app, or enter the secret code above. Then, enter the 6-digit code it generates below.',
     'captcha_failed' => 'Captcha verification failed. Please try again.',
+    'captcha_expired' => 'Captcha expired. Please try again.',
+    'captcha_load_failed' => 'Failed to load captcha.',
     'close_menu' => 'Close menu',
     'toggle_navigation_menu' => 'Toggle navigation menu',
     'console_command_placeholder' => 'Enter a command...',
@@ -1342,4 +1344,6 @@ return [
     'admin_service_variables' => 'Service Variables',
     'admin_logout_confirm' => 'Do you want to log out?',
     'admin_generated_password' => 'Generated Password',
+    'admin_environment_only_notice' => 'Your Panel is currently configured to read settings from the environment only. You will need to set <code>APP_ENVIRONMENT_ONLY=false</code> in your environment file in order to load settings dynamically.',
+    'admin_footer_copyright' => 'Copyright &copy; 2015 - :year <a href="https://pyro.host">Pyro Inc.</a> and <a href="https://pterodactyl.io/">parent collaborators</a>.',
 ];

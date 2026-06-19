@@ -72,8 +72,8 @@ class DatabaseSettingsCommand extends Command
         try {
             $this->testMySQLConnection();
         } catch (\PDOException $exception) {
-            $this->output->error(sprintf('Unable to connect to the MySQL server using the provided credentials. The error returned was "%s".', $exception->getMessage()));
-            $this->output->error('Your connection credentials have NOT been saved. You will need to provide valid connection information before proceeding.');
+            $this->output->error(trans('command/messages.app.database_connection_failed', ['error' => $exception->getMessage()]));
+            $this->output->error(trans('command/messages.app.database_credentials_not_saved'));
 
             if ($this->confirm('Go back and try again?')) {
                 $this->database->disconnect('_pterodactyl_command_test');

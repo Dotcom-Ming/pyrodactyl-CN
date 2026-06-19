@@ -6,6 +6,7 @@ import Code from '@/components/elements/Code';
 import { Dialog } from '@/components/elements/dialog';
 
 import { deleteSSHKey, useSSHKeys } from '@/api/account/ssh-keys';
+import { t } from '@/lib/i18n';
 
 import { useFlashKey } from '@/plugins/useFlash';
 
@@ -30,12 +31,13 @@ const DeleteSSHKeyButton = ({ name, fingerprint }: { name: string; fingerprint: 
         <>
             <Dialog.Confirm
                 open={visible}
-                title={'Delete SSH Key'}
-                confirm={'Delete Key'}
+                title={t('server.delete_ssh_key')}
+                confirm={t('server.delete_key')}
                 onConfirmed={onClick}
                 onClose={() => setVisible(false)}
             >
-                Removing the <Code>{name}</Code> SSH key will invalidate its usage across the Panel.
+                {t('server.ssh_key_remove_named_warning_prefix')} <Code>{name}</Code>{' '}
+                {t('server.ssh_key_remove_named_warning_suffix')}
             </Dialog.Confirm>
             <button
                 className='p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all duration-150'

@@ -4,7 +4,7 @@ APP_KEY=base64:70nPUP+VYp/0HXxmnXbM2BJO6E1+JizA1XhAf72bAG8=
 APP_THEME=pterodactyl
 APP_TIMEZONE=UTC
 APP_URL="http://localhost:8000"
-APP_LOCALE=en
+APP_LOCALE=zh_CN
 APP_ENVIRONMENT_ONLY=false
 
 # If you are using a proxy server set this to be

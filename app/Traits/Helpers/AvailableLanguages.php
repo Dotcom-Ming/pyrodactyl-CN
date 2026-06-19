@@ -19,7 +19,10 @@ trait AvailableLanguages
     {
         return collect($this->getFilesystemInstance()->directories(resource_path('lang')))->mapWithKeys(function ($path) use ($localize) {
             $code = basename($path);
-            $value = $localize ? $this->getIsoInstance()->nativeByCode1($code) : $this->getIsoInstance()->languageByCode1($code);
+            $value = match ($code) {
+                'zh_CN' => $localize ? '简体中文' : 'Chinese (Simplified)',
+                default => $localize ? $this->getIsoInstance()->nativeByCode1($code) : $this->getIsoInstance()->languageByCode1($code),
+            };
 
             return [$code => title_case($value)];
         })->toArray();

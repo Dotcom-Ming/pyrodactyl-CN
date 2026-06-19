@@ -26,7 +26,7 @@ class AssetComposer
   {
     $view->with('siteConfiguration', [
       'name' => config('app.name') ?? 'Pyrodactyl',
-      'locale' => config('app.locale') ?? 'en',
+      'locale' => app()->getLocale(),
       'timezone' => config('app.timezone') ?? '',
       'captcha' => [
         'enabled' => $this->captcha->getDefaultDriver() !== 'none',

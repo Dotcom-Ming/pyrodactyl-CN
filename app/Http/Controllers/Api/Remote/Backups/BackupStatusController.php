@@ -125,7 +125,7 @@ class BackupStatusController extends Controller
                 return;
             }
 
-            throw new DisplayException('Cannot complete backup request: no upload_id present on model.');
+            throw new DisplayException(trans('exceptions.backup.cannot_complete_missing_upload_id'));
         }
 
         $params = [
@@ -166,7 +166,7 @@ class BackupStatusController extends Controller
                 foreach ($parts as $part) {
                     // Validate part data
                     if (!isset($part['etag']) || !isset($part['part_number'])) {
-                        throw new DisplayException('Invalid part data provided for multipart upload completion.');
+                        throw new DisplayException(trans('exceptions.backup.invalid_multipart_parts'));
                     }
                     
                     $params['MultipartUpload']['Parts'][] = [
@@ -178,7 +178,7 @@ class BackupStatusController extends Controller
 
             // Ensure we have parts to complete
             if (empty($params['MultipartUpload']['Parts'])) {
-                throw new DisplayException('No parts found for multipart upload completion.');
+                throw new DisplayException(trans('exceptions.backup.multipart_parts_missing'));
             }
 
             $client->execute($client->getCommand('CompleteMultipartUpload', $params));

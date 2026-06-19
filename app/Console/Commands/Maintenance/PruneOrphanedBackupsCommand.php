@@ -24,7 +24,7 @@ class PruneOrphanedBackupsCommand extends Command
     {
         $since = $this->option('prune-age') ?? config('backups.prune_age', 360);
         if (!$since || !is_digit($since)) {
-            throw new \InvalidArgumentException('The "--prune-age" argument must be a value greater than 0.');
+            throw new \InvalidArgumentException(trans('command/messages.maintenance.prune_age_invalid'));
         }
 
         $query = Backup::query()
@@ -33,12 +33,12 @@ class PruneOrphanedBackupsCommand extends Command
 
         $count = $query->count();
         if (!$count) {
-            $this->info('There are no orphaned backups to be marked as failed.');
+            $this->info(trans('command/messages.maintenance.no_uncompleted_backups'));
 
             return;
         }
 
-        $this->warn("Marking $count uncompleted backups that are older than $since minutes as failed.");
+        $this->warn(trans('command/messages.maintenance.marking_uncompleted_backups', ['count' => $count, 'minutes' => $since]));
 
         $query->update([
             'is_successful' => false,

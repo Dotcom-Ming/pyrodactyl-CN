@@ -16,6 +16,10 @@ return [
         'limit_reached' => 'Cannot assign additional allocations to this server: limit has been reached.',
         'no_limit_set' => 'You cannot delete allocations for this server: no allocation limit is set.',
         'cannot_delete_primary' => 'You cannot delete the primary allocation for this server.',
+        'default_not_assigned' => 'The requested default allocation is not currently assigned to this server.',
+        'delete_default_no_fallback' => 'You are attempting to delete the default allocation for this server but there is no fallback allocation to use.',
+        'parse_ip_failed' => 'Could not parse provided allocation IP address (:ip): :error',
+        'invalid_ip_generated' => 'Invalid IP address generated: :ip',
     ],
     'nest' => [
         'delete_has_servers' => 'A Nest with active servers attached to it cannot be deleted from the Panel.',
@@ -28,12 +32,14 @@ return [
         'variables' => [
             'env_not_unique' => 'The environment variable :name must be unique to this Egg.',
             'reserved_name' => 'The environment variable :name is protected and cannot be assigned to a variable.',
+            'protected_name' => 'Cannot use the protected name :name for this environment variable.',
             'bad_validation_rule' => 'The validation rule ":rule" is not a valid rule for this application.',
         ],
         'importer' => [
             'json_error' => 'There was an error while attempting to parse the JSON file: :error.',
             'file_error' => 'The JSON file provided was not valid.',
             'invalid_json_provided' => 'The JSON file provided is not in a format that can be recognized.',
+            'selected_file_invalid' => 'The selected file is not valid and cannot be imported.',
         ],
     ],
     'subusers' => [
@@ -43,12 +49,15 @@ return [
     ],
     'databases' => [
         'delete_has_databases' => 'Cannot delete a database host server that has active databases linked to it.',
+        'duplicate_name' => 'A database with that name already exists for this server.',
     ],
     'tasks' => [
         'chain_interval_too_long' => 'The maximum interval time for a chained task is 15 minutes.',
         'schedule_task_limit' => 'Schedules may not have more than :limit tasks associated with them. Creating this task would put this schedule over the limit.',
         'backup_disabled' => 'A backup task cannot be created when backups are disabled for this server.',
         'backup_limit_zero' => 'A backup task cannot be created when the server\'s backup limit is set to 0.',
+        'invalid_cron' => 'The cron data provided does not evaluate to a valid expression.',
+        'no_tasks' => 'Cannot process schedule for task execution: no tasks are registered.',
         'permission_denied' => 'You do not have permission to perform this action.',
         'task_queued' => 'Cannot delete a task that is currently queued or processing.',
         'subuser_permission_denied' => 'Cannot assign permissions to a subuser that your account does not actively possess.',
@@ -65,6 +74,11 @@ return [
     ],
     'api' => [
         'resource_not_found' => 'The requested resource does not exist on this server.',
+        'requested_resource_missing' => 'The requested resource does not exist on the system.',
+        'invalid_json' => 'The JSON data passed in the request appears to be malformed: :error',
+        'invalid_authorization_header' => 'The Authorization header provided was not in a valid format.',
+        'daemon_access_denied' => 'You are not authorized to access this resource.',
+        'acl_required' => 'An ACL resource must be defined on API requests.',
         'api_key_limit' => 'You have reached the account limit for number of API keys.',
         'client_key_required' => 'You are attempting to use an application API key on an endpoint that requires a client API key.',
         'application_key_required' => 'This account does not have permission to access the API.',
@@ -84,6 +98,10 @@ return [
         'access_denied' => 'You do not have permission to access that backup.',
         'already_completed' => 'This backup is already in a completed state.',
         'cannot_update_completed' => 'Cannot update the status of a backup that is already marked as completed.',
+        'cannot_complete_missing_upload_id' => 'Cannot complete backup request: no upload_id present on model.',
+        'invalid_multipart_parts' => 'Invalid part data provided for multipart upload completion.',
+        'multipart_parts_missing' => 'No parts found for multipart upload completion.',
+        'server_access_denied' => 'You do not have permission to access that server.',
         'locked_delete' => 'Cannot delete a backup that is marked as locked.',
         'size_required' => 'A non-empty "size" query parameter must be provided.',
         's3_required' => 'The configured backup adapter is not an S3 compatible adapter.',
@@ -98,6 +116,12 @@ return [
         'must_be_online_for_command' => 'Server must be online in order to send commands.',
         'failed_install_recover' => 'This server is in a failed install state and cannot be recovered. Please delete and re-create the server.',
         'transfer_toggle_suspension' => 'Cannot toggle suspension status on a server that is currently being transferred.',
+        'not_transferring' => 'Server is not being transferred.',
+        'resource_not_found' => 'No server resource was located in the request parameters.',
+        'install_state_forbidden' => 'Access to this resource is not allowed due to the current installation state.',
+    ],
+    'mail' => [
+        'smtp_only' => 'This feature is only available if SMTP is the selected email driver for the Panel.',
     ],
     'websocket' => [
         'connect_denied' => 'You do not have permission to connect to this server\'s websocket.',
