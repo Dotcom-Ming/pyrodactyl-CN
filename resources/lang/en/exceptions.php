@@ -12,6 +12,10 @@ return [
         'invalid_mapping' => 'The mapping provided for :port was invalid and could not be processed.',
         'cidr_out_of_range' => 'CIDR notation only allows masks between /25 and /32.',
         'port_out_of_range' => 'Ports in an allocation must be greater than 1024 and less than or equal to 65535.',
+        'disabled' => 'Cannot assign allocations to this server: allocations are disabled.',
+        'limit_reached' => 'Cannot assign additional allocations to this server: limit has been reached.',
+        'no_limit_set' => 'You cannot delete allocations for this server: no allocation limit is set.',
+        'cannot_delete_primary' => 'You cannot delete the primary allocation for this server.',
     ],
     'nest' => [
         'delete_has_servers' => 'A Nest with active servers attached to it cannot be deleted from the Panel.',
@@ -42,6 +46,12 @@ return [
     ],
     'tasks' => [
         'chain_interval_too_long' => 'The maximum interval time for a chained task is 15 minutes.',
+        'schedule_task_limit' => 'Schedules may not have more than :limit tasks associated with them. Creating this task would put this schedule over the limit.',
+        'backup_disabled' => 'A backup task cannot be created when backups are disabled for this server.',
+        'backup_limit_zero' => 'A backup task cannot be created when the server\'s backup limit is set to 0.',
+        'permission_denied' => 'You do not have permission to perform this action.',
+        'task_queued' => 'Cannot delete a task that is currently queued or processing.',
+        'subuser_permission_denied' => 'Cannot assign permissions to a subuser that your account does not actively possess.',
     ],
     'locations' => [
         'has_nodes' => 'Cannot delete a location that has active nodes attached to it.',
@@ -55,5 +65,52 @@ return [
     ],
     'api' => [
         'resource_not_found' => 'The requested resource does not exist on this server.',
+        'api_key_limit' => 'You have reached the account limit for number of API keys.',
+        'client_key_required' => 'You are attempting to use an application API key on an endpoint that requires a client API key.',
+        'application_key_required' => 'This account does not have permission to access the API.',
+        'ip_not_allowed' => 'This IP address (:ip) does not have permission to access the API using these credentials.',
+    ],
+    'auth' => [
+        'totp_already_enabled' => 'Two-factor authentication is already enabled on this account.',
+        'password_invalid' => 'The password provided was not valid.',
+        'totp_required' => 'Two-factor authentication code is required.',
+        'totp_invalid' => 'The two-factor authentication code provided was not valid.',
+    ],
+    'backup' => [
+        'unknown_disk' => 'The backup requested references an unknown disk driver type and cannot be downloaded.',
+        'restore_state' => 'This server is not currently in a state that allows for a backup to be restored.',
+        'restore_unavailable' => 'This backup cannot be restored at this time: not completed or failed.',
+        'incomplete_download' => 'Cannot download an incomplete backup.',
+        'access_denied' => 'You do not have permission to access that backup.',
+        'already_completed' => 'This backup is already in a completed state.',
+        'cannot_update_completed' => 'Cannot update the status of a backup that is already marked as completed.',
+        'locked_delete' => 'Cannot delete a backup that is marked as locked.',
+        'size_required' => 'A non-empty "size" query parameter must be provided.',
+        's3_required' => 'The configured backup adapter is not an S3 compatible adapter.',
+    ],
+    'startup' => [
+        'variable_missing' => 'The environment variable you are trying to edit does not exist.',
+        'variable_read_only' => 'The environment variable you are trying to edit is read-only.',
+        'docker_image_not_allowed' => 'The requested Docker image is not allowed for this server.',
+        'no_default_docker_image' => 'No default docker image available for this server\'s egg.',
+    ],
+    'server' => [
+        'must_be_online_for_command' => 'Server must be online in order to send commands.',
+        'failed_install_recover' => 'This server is in a failed install state and cannot be recovered. Please delete and re-create the server.',
+        'transfer_toggle_suspension' => 'Cannot toggle suspension status on a server that is currently being transferred.',
+    ],
+    'websocket' => [
+        'connect_denied' => 'You do not have permission to connect to this server\'s websocket.',
+        'transfer_logs_denied' => 'You do not have permission to view server transfer logs.',
+    ],
+    'sftp' => [
+        'missing_identifier' => 'No valid server identifier was included in the request.',
+        'too_many_attempts' => 'Too many login attempts for this account, please try again in :seconds seconds.',
+        'bad_credentials' => 'Authorization credentials were not correct, please try again.',
+        'access_denied' => 'You do not have permission to access SFTP for this server.',
+    ],
+    'captcha' => [
+        'required' => 'Please complete the captcha verification.',
+        'failed' => 'Captcha verification failed. Please try again.',
     ],
 ];

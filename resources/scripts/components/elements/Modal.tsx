@@ -8,6 +8,8 @@ import ActionButton from '@/components/elements/ActionButton';
 import Spinner from '@/components/elements/Spinner';
 import { DialogContext, IconPosition, styles } from '@/components/elements/dialog';
 
+import { t } from '@/lib/i18n';
+
 const variants = {
     open: {
         scale: 1,
@@ -164,7 +166,7 @@ const Modal: React.FC<ModalProps> = ({
                                                 {closeButton && (
                                                     <div className={`my-6 sm:flex items-center justify-end`}>
                                                         <ActionButton onClick={onDismissed} className={`min-w-full`}>
-                                                            <div>Close</div>
+                                                            <div>{t('strings.close')}</div>
                                                         </ActionButton>
                                                     </div>
                                                 )}

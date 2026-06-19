@@ -1,5 +1,7 @@
 import clsx from 'clsx';
 
+import { t } from '@/lib/i18n';
+
 import { Schedule } from '@/api/server/schedules/getServerSchedules';
 
 interface Props {
@@ -11,23 +13,23 @@ const ScheduleCronRow = ({ cron, className }: Props) => (
     <div className={clsx('flex flex-wrap gap-4 justify-center m-auto', className)}>
         <div className={'text-center'}>
             <p className={'font-medium'}>{cron.minute}</p>
-            <p className={'text-xs text-zinc-500 uppercase'}>Minute</p>
+            <p className={'text-xs text-zinc-500 uppercase'}>{t('server.minute')}</p>
         </div>
         <div className={'text-center'}>
             <p className={'font-medium'}>{cron.hour}</p>
-            <p className={'text-xs text-zinc-500 uppercase'}>Hour</p>
+            <p className={'text-xs text-zinc-500 uppercase'}>{t('server.hour')}</p>
         </div>
         <div className={'text-center'}>
             <p className={'font-medium'}>{cron.dayOfMonth}</p>
-            <p className={'text-xs text-zinc-500 uppercase'}>Day (Month)</p>
+            <p className={'text-xs text-zinc-500 uppercase'}>{t('server.day_month')}</p>
         </div>
         <div className={'text-center'}>
             <p className={'font-medium'}>{cron.month}</p>
-            <p className={'text-xs text-zinc-500 uppercase'}>Month</p>
+            <p className={'text-xs text-zinc-500 uppercase'}>{t('server.month')}</p>
         </div>
         <div className={'text-center'}>
             <p className={'font-medium'}>{cron.dayOfWeek}</p>
-            <p className={'text-xs text-zinc-500 uppercase'}>Day (Week)</p>
+            <p className={'text-xs text-zinc-500 uppercase'}>{t('server.day_week')}</p>
         </div>
     </div>
 );

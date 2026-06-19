@@ -10,6 +10,8 @@ import {
 } from '@/components/elements/DropdownMenu';
 import Logo from '@/components/elements/PyroLogo';
 
+import { t } from '@/lib/i18n';
+
 interface MobileTopBarProps {
     onMenuToggle: () => void;
     onTriggerLogout: () => void;
@@ -75,14 +77,14 @@ const MobileTopBar = ({ onMenuToggle, onTriggerLogout, onSelectAdminPanel, rootA
                     <DropdownMenuContent className='z-99999' sideOffset={8}>
                         {rootAdmin && onSelectAdminPanel && (
                             <DropdownMenuItem onSelect={handleAdminPanel}>
-                                Admin Panel
+                                {t('strings.admin_panel')}
                                 <span className='ml-2 z-10 rounded-full bg-brand px-2 py-1 text-xs text-white'>
-                                    Staff
+                                    {t('strings.staff')}
                                 </span>
                             </DropdownMenuItem>
                         )}
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onSelect={handleLogout}>Log Out</DropdownMenuItem>
+                        <DropdownMenuItem onSelect={handleLogout}>{t('strings.logout')}</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
 
@@ -90,7 +92,7 @@ const MobileTopBar = ({ onMenuToggle, onTriggerLogout, onSelectAdminPanel, rootA
                 <button
                     onClick={handleMenuToggle}
                     className='w-10 h-10 flex items-center justify-center rounded-md text-white hover:bg-[#ffffff11] p-2 cursor-pointer'
-                    aria-label='Toggle navigation menu'
+                    aria-label={t('strings.toggle_navigation_menu')}
                 >
                     <BarsPlay width={22} height={22} fill='currentColor' />
                 </button>

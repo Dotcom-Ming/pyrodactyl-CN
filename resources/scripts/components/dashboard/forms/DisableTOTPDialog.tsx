@@ -7,6 +7,8 @@ import ActionButton from '@/components/elements/ActionButton';
 import { Dialog, DialogWrapperContext } from '@/components/elements/dialog';
 import { Input } from '@/components/elements/inputs';
 
+import { t } from '@/lib/i18n';
+
 import asDialog from '@/hoc/asDialog';
 
 import disableAccountTwoFactor from '@/api/account/disableAccountTwoFactor';
@@ -47,7 +49,7 @@ const DisableTOTPDialog = () => {
         <form id={'disable-totp-form'} className={'mt-6'} onSubmit={submit}>
             <FlashMessageRender byKey={'account:two-step'} />
             <label className={'block pb-1'} htmlFor={'totp-password'}>
-                Password
+                {t('strings.password')}
             </label>
             <Input.Text
                 id={'totp-password'}
@@ -58,7 +60,7 @@ const DisableTOTPDialog = () => {
             />
             <Dialog.Footer>
                 <ActionButton variant='secondary' onClick={close}>
-                    Cancel
+                    {t('strings.cancel')}
                 </ActionButton>
                 {/* <Tooltip
                     delay={100}
@@ -71,7 +73,7 @@ const DisableTOTPDialog = () => {
                     form={'disable-totp-form'}
                     disabled={submitting || !password.length}
                 >
-                    Disable
+                    {t('strings.disable')}
                 </ActionButton>
                 {/* </Tooltip> */}
             </Dialog.Footer>
@@ -79,7 +81,7 @@ const DisableTOTPDialog = () => {
     );
 };
 
-export default asDialog({
-    title: 'Remove Authenticator App',
-    description: 'Removing your authenticator app will make your account less secure.',
-})(DisableTOTPDialog);
+export default asDialog(() => ({
+    title: t('strings.remove_authenticator_app'),
+    description: t('strings.remove_authenticator_app_desc'),
+}))(DisableTOTPDialog);

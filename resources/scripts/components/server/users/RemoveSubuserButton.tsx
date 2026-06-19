@@ -7,6 +7,7 @@ import ConfirmationModal from '@/components/elements/ConfirmationModal';
 
 import { httpErrorToHuman } from '@/api/http';
 import deleteSubuser from '@/api/server/users/deleteSubuser';
+import { t } from '@/lib/i18n';
 
 import { ApplicationStore } from '@/state';
 import { ServerContext } from '@/state/server';
@@ -39,24 +40,24 @@ const RemoveSubuserButton = ({ subuser }: { subuser: Subuser }) => {
     return (
         <>
             <ConfirmationModal
-                title={`Remove ${subuser.username}?`}
-                buttonText={`Remove ${subuser.username}`}
+                title={t('server.remove_user', { username: subuser.username })}
+                buttonText={t('server.remove_user_btn', { username: subuser.username })}
                 visible={showConfirmation}
                 loading={loading}
                 onConfirmed={() => doDeletion()}
                 onModalDismissed={() => setShowConfirmation(false)}
             >
-                All access to the server will be removed immediately.
+                {t('server.remove_user_warning')}
             </ConfirmationModal>
             <ActionButton
                 variant='danger'
                 size='sm'
                 className='flex items-center gap-2'
                 onClick={() => setShowConfirmation(true)}
-                aria-label='Delete subuser'
+                aria-label={t('server.delete_subuser')}
             >
                 <TrashBin width={22} height={22} fill='currentColor' className='w-4 h-4' />
-                Delete
+                {t('server.delete')}
             </ActionButton>
         </>
     );

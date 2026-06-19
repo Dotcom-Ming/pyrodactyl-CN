@@ -14,6 +14,7 @@ import UserRow from '@/components/server/users/UserRow';
 
 import { httpErrorToHuman } from '@/api/http';
 import getServerSubusers from '@/api/server/users/getServerSubusers';
+import { t } from '@/lib/i18n';
 
 import { ApplicationStore } from '@/state';
 import { ServerContext } from '@/state/server';
@@ -53,14 +54,14 @@ const UsersContainer = () => {
 
     if (!subusers.length && (loading || !Object.keys(permissions).length)) {
         return (
-            <ServerContentBlock title={'Users'}>
+            <ServerContentBlock title={t('server.user_management')}>
                 <FlashMessageRender byKey={'users'} />
                 <MainPageHeader
                     direction='column'
-                    title={'Users'}
+                    title={t('server.user_management')}
                     titleChildren={
                         <div className='flex flex-col sm:flex-row items-center justify-end gap-4'>
-                            <p className='text-sm text-zinc-300 text-center sm:text-right'>0 users</p>
+                            <p className='text-sm text-zinc-300 text-center sm:text-right'>{t('server.zero_users')}</p>
                             <Can action={'user.create'}>
                                 <ActionButton
                                     variant='primary'
@@ -68,15 +69,14 @@ const UsersContainer = () => {
                                     className='flex items-center gap-2'
                                 >
                                     <Plus width={22} height={22} className='w-4 h-4' fill='currentColor' />
-                                    New User
+                                    {t('server.new_user')}
                                 </ActionButton>
                             </Can>
                         </div>
                     }
                 >
                     <p className='text-sm text-neutral-400 leading-relaxed'>
-                        Manage user access to your server. Grant specific permissions to other users to help you manage
-                        and maintain your server.
+                        {t('server.users_desc')}
                     </p>
                 </MainPageHeader>
                 <div className='flex items-center justify-center py-12'>
@@ -87,14 +87,14 @@ const UsersContainer = () => {
     }
 
     return (
-        <ServerContentBlock title={'Users'}>
+        <ServerContentBlock title={t('server.user_management')}>
             <FlashMessageRender byKey={'users'} />
             <MainPageHeader
                 direction='column'
-                title={'Users'}
+                title={t('server.user_management')}
                 titleChildren={
                     <div className='flex flex-col sm:flex-row items-center justify-end gap-4'>
-                        <p className='text-sm text-zinc-300 text-center sm:text-right'>{subusers.length} users</p>
+                        <p className='text-sm text-zinc-300 text-center sm:text-right'>{t('server.users_count', { count: subusers.length })}</p>
                         <Can action={'user.create'}>
                             <ActionButton
                                 variant='primary'
@@ -102,15 +102,14 @@ const UsersContainer = () => {
                                 className='flex items-center gap-2'
                             >
                                 <Plus width={22} height={22} className='w-4 h-4' fill='currentColor' />
-                                New User
+                                {t('server.new_user')}
                             </ActionButton>
                         </Can>
                     </div>
                 }
             >
                 <p className='text-sm text-neutral-400 leading-relaxed'>
-                    Manage user access to your server. Grant specific permissions to other users to help you manage and
-                    maintain your server.
+                    {t('server.users_desc')}
                 </p>
             </MainPageHeader>
             {!subusers.length ? (
@@ -119,9 +118,9 @@ const UsersContainer = () => {
                         <div className='w-16 h-16 mx-auto mb-4 rounded-full bg-[#ffffff11] flex items-center justify-center'>
                             <Person width={22} height={22} className='w-8 h-8 text-zinc-400' fill='currentColor' />
                         </div>
-                        <h3 className='text-lg font-medium text-zinc-200 mb-2'>No users found</h3>
+                        <h3 className='text-lg font-medium text-zinc-200 mb-2'>{t('server.no_users')}</h3>
                         <p className='text-sm text-zinc-400 max-w-sm'>
-                            Your server does not have any additional users. Add others to help you manage your server.
+                            {t('server.no_users_help')}
                         </p>
                     </div>
                 </div>

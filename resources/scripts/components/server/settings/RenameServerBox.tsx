@@ -9,6 +9,7 @@ import TitledGreyBox from '@/components/elements/TitledGreyBox';
 
 import { httpErrorToHuman } from '@/api/http';
 import renameServer from '@/api/server/renameServer';
+import { t } from '@/lib/i18n';
 
 import { ApplicationStore } from '@/state';
 import { ServerContext } from '@/state/server';
@@ -20,13 +21,13 @@ interface Values {
 
 const RenameServerForm = () => {
     return (
-        <TitledGreyBox title={'Server Details'}>
+        <TitledGreyBox title={t('strings.server_details')}>
             <Form className='flex flex-col gap-4'>
-                <Field id={'name'} name={'name'} label={'Server Name'} type={'text'} />
-                <Field id={'description'} name={'description'} label={'Server Description'} type={'text'} />
+                <Field id={'name'} name={'name'} label={t('strings.server_name_label')} type={'text'} />
+                <Field id={'description'} name={'description'} label={t('strings.server_desc_label')} type={'text'} />
                 <div className={`mt-6 text-right`}>
                     <ActionButton variant='primary' type={'submit'}>
-                        Save
+                        {t('strings.save')}
                     </ActionButton>
                 </div>
             </Form>
@@ -41,14 +42,14 @@ const RenameServerBox = () => {
 
     const submit = ({ name, description }: Values) => {
         clearFlashes('settings');
-        toast('Updating server details...');
+        toast(t('strings.updating_server'));
         renameServer(server.uuid, name, description)
             .then(() => setServer({ ...server, name, description }))
             .catch((error) => {
                 console.error(error);
                 addError({ key: 'settings', message: httpErrorToHuman(error) });
             })
-            .then(() => toast.success('Server details updated!'));
+            .then(() => toast.success(t('strings.server_updated')));
     };
 
     return (

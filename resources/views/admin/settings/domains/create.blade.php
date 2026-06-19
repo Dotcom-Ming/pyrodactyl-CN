@@ -2,16 +2,16 @@
 @include('partials/admin.settings.nav', ['activeTab' => 'domains'])
 
 @section('title')
-  Create Domain
+  {{ trans('strings.admin_create_domain') }}
 @endsection
 
 @section('content-header')
-  <h1>Create Domain<small>Add a new DNS domain for subdomain management.</small></h1>
+  <h1>{{ trans('strings.admin_create_domain') }}<small>{{ trans('strings.admin_domain_management_desc') }}</small></h1>
   <ol class="breadcrumb">
-    <li><a href="{{ route('admin.index') }}">Admin</a></li>
-    <li><a href="{{ route('admin.settings') }}">Settings</a></li>
-    <li><a href="{{ route('admin.settings.domains.index') }}">Domains</a></li>
-    <li class="active">Create</li>
+    <li><a href="{{ route('admin.index') }}">{{ trans('strings.admin') }}</a></li>
+    <li><a href="{{ route('admin.settings') }}">{{ trans('strings.admin_settings') }}</a></li>
+    <li><a href="{{ route('admin.settings.domains.index') }}">{{ trans('strings.admin_settings_domains') }}</a></li>
+    <li class="active">{{ trans('strings.admin_create') }}</li>
   </ol>
 @endsection
 
@@ -22,30 +22,30 @@
       <form action="{{ route('admin.settings.domains.store') }}" method="POST" id="domain-form">
         <div class="box">
           <div class="box-header with-border">
-            <h3 class="box-title">Domain Information</h3>
+            <h3 class="box-title">{{ trans('strings.admin_domain_info') }}</h3>
           </div>
           <div class="box-body">
             <div class="row">
               <div class="form-group col-md-6">
-                <label for="name" class="control-label">Domain Name <span class="field-required"></span></label>
+                <label for="name" class="control-label">{{ trans('strings.admin_domain_name') }} <span class="field-required"></span></label>
                 <div>
                   <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}"
                     placeholder="example.com" required />
-                  <p class="text-muted small">The domain name that will be used for subdomains (e.g., example.com).</p>
+                  <p class="text-muted small">{{ trans('strings.admin_domain_name_desc') }}</p>
                 </div>
               </div>
               <div class="form-group col-md-6">
-                <label for="dns_provider" class="control-label">DNS Provider <span class="field-required"></span></label>
+                <label for="dns_provider" class="control-label">{{ trans('strings.admin_dns_provider') }} <span class="field-required"></span></label>
                 <div>
                   <select name="dns_provider" id="dns_provider" class="form-control" required>
-                    <option value="">Select a DNS provider...</option>
+                    <option value="">{{ trans('strings.admin_select_dns_provider') }}</option>
                     @foreach($providers as $key => $provider)
                       <option value="{{ $key }}" @if(old('dns_provider') === $key) selected @endif>
                         {{ $provider['name'] }}
                       </option>
                     @endforeach
                   </select>
-                  <p class="text-muted small">The DNS service provider that manages this domain.</p>
+                  <p class="text-muted small">{{ trans('strings.admin_dns_provider_desc') }}</p>
                 </div>
               </div>
             </div>
@@ -54,7 +54,7 @@
 
         <div class="box" id="dns-config-box" style="display: none;">
           <div class="box-header with-border">
-            <h3 class="box-title">DNS Provider Configuration</h3>
+            <h3 class="box-title">{{ trans('strings.admin_dns_provider_config') }}</h3>
           </div>
           <div class="box-body" id="dns-config-content">
             <!-- Dynamic content will be loaded here -->
@@ -63,37 +63,36 @@
 
         <div class="box">
           <div class="box-header with-border">
-            <h3 class="box-title">Additional Settings</h3>
+            <h3 class="box-title">{{ trans('strings.admin_additional_settings') }}</h3>
           </div>
           <div class="box-body">
             <div class="row">
               <div class="form-group col-md-6">
-                <label class="control-label">Status</label>
+                <label class="control-label">{{ trans('strings.admin_status') }}</label>
                 <div>
                   <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-outline-primary @if(old('is_active', true)) active @endif">
-                      <input type="radio" name="is_active" value="1" @if(old('is_active', true)) checked @endif> Active
+                      <input type="radio" name="is_active" value="1" @if(old('is_active', true)) checked @endif> {{ trans('strings.admin_active') }}
                     </label>
                     <label class="btn btn-outline-primary @if(!old('is_active', true)) active @endif">
-                      <input type="radio" name="is_active" value="0" @if(!old('is_active', true)) checked @endif> Inactive
+                      <input type="radio" name="is_active" value="0" @if(!old('is_active', true)) checked @endif> {{ trans('strings.admin_inactive') }}
                     </label>
                   </div>
-                  <p class="text-muted small">Whether this domain should be available for subdomain creation.</p>
+                  <p class="text-muted small">{{ trans('strings.admin_domain_status_desc') }}</p>
                 </div>
               </div>
               <div class="form-group col-md-6">
-                <label class="control-label">Default Domain</label>
+                <label class="control-label">{{ trans('strings.admin_default_domain') }}</label>
                 <div>
                   <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-outline-primary @if(old('is_default', false)) active @endif">
-                      <input type="radio" name="is_default" value="1" @if(old('is_default', false)) checked @endif> Yes
+                      <input type="radio" name="is_default" value="1" @if(old('is_default', false)) checked @endif> {{ trans('strings.admin_yes') }}
                     </label>
                     <label class="btn btn-outline-primary @if(!old('is_default', false)) active @endif">
-                      <input type="radio" name="is_default" value="0" @if(!old('is_default', false)) checked @endif> No
+                      <input type="radio" name="is_default" value="0" @if(!old('is_default', false)) checked @endif> {{ trans('strings.admin_no') }}
                     </label>
                   </div>
-                  <p class="text-muted small">Whether this domain should be used as the default for automatic subdomain
-                    generation.</p>
+                  <p class="text-muted small">{{ trans('strings.admin_default_domain_desc') }}</p>
                 </div>
               </div>
             </div>
@@ -104,10 +103,10 @@
           <div class="box-footer">
             {{ csrf_field() }}
             <button type="button" id="test-connection" class="btn btn-sm btn-info" disabled>
-              <i class="fa fa-refresh fa-spin" style="display: none;"></i> Test Connection
+              <i class="fa fa-refresh fa-spin" style="display: none;"></i> {{ trans('strings.admin_test_connection') }}
             </button>
-            <a href="{{ route('admin.settings.domains.index') }}" class="btn btn-sm btn-default">Cancel</a>
-            <button type="submit" class="btn btn-sm btn-success pull-right">Create Domain</button>
+            <a href="{{ route('admin.settings.domains.index') }}" class="btn btn-sm btn-default">{{ trans('strings.admin_cancel') }}</a>
+            <button type="submit" class="btn btn-sm btn-success pull-right">{{ trans('strings.admin_create_domain') }}</button>
           </div>
         </div>
       </form>
@@ -119,6 +118,21 @@
   @parent
   <script>
     $(document).ready(function () {
+      const domainTranslations = @json([
+        'connectionSuccessful' => trans('strings.admin_connection_successful'),
+        'connectionFailed' => trans('strings.admin_connection_failed'),
+        'unexpectedError' => trans('strings.admin_unexpected_error'),
+      ]);
+      const domainFieldLabels = @json([
+        'api_token' => trans('strings.admin_dns_field_api_token'),
+        'account_id' => trans('strings.admin_dns_field_account_id'),
+        'access_key_id' => trans('strings.admin_dns_field_access_key_id'),
+        'secret_access_key' => trans('strings.admin_dns_field_secret_access_key'),
+        'hosted_zone_id' => trans('strings.admin_dns_field_hosted_zone_id'),
+        'region' => trans('strings.admin_dns_field_region'),
+        'zone_id' => trans('strings.admin_dns_field_zone_id'),
+      ]);
+
       const $providerSelect = $('#dns_provider');
       const $configBox = $('#dns-config-box');
       const $configContent = $('#dns-config-content');
@@ -169,25 +183,25 @@
             if (response.success) {
               swal({
                 type: 'success',
-                title: 'Connection Successful',
+                title: domainTranslations.connectionSuccessful,
                 text: response.message
               });
             } else {
               swal({
                 type: 'error',
-                title: 'Connection Failed',
+                title: domainTranslations.connectionFailed,
                 text: response.message
               });
             }
           })
           .fail(function (xhr) {
-            const response = xhr.responseJSON || {};
-            swal({
-              type: 'error',
-              title: 'Connection Failed',
-              text: response.message || 'An unexpected error occurred.'
-            });
-          })
+          const response = xhr.responseJSON || {};
+          swal({
+            type: 'error',
+            title: domainTranslations.connectionFailed,
+            text: response.message || domainTranslations.unexpectedError
+          });
+        })
           .always(function () {
             $button.prop('disabled', false);
             $spinner.hide();
@@ -215,11 +229,12 @@
         Object.keys(schema).forEach(function (key) {
           const field = schema[key];
           const oldValue = `{{ old('dns_config.${key}') }}`.replace('${key}', key);
+          const label = domainFieldLabels[key] || field.description || key;
 
           html += `
                           <div class="form-group col-md-6">
                             <label for="dns_config_${key}" class="control-label">
-                              ${field.description || key} 
+                              ${label}
                               ${field.required ? '<span class="field-required"></span>' : ''}
                             </label>
                             <div>

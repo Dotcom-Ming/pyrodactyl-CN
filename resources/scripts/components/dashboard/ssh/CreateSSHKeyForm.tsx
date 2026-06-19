@@ -14,6 +14,8 @@ import { createSSHKey } from '@/api/account/ssh-keys';
 import { useSSHKeys } from '@/api/account/ssh-keys';
 import { httpErrorToHuman } from '@/api/http';
 
+import { t } from '@/lib/i18n';
+
 import { ApplicationStore } from '@/state';
 
 interface Values {
@@ -56,8 +58,8 @@ const CreateSSHKeyForm = () => {
                     onSubmit={submit}
                     initialValues={{ name: '', publicKey: '' }}
                     validationSchema={object().shape({
-                        name: string().required('SSH Key Name is required'),
-                        publicKey: string().required('Public Key is required'),
+                        name: string().required(t('server.ssh_key_name_required')),
+                        publicKey: string().required(t('server.public_key_required')),
                     })}
                 >
                     {({ isSubmitting }) => (
@@ -67,18 +69,18 @@ const CreateSSHKeyForm = () => {
 
                             {/* SSH Key Name Field */}
                             <FormikFieldWrapper
-                                label='SSH Key Name'
+                                label={t('server.ssh_key_name')}
                                 name='name'
-                                description='A name to identify this SSH key.'
+                                description={t('server.ssh_key_name_desc')}
                             >
                                 <Field name='name' as={Input} className='w-full' />
                             </FormikFieldWrapper>
 
                             {/* Public Key Field */}
                             <FormikFieldWrapper
-                                label='Public Key'
+                                label={t('server.public_key')}
                                 name='publicKey'
-                                description='Enter your public SSH key.'
+                                description={t('server.public_key_desc')}
                             >
                                 <Field name='publicKey' as={Input} className='w-full' />
                             </FormikFieldWrapper>
@@ -86,7 +88,7 @@ const CreateSSHKeyForm = () => {
                             {/* Submit Button below form fields */}
                             <div className='flex justify-end mt-6'>
                                 <ActionButton type='submit' disabled={isSubmitting}>
-                                    {isSubmitting ? 'Creating...' : 'Create SSH Key'}
+                                    {isSubmitting ? t('strings.creating') : t('server.add_ssh_key')}
                                 </ActionButton>
                             </div>
                         </Form>

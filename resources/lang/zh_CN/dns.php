@@ -1,0 +1,82 @@
+<?php
+
+return [
+    'provider_names' => [
+        'cloudflare' => 'Cloudflare',
+        'hetzner' => 'Hetzner',
+        'route53' => 'AWS Route53',
+        'dnsimple' => 'DNSimple',
+    ],
+    'providers' => [
+        'cloudflare' => 'Cloudflare DNS 服务',
+        'hetzner' => 'Hetzner DNS 服务',
+        'route53' => 'AWS Route53 DNS 服务',
+        'dnsimple' => 'DNSimple DNS 服务',
+    ],
+    'schema' => [
+        'cloudflare' => [
+            'api_token' => '具有 Zone:Edit 权限的 Cloudflare API 令牌',
+            'zone_id' => 'Cloudflare 区域 ID',
+        ],
+        'hetzner' => [
+            'api_token' => '具有读写权限的 Hetzner DNS API 令牌',
+        ],
+        'route53' => [
+            'access_key_id' => '具有 Route53 权限的 AWS 访问密钥 ID',
+            'secret_access_key' => 'AWS 秘密访问密钥',
+            'hosted_zone_id' => 'Route53 托管区域 ID',
+            'region' => 'AWS 区域（默认：us-east-1）',
+        ],
+        'dnsimple' => [
+            'api_token' => 'DNSimple API 访问令牌',
+            'account_id' => 'DNSimple 账户 ID（可选，留空时自动检测）',
+        ],
+    ],
+    'errors' => [
+        'service_unavailable' => 'DNS 服务暂时不可用。',
+        'record_not_found' => '未找到该 DNS 记录，或该记录当前无法访问。',
+        'rejected_create_request' => 'DNS 提供商拒绝了创建记录的请求。',
+        'rejected_update_request' => 'DNS 提供商拒绝了更新记录的请求。',
+        'rejected_delete_request' => 'DNS 提供商拒绝了删除记录的请求。',
+        'failed_retrieve_records' => '获取 DNS 记录失败。',
+        'zone_not_found_or_inaccessible' => '未找到该域名区域，或该区域当前无法访问。',
+        'zone_not_found_for_domain' => '未找到域名 :domain 对应的区域。',
+        'account_id_unavailable' => '无法从 DNSimple API 确定账户 ID。',
+    ],
+    'exceptions' => [
+        'connection_failed' => "连接 DNS 提供商“:provider”失败。",
+        'connection_failed_reason' => "连接 DNS 提供商“:provider”失败：:reason",
+        'authentication_failed' => "DNS 提供商“:provider”的身份验证失败，请检查您的凭据。",
+        'invalid_configuration' => "DNS 提供商“:provider”的配置无效：缺少字段“:field”或该字段无效。",
+        'record_creation_failed' => "为“:record”创建 DNS 记录失败。",
+        'record_creation_failed_reason' => "为“:record”创建 DNS 记录失败：:reason",
+        'record_update_failed' => "更新域名“:domain”的 DNS 记录 [:records] 失败。",
+        'record_update_failed_reason' => "更新域名“:domain”的 DNS 记录 [:records] 失败：:reason",
+        'record_deletion_failed' => "删除域名“:domain”的 DNS 记录 [:records] 失败。",
+        'record_deletion_failed_reason' => "删除域名“:domain”的 DNS 记录 [:records] 失败：:reason",
+        'unsupported_record_type' => "DNS 提供商“:provider”不支持记录类型“:record_type”。",
+    ],
+    'validation' => [
+        'domain_name_required' => '必须填写域名。',
+        'domain_name_invalid' => '域名格式无效。',
+        'domain_name_unique' => '该域名已配置。',
+        'provider_required' => '必须选择一个 DNS 提供商。',
+        'provider_unsupported' => '所选的 DNS 提供商不受支持。',
+        'config_required' => '必须填写 DNS 配置。',
+        'api_token_required' => '所选 DNS 提供商必须填写 API 令牌。',
+        'access_key_required' => 'Route53 必须填写 AWS 访问密钥 ID。',
+        'secret_key_required' => 'Route53 必须填写 AWS 秘密访问密钥。',
+    ],
+    'attributes' => [
+        'domain_name' => '域名',
+        'dns_provider' => 'DNS 提供商',
+        'api_token' => 'API 令牌',
+        'account_id' => '账户 ID',
+        'access_key_id' => '访问密钥 ID',
+        'secret_access_key' => '秘密访问密钥',
+        'region' => 'AWS 区域',
+        'hosted_zone_id' => '托管区域 ID',
+        'zone_id' => '区域 ID',
+        'route53_credentials' => 'AWS 访问密钥 ID 和秘密访问密钥',
+    ],
+];

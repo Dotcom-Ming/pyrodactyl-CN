@@ -7,6 +7,7 @@ import Spinner from '@/components/elements/Spinner';
 import { PageListItem } from '@/components/elements/pages/PageList';
 
 import { bytesToString } from '@/lib/formatters';
+import { t } from '@/lib/i18n';
 
 import useFlash from '@/plugins/useFlash';
 
@@ -52,16 +53,16 @@ const BackupItem = ({ backup, isSelected = false, onToggleSelect, isSelectable =
             await retryBackup(backup.uuid);
             addFlash({
                 type: 'success',
-                title: 'Success',
+                title: t('strings.success'),
                 key: 'backup',
-                message: 'Backup is being retried.',
+                message: t('strings.backup_retrying'),
             });
         } catch (error) {
             addFlash({
                 type: 'error',
-                title: 'Error',
+                title: t('strings.error'),
                 key: 'backup',
-                message: error instanceof Error ? error.message : 'Failed to retry backup.',
+                message: error instanceof Error ? error.message : t('strings.backup_retry_failed'),
             });
         }
     };
@@ -150,12 +151,12 @@ const BackupItem = ({ backup, isSelected = false, onToggleSelect, isSelectable =
                         <h3 className='text-sm font-medium text-zinc-100 truncate'>{backup.name}</h3>
                         {backup.isAutomatic && (
                             <span className='text-xs text-blue-400 font-medium bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded'>
-                                Automatic
+                                {t('strings.automatic')}
                             </span>
                         )}
                         {backup.isLocked && (
                             <span className='text-xs text-red-400 font-medium bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded'>
-                                Locked
+                                {t('strings.locked')}
                             </span>
                         )}
                     </div>
@@ -189,12 +190,12 @@ const BackupItem = ({ backup, isSelected = false, onToggleSelect, isSelectable =
                 <div className='hidden sm:block flex-shrink-0 text-right min-w-[90px]'>
                     {backup.completedAt && backup.isSuccessful && backup.bytes ? (
                         <>
-                            <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>Size</p>
+                            <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>{t('strings.size')}</p>
                             <p className='text-sm text-zinc-300 font-medium'>{bytesToString(backup.bytes)}</p>
                         </>
                     ) : (
                         <>
-                            <p className='text-xs text-transparent uppercase tracking-wide mb-1'>Size</p>
+                            <p className='text-xs text-transparent uppercase tracking-wide mb-1'>{t('strings.size')}</p>
                             <p className='text-sm text-transparent font-medium'>-</p>
                         </>
                     )}
@@ -202,7 +203,7 @@ const BackupItem = ({ backup, isSelected = false, onToggleSelect, isSelectable =
 
                 {/* Created time */}
                 <div className='hidden sm:block flex-shrink-0 text-right min-w-[130px]'>
-                    <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>Created</p>
+                    <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>{t('strings.created')}</p>
                     <p
                         className='text-sm text-zinc-300 font-medium'
                         title={format(backup.createdAt, 'ddd, MMMM do, yyyy HH:mm:ss')}
@@ -219,7 +220,7 @@ const BackupItem = ({ backup, isSelected = false, onToggleSelect, isSelectable =
                             <button
                                 onClick={handleRetry}
                                 className='p-2 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:bg-blue-500/20 transition-colors'
-                                title='Retry backup'
+                                title={t('strings.retry_backup')}
                             >
                                 <CloudArrowUpIn width={22} height={22} />
                             </button>

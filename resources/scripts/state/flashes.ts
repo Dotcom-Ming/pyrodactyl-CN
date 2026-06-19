@@ -3,6 +3,7 @@ import { Action, action } from 'easy-peasy';
 import { FlashMessageType } from '@/components/MessageBox';
 
 import { httpErrorToHuman } from '@/api/http';
+import { t } from '@/lib/i18n';
 
 export interface FlashStore {
     items: FlashMessage[];
@@ -28,7 +29,7 @@ const flashes: FlashStore = {
     }),
 
     addError: action((state, payload) => {
-        state.items.push({ type: 'error', title: 'Error', ...payload });
+        state.items.push({ type: 'error', title: t('strings.error'), ...payload });
     }),
 
     clearAndAddHttpError: action((state, payload) => {
@@ -40,7 +41,7 @@ const flashes: FlashStore = {
             state.items = [
                 {
                     type: 'error',
-                    title: 'Error',
+                    title: t('strings.error'),
                     key: payload.key,
                     message: httpErrorToHuman(payload.error),
                 },

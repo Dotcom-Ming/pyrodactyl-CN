@@ -1,0 +1,82 @@
+<?php
+
+return [
+    'provider_names' => [
+        'cloudflare' => 'Cloudflare',
+        'hetzner' => 'Hetzner',
+        'route53' => 'AWS Route53',
+        'dnsimple' => 'DNSimple',
+    ],
+    'providers' => [
+        'cloudflare' => 'Cloudflare DNS service',
+        'hetzner' => 'Hetzner DNS service',
+        'route53' => 'AWS Route53 DNS service',
+        'dnsimple' => 'DNSimple DNS service',
+    ],
+    'schema' => [
+        'cloudflare' => [
+            'api_token' => 'Cloudflare API token with Zone:Edit permissions',
+            'zone_id' => 'Cloudflare zone ID',
+        ],
+        'hetzner' => [
+            'api_token' => 'Hetzner DNS API token with read and write permissions',
+        ],
+        'route53' => [
+            'access_key_id' => 'AWS access key ID with Route53 permissions',
+            'secret_access_key' => 'AWS secret access key',
+            'hosted_zone_id' => 'Route53 hosted zone ID',
+            'region' => 'AWS region (default: us-east-1)',
+        ],
+        'dnsimple' => [
+            'api_token' => 'DNSimple API access token',
+            'account_id' => 'DNSimple account ID (optional, auto-detected if omitted)',
+        ],
+    ],
+    'errors' => [
+        'service_unavailable' => 'DNS service is temporarily unavailable.',
+        'record_not_found' => 'DNS record was not found or is inaccessible.',
+        'rejected_create_request' => 'The DNS provider rejected the record creation request.',
+        'rejected_update_request' => 'The DNS provider rejected the record update request.',
+        'rejected_delete_request' => 'The DNS provider rejected the record deletion request.',
+        'failed_retrieve_records' => 'Failed to retrieve DNS records.',
+        'zone_not_found_or_inaccessible' => 'The domain zone was not found or is inaccessible.',
+        'zone_not_found_for_domain' => 'The domain zone was not found for :domain.',
+        'account_id_unavailable' => 'Unable to determine the account ID from the DNSimple API.',
+    ],
+    'exceptions' => [
+        'connection_failed' => "Failed to connect to DNS provider ':provider'.",
+        'connection_failed_reason' => "Failed to connect to DNS provider ':provider': :reason",
+        'authentication_failed' => "Authentication failed for DNS provider ':provider'. Please check your credentials.",
+        'invalid_configuration' => "Invalid configuration for DNS provider ':provider': missing or invalid field ':field'.",
+        'record_creation_failed' => "Failed to create a DNS record for ':record'.",
+        'record_creation_failed_reason' => "Failed to create a DNS record for ':record': :reason",
+        'record_update_failed' => "Failed to update DNS records [:records] for domain ':domain'.",
+        'record_update_failed_reason' => "Failed to update DNS records [:records] for domain ':domain': :reason",
+        'record_deletion_failed' => "Failed to delete DNS records [:records] for domain ':domain'.",
+        'record_deletion_failed_reason' => "Failed to delete DNS records [:records] for domain ':domain': :reason",
+        'unsupported_record_type' => "DNS provider ':provider' does not support record type ':record_type'.",
+    ],
+    'validation' => [
+        'domain_name_required' => 'A domain name is required.',
+        'domain_name_invalid' => 'The domain name format is invalid.',
+        'domain_name_unique' => 'This domain is already configured.',
+        'provider_required' => 'A DNS provider must be selected.',
+        'provider_unsupported' => 'The selected DNS provider is not supported.',
+        'config_required' => 'DNS configuration is required.',
+        'api_token_required' => 'An API token is required for the selected DNS provider.',
+        'access_key_required' => 'An AWS access key ID is required for Route53.',
+        'secret_key_required' => 'An AWS secret access key is required for Route53.',
+    ],
+    'attributes' => [
+        'domain_name' => 'domain name',
+        'dns_provider' => 'DNS provider',
+        'api_token' => 'API token',
+        'account_id' => 'account ID',
+        'access_key_id' => 'access key ID',
+        'secret_access_key' => 'secret access key',
+        'region' => 'AWS region',
+        'hosted_zone_id' => 'hosted zone ID',
+        'zone_id' => 'zone ID',
+        'route53_credentials' => 'AWS access key ID and secret access key',
+    ],
+];

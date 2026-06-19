@@ -45,11 +45,11 @@ class BackupStatusController extends Controller
         /** @var \Pterodactyl\Models\Server $server */
         $server = $model->server;
         if ($server->node_id !== $node->id) {
-            throw new HttpForbiddenException('You do not have permission to access that backup.');
+            throw new HttpForbiddenException(trans('exceptions.backup.access_denied'));
         }
 
         if ($model->is_successful) {
-            throw new BadRequestHttpException('Cannot update the status of a backup that is already marked as completed.');
+            throw new BadRequestHttpException(trans('exceptions.backup.cannot_update_completed'));
         }
 
         $action = $request->boolean('successful') ? 'server:backup.complete' : 'server:backup.fail';

@@ -47,7 +47,7 @@ class ServerOperationService
         ?string $message = null
     ): ServerOperation {
         if (!$this->canAcceptOperation($server)) {
-            throw new ConflictHttpException('Server cannot accept new operations at this time.');
+            throw new ConflictHttpException(trans('operations.service.cannot_accept'));
         }
 
         $operationId = Str::uuid()->toString();
@@ -58,7 +58,7 @@ class ServerOperationService
             'user_id' => $user->id,
             'type' => $type,
             'status' => ServerOperation::STATUS_PENDING,
-            'message' => $message ?? 'Operation queued for processing...',
+            'message' => $message ?? trans('operations.service.queued'),
             'parameters' => $parameters,
         ]);
     }
@@ -73,7 +73,7 @@ class ServerOperationService
             ->firstOrFail();
 
         if ($operation->hasTimedOut()) {
-            $operation->markAsFailed('Operation timed out');
+            $operation->markAsFailed(trans('operations.service.timed_out'));
         }
 
         return $operation;
@@ -105,7 +105,7 @@ class ServerOperationService
             $timedOutOperations = ServerOperation::forServer($server)->timedOut()->get();
             
             foreach ($timedOutOperations as $operation) {
-                $operation->markAsFailed('Operation timed out');
+                $operation->markAsFailed(trans('operations.service.timed_out'));
             }
 
             return $timedOutOperations->count();
@@ -143,7 +143,7 @@ class ServerOperationService
     /**
      * Clean up old completed operations.
      */
-    public function cleanupOldOperations(int $daysOld = null): int
+    public function cleanupOldOperations(?int $daysOld = null): int
     {
         $daysOld = $daysOld ?? config('server_operations.cleanup.retain_days', 30);
         $chunkSize = config('server_operations.cleanup.chunk_size', 100);

@@ -9,6 +9,7 @@ import { PageListItem } from '@/components/elements/pages/PageList';
 import { SocketEvent } from '@/components/server/events';
 
 import { bytesToString } from '@/lib/formatters';
+import { t } from '@/lib/i18n';
 
 import { ServerBackup } from '@/api/server/types';
 import getServerBackups from '@/api/swr/getServerBackups';
@@ -81,12 +82,12 @@ const BackupItem = ({ backup }: Props) => {
                                     <h3 className='text-sm font-medium text-zinc-100 truncate'>{backup.name}</h3>
                                     {backup.isAutomatic && (
                                         <span className='text-xs text-blue-400 font-medium bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded'>
-                                            Automatic
+                                            {t('strings.automatic')}
                                         </span>
                                     )}
                                     {backup.isLocked && (
                                         <span className='text-xs text-red-400 font-medium bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded'>
-                                            Locked
+                                            {t('strings.locked')}
                                         </span>
                                     )}
                                 </div>
@@ -98,19 +99,19 @@ const BackupItem = ({ backup }: Props) => {
                     <div className='visible sm:block flex-shrink-0 text-right min-w-[90px] '>
                         {backup.completedAt && backup.bytes ? (
                             <>
-                                <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>Size</p>
+                                <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>{t('strings.size')}</p>
                                 <p className='text-sm text-zinc-300 font-medium'>{bytesToString(backup.bytes)}</p>
                             </>
                         ) : (
                             <>
-                                <p className='text-xs text-transparent uppercase tracking-wide mb-1'>Size</p>
+                                <p className='text-xs text-transparent uppercase tracking-wide mb-1'>{t('strings.size')}</p>
                                 <p className='text-sm text-transparent font-medium'>-</p>
                             </>
                         )}
                     </div>
 
                     <div className='hidden sm:block flex-shrink-0 text-right min-w-[130px] mr-5'>
-                        <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>Created</p>
+                        <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>{t('strings.created')}</p>
                         <p
                             className='text-sm text-zinc-300 font-medium'
                             title={format(backup.createdAt, 'ddd, MMMM do, yyyy HH:mm:ss')}

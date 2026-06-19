@@ -7,6 +7,8 @@ import ContentBox from '@/components/elements/ContentBox';
 import { ModBox } from '@/components/elements/ModBox';
 import PageContentBlock from '@/components/elements/PageContentBlock';
 
+import { t } from '@/lib/i18n';
+
 import LoaderSelector from './LoaderSelector';
 import { ModList } from './ModList';
 import GameVersionSelector from './VersionSelector';
@@ -55,7 +57,7 @@ const ModrinthContainerInner = () => {
 
             const initialized = await ModrinthService.init(appVersion);
             if (!initialized) {
-                toast.error('Failed to initialize Modrinth API');
+                toast.error(t('server.failed_init_modrinth'));
                 return;
             }
 
@@ -77,7 +79,7 @@ const ModrinthContainerInner = () => {
                 setIsInitialized(true);
             } catch (error) {
                 console.error('Initial fetch error:', error);
-                toast.error(error instanceof Error ? error.message : 'Failed to fetch initial data');
+                toast.error(error instanceof Error ? error.message : t('server.failed_fetch_data'));
                 setLoaderLoading(false);
                 setVersionLoading(false);
             }
@@ -101,7 +103,7 @@ const ModrinthContainerInner = () => {
     // });
 
     return (
-        <PageContentBlock title={'Mods/Plugins'}>
+        <PageContentBlock title={t('server.mods_plugins_title')}>
             <Toaster />
             <ContentBox className='p-8 bg-[#ffffff09] border-[1px] border-[#ffffff11] shadow-xs rounded-xl mb-5'>
                 {/* TODO: Add a navbar to cycle between Downloaded, Download, and Dependency resolver */}
@@ -109,19 +111,19 @@ const ModrinthContainerInner = () => {
             <div className='flex flex-wrap gap-4'>
                 <ContentBox
                     className='p-8 bg-[#ffffff09] border-[1px] border-[#ffffff11] shadow-xs rounded-xl w-full md:w-1/6'
-                    title='Settings'
+                    title={t('server.settings')}
                 >
                     <Can action={'modrinth.loader'}>
                         <ModBox>
-                            <ContentBox title='Loader' className=''>
-                                {isLoadingLoader ? <p>Loading loaders...</p> : <LoaderSelector />}
+                            <ContentBox title={t('server.loader')} className=''>
+                                {isLoadingLoader ? <p>{t('server.loading_loaders')}</p> : <LoaderSelector />}
                             </ContentBox>
                         </ModBox>
                     </Can>
                     <Can action={'modrinth.version'}>
                         <ModBox>
-                            <ContentBox title='Version' className='scrollbar-thumb-red-700'>
-                                {isLoadingVersion ? <p>Loading versions...</p> : <GameVersionSelector />}
+                            <ContentBox title={t('server.version')} className='scrollbar-thumb-red-700'>
+                                {isLoadingVersion ? <p>{t('server.loading_versions')}</p> : <GameVersionSelector />}
                             </ContentBox>
                         </ModBox>
                     </Can>
@@ -129,7 +131,7 @@ const ModrinthContainerInner = () => {
 
                 <ContentBox
                     className='p-8 bg-[#ffffff09] border-[1px] border-[#ffffff11] shadow-xs rounded-xl w-full md:w-4/5'
-                    title='Downloader'
+                    title={t('server.downloader')}
                 >
                     <div className='relative w-full h-full mb-4'>
                         <svg
@@ -149,7 +151,7 @@ const ModrinthContainerInner = () => {
                         <input
                             className='pl-14 pr-4 py-4 w-full rounded-lg bg-[#ffffff11] text-sm font-bold'
                             type='text'
-                            placeholder='Search'
+                            placeholder={t('server.search_placeholder_mods')}
                             value={searchTerm}
                             onChange={handleInputChange}
                         />

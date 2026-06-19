@@ -3,6 +3,8 @@ import { useContext } from 'react';
 
 import ActionButton from '@/components/elements/ActionButton';
 
+import { t } from '@/lib/i18n';
+
 import asModal from '@/hoc/asModal';
 
 type Props = {
@@ -23,7 +25,7 @@ const ConfirmationModal: React.FC<Props> = ({ children, buttonText, onConfirmed,
                 <div className={`text-zinc-300`}>{children}</div>
                 <div className={`flex gap-4 items-center justify-end my-6`}>
                     <ActionButton variant='secondary' onClick={() => dismiss()}>
-                        Cancel
+                        {t('strings.cancel')}
                     </ActionButton>
                     <ActionButton onClick={() => onConfirmed()} disabled={disabled}>
                         {buttonText}

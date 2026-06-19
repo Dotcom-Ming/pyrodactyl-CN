@@ -5,6 +5,8 @@ import FlashMessageRender from '@/components/FlashMessageRender';
 import Modal from '@/components/elements/Modal';
 import { SocketEvent } from '@/components/server/events';
 
+import { t } from '@/lib/i18n';
+
 import { ServerContext } from '@/state/server';
 
 import useFlash from '@/plugins/useFlash';
@@ -55,28 +57,22 @@ const PIDLimitModalFeature = () => {
             dismissable={false}
             closeOnBackground={false}
             closeButton={true}
-            title={isAdmin ? 'Memory or process limit reached' : 'Possible resource limit reached'}
+            title={isAdmin ? t('server.pid_limit_title') : t('server.pid_limit_title')}
         >
             <FlashMessageRender key={'feature:pidLimit'} />
             <div className={`flex-col`}>
                 {isAdmin ? (
                     <>
                         <p>
-                            This server has reached the maximum process, thread, or memory limit. Increasing{' '}
-                            <code className={`font-mono bg-zinc-900`}>container_pid_limit</code> in the Wings
-                            configuration, <code className={`font-mono bg-zinc-900`}>config.yml</code>, might help
-                            resolve this issue.
+                            {t('server.pid_limit_desc')}
                         </p>
                         <p className='mt-3'>
-                            <b>Note: Wings must be restarted for the configuration file changes to take effect</b>
+                            <b>{t('server.pid_limit_restart_note')}</b>
                         </p>
                     </>
                 ) : (
                     <>
-                        <p>
-                            This server is attempting to use more resources than allocated. Please contact the
-                            administrator and give them the error below.
-                        </p>
+                        <p>{t('server.pid_limit_user_desc')}</p>
                         <p className='mt-3'>
                             <code className={`font-mono bg-zinc-900`}>
                                 pthread_create failed, Possibly out of memory or process/resource limits reached

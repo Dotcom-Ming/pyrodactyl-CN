@@ -1,16 +1,16 @@
 @extends('layouts.admin')
 
 @section('title')
-    Server — {{ $server->name }}: Details
+    {{ trans('strings.admin_server') }} — {{ $server->name }}: {{ trans('strings.admin_details') }}
 @endsection
 
 @section('content-header')
-    <h1>{{ $server->name }}<small>Edit details for this server including owner and container.</small></h1>
+    <h1>{{ $server->name }}<small>{{ trans('strings.admin_edit_server_details_desc') }}</small></h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('admin.index') }}">Admin</a></li>
-        <li><a href="{{ route('admin.servers') }}">Servers</a></li>
+        <li><a href="{{ route('admin.index') }}">{{ trans('strings.admin') }}</a></li>
+        <li><a href="{{ route('admin.servers') }}">{{ trans('strings.admin_servers') }}</a></li>
         <li><a href="{{ route('admin.servers.view', $server->id) }}">{{ $server->name }}</a></li>
-        <li class="active">Details</li>
+        <li class="active">{{ trans('strings.admin_details') }}</li>
     </ol>
 @endsection
 
@@ -20,37 +20,37 @@
     <div class="col-xs-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">Base Information</h3>
+                <h3 class="box-title">{{ trans('strings.admin_base_information') }}</h3>
             </div>
             <form action="{{ route('admin.servers.view.details', $server->id) }}" method="POST">
                 <div class="box-body">
                     <div class="form-group">
-                        <label for="name" class="control-label">Server Name <span class="field-required"></span></label>
+                        <label for="name" class="control-label">{{ trans('strings.admin_server_name') }} <span class="field-required"></span></label>
                         <input type="text" name="name" value="{{ old('name', $server->name) }}" class="form-control" />
-                        <p class="text-muted small">Character limits: <code>a-zA-Z0-9_-</code> and <code>[Space]</code>.</p>
+                        <p class="text-muted small">{!! trans('strings.admin_server_name_limits') !!}</p>
                     </div>
                     <div class="form-group">
-                        <label for="external_id" class="control-label">External Identifier</label>
+                        <label for="external_id" class="control-label">{{ trans('strings.admin_external_identifier') }}</label>
                         <input type="text" name="external_id" value="{{ old('external_id', $server->external_id) }}" class="form-control" />
-                        <p class="text-muted small">Leave empty to not assign an external identifier for this server. The external ID should be unique to this server and not be in use by any other servers.</p>
+                        <p class="text-muted small">{{ trans('strings.admin_external_id_desc') }}</p>
                     </div>
                     <div class="form-group">
-                        <label for="pUserId" class="control-label">Server Owner <span class="field-required"></span></label>
+                        <label for="pUserId" class="control-label">{{ trans('strings.admin_server_owner') }} <span class="field-required"></span></label>
                         <select name="owner_id" class="form-control" id="pUserId">
                             <option value="{{ $server->owner_id }}" selected>{{ $server->user->email }}</option>
                         </select>
-                        <p class="text-muted small">You can change the owner of this server by changing this field to an email matching another use on this system. If you do this a new daemon security token will be generated automatically.</p>
+                        <p class="text-muted small">{{ trans('strings.admin_change_owner_desc') }}</p>
                     </div>
                     <div class="form-group">
-                        <label for="description" class="control-label">Server Description</label>
+                        <label for="description" class="control-label">{{ trans('strings.admin_server_description') }}</label>
                         <textarea name="description" rows="3" class="form-control">{{ old('description', $server->description) }}</textarea>
-                        <p class="text-muted small">A brief description of this server.</p>
+                        <p class="text-muted small">{{ trans('strings.admin_server_description_desc') }}</p>
                     </div>
                 </div>
                 <div class="box-footer">
                     {!! csrf_field() !!}
                     {!! method_field('PATCH') !!}
-                    <input type="submit" class="btn btn-sm btn-primary" value="Update Details" />
+                    <input type="submit" class="btn btn-sm btn-primary" value="{{ trans('strings.admin_update_details') }}" />
                 </div>
             </form>
         </div>

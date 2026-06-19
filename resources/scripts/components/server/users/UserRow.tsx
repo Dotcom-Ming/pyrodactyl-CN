@@ -9,6 +9,7 @@ import RemoveSubuserButton from '@/components/server/users/RemoveSubuserButton';
 
 import { ServerContext } from '@/state/server';
 import { Subuser } from '@/state/server/subusers';
+import { t } from '@/lib/i18n';
 
 interface Props {
     subuser: Subuser;
@@ -31,7 +32,7 @@ const UserRow = ({ subuser }: Props) => {
             <div className={`sm:ml-4 flex-1 overflow-hidden flex flex-col`}>
                 <p className={`truncate text-lg`}>{subuser.email}</p>
                 <p className={`mt-1 md:mt-0 text-xs text-zinc-400 truncate sm:text-left text-center`}>
-                    {subuser.twoFactorEnabled ? 'MFA Enabled' : 'MFA Disabled'}
+                    {subuser.twoFactorEnabled ? t('server.mfa_enabled') : t('server.mfa_disabled')}
                 </p>
             </div>
 
@@ -40,7 +41,7 @@ const UserRow = ({ subuser }: Props) => {
                     <p className={`font-medium text-center`}>
                         {subuser.permissions.filter((permission) => permission !== 'websocket.connect').length}
                     </p>
-                    <p className={`text-xs text-zinc-500 uppercase`}>Permissions</p>
+                    <p className={`text-xs text-zinc-500 uppercase`}>{t('server.permissions_label')}</p>
                 </div>
                 {subuser.uuid !== uuid && (
                     <>
@@ -51,10 +52,10 @@ const UserRow = ({ subuser }: Props) => {
                                     size='sm'
                                     className='flex items-center gap-2'
                                     onClick={handleEditClick}
-                                    aria-label='Edit subuser'
+                                    aria-label={t('server.edit_subuser')}
                                 >
                                     <Pencil width={22} height={22} fill='currentColor' />
-                                    Edit
+                                    {t('strings.edit')}
                                 </ActionButton>
                             </Can>
                             <Can action={'user.delete'}>

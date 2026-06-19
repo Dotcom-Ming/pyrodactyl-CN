@@ -3,6 +3,8 @@ import CopyOnClick from '@/components/elements/CopyOnClick';
 import { Alert } from '@/components/elements/alert';
 import { Dialog, DialogProps } from '@/components/elements/dialog';
 
+import { t } from '@/lib/i18n';
+
 interface RecoveryTokenDialogProps extends DialogProps {
     tokens: string[];
 }
@@ -19,10 +21,8 @@ const RecoveryTokensDialog = ({ tokens, open, onClose }: RecoveryTokenDialogProp
         <Dialog
             open={open}
             onClose={onClose}
-            title={'Authenticator App Enabled'}
-            description={
-                'Store the codes below somewhere safe. If you lose access to your authenticator app you can use these backup codes to sign in.'
-            }
+            title={t('strings.authenticator_app_enabled')}
+            description={t('strings.authenticator_app_enabled_desc')}
             hideCloseIcon
             preventExternalClose
         >
@@ -40,11 +40,11 @@ const RecoveryTokensDialog = ({ tokens, open, onClose }: RecoveryTokenDialogProp
                 </pre>
             </CopyOnClick>
             <Alert type={'danger'} className={'mt-3'}>
-                These codes will not be shown again.
+                {t('strings.recovery_codes_warning')}
             </Alert>
             <Dialog.Footer>
                 <ActionButton variant='primary' onClick={onClose}>
-                    Done
+                    {t('strings.done')}
                 </ActionButton>
             </Dialog.Footer>
         </Dialog>

@@ -21,6 +21,7 @@ import { httpErrorToHuman } from '@/api/http';
 import { ApplicationStore } from '@/state';
 
 import { useFlashKey } from '@/plugins/useFlash';
+import { t } from '@/lib/i18n';
 
 interface CreateValues {
     name: string;
@@ -84,7 +85,7 @@ const AccountSSHContainer = () => {
     };
 
     return (
-        <PageContentBlock title={'SSH Keys'}>
+        <PageContentBlock title={t('server.ssh_keys')}>
             <FlashMessageRender byKey='account:ssh-keys' />
 
             {/* Create SSH Key Modal */}
@@ -92,8 +93,8 @@ const AccountSSHContainer = () => {
                 <Dialog.Confirm
                     open={showCreateModal}
                     onClose={() => setShowCreateModal(false)}
-                    title='Add SSH Key'
-                    confirm='Add Key'
+                    title={t('server.add_ssh_key')}
+                    confirm={t('server.add_key')}
                     onConfirmed={() => {
                         const form = document.getElementById('create-ssh-form') as HTMLFormElement;
                         if (form) {
@@ -106,8 +107,8 @@ const AccountSSHContainer = () => {
                         onSubmit={submitCreate}
                         initialValues={{ name: '', publicKey: '' }}
                         validationSchema={object().shape({
-                            name: string().required('SSH Key Name is required'),
-                            publicKey: string().required('Public Key is required'),
+                            name: string().required(t('server.ssh_key_name_required')),
+                            publicKey: string().required(t('server.public_key_required')),
                         })}
                     >
                         {({ isSubmitting }) => (
@@ -115,17 +116,17 @@ const AccountSSHContainer = () => {
                                 <SpinnerOverlay visible={isSubmitting} />
 
                                 <FormikFieldWrapper
-                                    label='SSH Key Name'
+                                    label={t('server.ssh_key_name')}
                                     name='name'
-                                    description='A name to identify this SSH key.'
+                                    description={t('server.ssh_key_name_desc')}
                                 >
                                     <Field name='name' as={Input} className='w-full' />
                                 </FormikFieldWrapper>
 
                                 <FormikFieldWrapper
-                                    label='Public Key'
+                                    label={t('server.public_key')}
                                     name='publicKey'
-                                    description='Enter your public SSH key.'
+                                    description={t('server.public_key_desc')}
                                 >
                                     <Field name='publicKey' as={Input} className='w-full' />
                                 </FormikFieldWrapper>
@@ -147,7 +148,7 @@ const AccountSSHContainer = () => {
                     }}
                 >
                     <MainPageHeader
-                        title='SSH Keys'
+                        title={t('server.ssh_keys')}
                         titleChildren={
                             <ActionButton
                                 variant='primary'
@@ -155,7 +156,7 @@ const AccountSSHContainer = () => {
                                 className='flex items-center gap-2'
                             >
                                 <Plus width={22} height={22} fill='currentColor' />
-                                Add SSH Key
+                                {t('server.add_ssh_key')}
                             </ActionButton>
                         }
                     />
@@ -172,14 +173,13 @@ const AccountSSHContainer = () => {
                     <div className='bg-gradient-to-b from-[#ffffff08] to-[#ffffff05] border-[1px] border-[#ffffff12] rounded-xl p-4 sm:p-6 shadow-sm'>
                         <SpinnerOverlay visible={!data && isValidating} />
                         <Dialog.Confirm
-                            title={'Delete SSH Key'}
-                            confirm={'Delete Key'}
+                            title={t('server.delete_ssh_key')}
+                            confirm={t('server.delete_key')}
                             open={!!deleteKey}
                             onClose={() => setDeleteKey(null)}
                             onConfirmed={doDeletion}
                         >
-                            Removing the <Code>{deleteKey?.name}</Code> SSH key will invalidate its usage across the
-                            Panel.
+                            {t('server.ssh_key_remove_warning')}
                         </Dialog.Confirm>
 
                         {!data || data.length === 0 ? (
@@ -187,11 +187,11 @@ const AccountSSHContainer = () => {
                                 <div className='w-16 h-16 mx-auto mb-4 rounded-full bg-[#ffffff11] flex items-center justify-center'>
                                     <Key width={22} height={22} className='text-zinc-400' fill='currentColor' />
                                 </div>
-                                <h3 className='text-lg font-medium text-zinc-200 mb-2'>No SSH Keys</h3>
+                                <h3 className='text-lg font-medium text-zinc-200 mb-2'>{t('server.no_ssh_keys')}</h3>
                                 <p className='text-sm text-zinc-400 max-w-sm mx-auto'>
                                     {!data
-                                        ? 'Loading your SSH keys...'
-                                        : "You haven't added any SSH keys yet. Add one to securely access your servers."}
+                                        ? t('server.loading_ssh_keys')
+                                        : t('server.no_ssh_keys_help')}
                                 </p>
                             </div>
                         ) : (
@@ -215,9 +215,11 @@ const AccountSSHContainer = () => {
                                                         </h4>
                                                     </div>
                                                     <div className='flex items-center gap-4 text-xs text-zinc-400'>
-                                                        <span>Added: {format(key.createdAt, 'MMM d, yyyy HH:mm')}</span>
+                                                        <span>
+                                                            {t('server.added')}: {format(key.createdAt, 'yyyy-MM-dd HH:mm')}
+                                                        </span>
                                                         <div className='flex items-center gap-2'>
-                                                            <span>Fingerprint:</span>
+                                                            <span>{t('server.fingerprint')}:</span>
                                                             <code className='font-mono px-2 py-1 bg-[#ffffff08] border border-[#ffffff08] rounded text-zinc-300'>
                                                                 {showKeys[key.fingerprint]
                                                                     ? `SHA256:${key.fingerprint}`

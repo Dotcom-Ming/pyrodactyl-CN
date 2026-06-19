@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Pterodactyl\Http\Controllers\Controller;
 use Pterodactyl\Extensions\Backups\BackupManager;
 use Pterodactyl\Extensions\Filesystem\S3Filesystem;
+use Pterodactyl\Exceptions\Http\HttpForbiddenException;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -39,7 +40,7 @@ class BackupRemoteUploadController extends Controller
     // Get the size query parameter.
     $size = (int) $request->query('size');
     if (empty($size)) {
-      throw new BadRequestHttpException('A non-empty "size" query parameter must be provided.');
+      throw new BadRequestHttpException(trans('exceptions.backup.size_required'));
     }
 
     /** @var Backup $model */
@@ -52,19 +53,19 @@ class BackupRemoteUploadController extends Controller
     /** @var \Pterodactyl\Models\Server $server */
     $server = $model->server;
     if ($server->node_id !== $node->id) {
-      throw new HttpForbiddenException('You do not have permission to access that backup.');
+      throw new HttpForbiddenException(trans('exceptions.backup.access_denied'));
     }
 
     // Prevent backups that have already been completed from trying to
     // be uploaded again.
     if (!is_null($model->completed_at)) {
-      throw new ConflictHttpException('This backup is already in a completed state.');
+      throw new ConflictHttpException(trans('exceptions.backup.already_completed'));
     }
 
     // Ensure we are using the S3 adapter.
     $adapter = $this->backupManager->adapter();
     if (!$adapter instanceof S3Filesystem) {
-      throw new BadRequestHttpException('The configured backup adapter is not an S3 compatible adapter.');
+      throw new BadRequestHttpException(trans('exceptions.backup.s3_required'));
     }
 
     // The path where backup will be uploaded to

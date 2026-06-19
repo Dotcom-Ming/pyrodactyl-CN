@@ -9,6 +9,8 @@ import Button from '@/components/elements/Button';
 import ContentBox from '@/components/elements/ContentBox';
 import Field from '@/components/elements/Field';
 
+import { t } from '@/lib/i18n';
+
 import loginCheckpoint from '@/api/auth/loginCheckpoint';
 
 import type { FlashStore } from '@/state/flashes';
@@ -41,18 +43,18 @@ function LoginCheckpointForm() {
                     </div>
                 </Link>
                 <div aria-hidden className='my-8 bg-[#ffffff33] min-h-[1px]'></div>
-                <h2 className='text-xl font-extrabold mb-2'>Two Factor Authentication</h2>
-                <div className='text-sm mb-6'>Check device linked with your account for code.</div>
+                <h2 className='text-xl font-extrabold mb-2'>{t('auth.two_factor.title')}</h2>
+                <div className='text-sm mb-6'>{t('auth.two_factor.label_help')}</div>
 
                 <div className={`mt-6`}>
                     <Field
                         name={isMissingDevice ? 'recoveryCode' : 'code'}
-                        title={isMissingDevice ? 'Recovery Code' : 'Authentication Code'}
+                        title={isMissingDevice ? t('strings.2fa_token') : t('auth.two_factor.label')}
                         placeholder='000000'
                         description={
                             isMissingDevice
-                                ? 'Enter one of the recovery codes generated when you setup 2-Factor authentication on this account in order to continue.'
-                                : 'Enter the two-factor token displayed by your device.'
+                                ? t('auth.two_factor.recovery_code_help')
+                                : t('auth.two_factor.token_help')
                         }
                         type={'text'}
                         autoComplete={'one-time-code'}
@@ -67,7 +69,7 @@ function LoginCheckpointForm() {
                         disabled={isSubmitting}
                         isLoading={isSubmitting}
                     >
-                        Login
+                        {t('strings.login')}
                     </Button>
                 </div>
                 <div aria-hidden className='my-8 bg-[#ffffff33] min-h-[1px]'></div>
@@ -86,7 +88,7 @@ function LoginCheckpointForm() {
                             'block w-full text-center py-2.5 px-4 text-xs font-medium tracking-wide uppercase text-white hover:text-white/80 transition-colors duration-200 border border-white/20 rounded-full hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30'
                         }
                     >
-                        {!isMissingDevice ? "I've Lost My Device" : 'I Have My Device'}
+                        {!isMissingDevice ? t('auth.two_factor.lost_device') : t('auth.two_factor.have_device')}
                     </span>
                 </div>
                 <div
@@ -98,7 +100,7 @@ function LoginCheckpointForm() {
                             'block w-full text-center py-2.5 px-4 text-xs font-medium tracking-wide uppercase text-white hover:text-white/80 transition-colors duration-200 border border-white/20 rounded-full hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30'
                         }
                     >
-                        Return to Login
+                        {t('auth.go_to_login')}
                     </Link>
                 </div>
             </LoginFormContainer>

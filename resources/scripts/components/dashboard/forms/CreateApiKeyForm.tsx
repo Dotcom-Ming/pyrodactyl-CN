@@ -17,6 +17,8 @@ import createApiKey from '@/api/account/createApiKey';
 import { ApiKey } from '@/api/account/getApiKeys';
 import { httpErrorToHuman } from '@/api/http';
 
+import { t } from '@/lib/i18n';
+
 import { ApplicationStore } from '@/state';
 
 interface Values {
@@ -60,7 +62,7 @@ const CreateApiKeyForm = ({ onKeyCreated }: { onKeyCreated: (key: ApiKey) => voi
                     initialValues={{ description: '', allowedIps: '' }}
                     validationSchema={object().shape({
                         allowedIps: string(),
-                        description: string().required().min(4),
+                        description: string().required(t('server.description_required')).min(4),
                     })}
                 >
                     {({ isSubmitting }) => (
@@ -70,18 +72,18 @@ const CreateApiKeyForm = ({ onKeyCreated }: { onKeyCreated: (key: ApiKey) => voi
 
                             {/* Description Field */}
                             <FormikFieldWrapper
-                                label='Description'
+                                label={t('server.description')}
                                 name='description'
-                                description='A description of this API key.'
+                                description={t('server.description_desc')}
                             >
                                 <Field name='description' as={Input} className='w-full' />
                             </FormikFieldWrapper>
 
                             {/* Allowed IPs Field */}
                             <FormikFieldWrapper
-                                label='Allowed IPs'
+                                label={t('server.allowed_ips')}
                                 name='allowedIps'
-                                description='Leave blank to allow any IP address to use this API key, otherwise provide each IP address on a new line.'
+                                description={t('server.allowed_ips_desc')}
                             >
                                 <Field name='allowedIps' as={Input} className='w-full' />
                             </FormikFieldWrapper>
@@ -89,7 +91,7 @@ const CreateApiKeyForm = ({ onKeyCreated }: { onKeyCreated: (key: ApiKey) => voi
                             {/* Submit Button below form fields */}
                             <div className='flex justify-end mt-6'>
                                 <ActionButton type='submit' disabled={isSubmitting}>
-                                    {isSubmitting ? 'Creating...' : 'Create API Key'}
+                                    {isSubmitting ? t('strings.creating') : t('server.create_api_key')}
                                 </ActionButton>
                             </div>
                         </Form>

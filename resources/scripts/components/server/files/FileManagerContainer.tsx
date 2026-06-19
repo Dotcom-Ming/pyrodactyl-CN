@@ -20,6 +20,7 @@ import UploadButton from '@/components/server/files/UploadButton';
 import { httpErrorToHuman } from '@/api/http';
 import { FileObject } from '@/api/server/files/loadDirectory';
 
+import { t } from '@/lib/i18n';
 import { useStoreActions } from '@/state/hooks';
 import { ServerContext } from '@/state/server';
 
@@ -93,16 +94,16 @@ const FileManagerContainer = () => {
     });
 
     if (error) {
-        return <ServerError title={'Something went wrong.'} message={httpErrorToHuman(error)} />;
+        return <ServerError title={t('strings.something_went_wrong')} message={httpErrorToHuman(error)} />;
     }
 
     return (
-        <ServerContentBlock className='p-0!' title={'File Manager'} showFlashKey={'files'}>
+        <ServerContentBlock className='p-0!' title={t('strings.file_manager')} showFlashKey={'files'}>
             <div className='px-2 sm:px-14 pt-2 h-full sm:pt-14'>
                 <ErrorBoundary>
                     <MainPageHeader
                         direction='column'
-                        title={'Files'}
+                        title={t('strings.files')}
                         titleChildren={
                             <Can action={'file.create'}>
                                 <div className='flex flex-row gap-1'>
@@ -115,8 +116,7 @@ const FileManagerContainer = () => {
                         }
                     >
                         <p className='text-sm text-neutral-400 leading-relaxed'>
-                            Manage your server files and directories. Upload, download, edit, and organize your
-                            server&apos;s file system with our integrated file manager.
+                            {t('strings.file_manager_description')}
                         </p>
                     </MainPageHeader>
                     <div className={'flex flex-wrap-reverse md:flex-nowrap mb-4'}>
@@ -135,7 +135,7 @@ const FileManagerContainer = () => {
             {!files ? null : (
                 <>
                     {!files.length ? (
-                        <p className={`text-sm text-zinc-400 text-center`}>This folder is empty.</p>
+                        <p className={`text-sm text-zinc-400 text-center`}>{t('strings.this_folder_is_empty')}</p>
                     ) : (
                         <>
                             <div className='relative p-1 border-[1px] border-[#ffffff12] rounded-md sm:ml-12 sm:mr-12 mx-2'>
@@ -160,7 +160,7 @@ const FileManagerContainer = () => {
                                     ref={searchInputRef}
                                     className='pl-14 py-4 w-full rounded-lg bg-[#ffffff11] text-sm font-bold outline-none'
                                     type='text'
-                                    placeholder='Search...'
+                                    placeholder={t('strings.search_placeholder')}
                                     onChange={(event) => debouncedSearchTerm(event.target.value)}
                                 />
                             </div>

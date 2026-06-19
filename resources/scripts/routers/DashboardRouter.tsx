@@ -20,6 +20,8 @@ import MobileTopBar from '@/components/elements/MobileTopBar';
 import Logo from '@/components/elements/PyroLogo';
 import { NotFound } from '@/components/elements/ScreenBlock';
 
+import { t } from '@/lib/i18n';
+
 import http from '@/api/http';
 
 const DashboardRouter = () => {
@@ -133,14 +135,14 @@ const DashboardRouter = () => {
                             <DropdownMenuContent className='z-99999' sideOffset={8}>
                                 {rootAdmin && (
                                     <DropdownMenuItem onSelect={onSelectAdminPanel}>
-                                        Admin Panel
+                                        {t('strings.admin_cp')}
                                         <span className='ml-2 z-10 rounded-full bg-brand px-2 py-1 text-xs text-white'>
-                                            Staff
+                                            {t('strings.staff')}
                                         </span>
                                     </DropdownMenuItem>
                                 )}
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onSelect={onTriggerLogout}>Log Out</DropdownMenuItem>
+                                <DropdownMenuItem onSelect={onTriggerLogout}>{t('strings.logout')}</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>
@@ -148,19 +150,19 @@ const DashboardRouter = () => {
                     <ul data-pyro-subnav-routes-wrapper='' className='pyro-subnav-routes-wrapper'>
                         <NavLink to={'/'} end className='flex flex-row items-center' ref={NavigationHome}>
                             <House width={22} height={22} fill='currentColor' />
-                            <p>Servers</p>
+                            <p>{t('strings.servers')}</p>
                         </NavLink>
                         <NavLink to={'/account/api'} end className='flex flex-row items-center' ref={NavigationApi}>
                             <Lock width={22} height={22} fill='currentColor' />
-                            <p>API Keys</p>
+                            <p>{t('server.api_keys')}</p>
                         </NavLink>
                         <NavLink to={'/account/ssh'} end className='flex flex-row items-center' ref={NavigationSSH}>
                             <Key width={22} height={22} fill='currentColor' />
-                            <p>SSH Keys</p>
+                            <p>{t('server.ssh_keys')}</p>
                         </NavLink>
                         <NavLink to={'/account'} end className='flex flex-row items-center' ref={NavigationSettings}>
                             <Gear width={22} height={22} fill='currentColor' />
-                            <p>Settings</p>
+                            <p>{t('strings.settings')}</p>
                         </NavLink>
                     </ul>
                 </MainSidebar>

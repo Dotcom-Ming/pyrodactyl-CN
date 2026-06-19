@@ -5,6 +5,8 @@ import FlashMessageRender from '@/components/FlashMessageRender';
 import Modal from '@/components/elements/Modal';
 import { SocketEvent } from '@/components/server/events';
 
+import { t } from '@/lib/i18n';
+
 import { ServerContext } from '@/state/server';
 
 import useFlash from '@/plugins/useFlash';
@@ -48,27 +50,23 @@ const SteamDiskSpaceFeature = () => {
             dismissable={false}
             closeOnBackground={false}
             closeButton={true}
-            title='Out of available disk space'
+            title={t('server.steam_disk_title')}
         >
             <FlashMessageRender key={'feature:steamDiskSpace'} />
             <div className={`flex-col`}>
                 {isAdmin ? (
                     <>
                         <p>
-                            This server has run out of available disk space and cannot complete the install or update
-                            process.
+                            {t('server.steam_disk_desc')}
                         </p>
                         <p className='mt-3'>
-                            Ensure the machine has enough disk space by typing{' '}
-                            <code className={`font-mono bg-zinc-900 rounded-sm py-1 px-2`}>df -h</code> on the machine
-                            hosting this server. Delete files or increase the available disk space to resolve the issue.
+                            {t('server.steam_disk_admin_hint', { command: 'df -h' })}
                         </p>
                     </>
                 ) : (
                     <>
                         <p className={`mt-4`}>
-                            This server has run out of available disk space and cannot complete the install or update
-                            process. Please get in touch with the administrator(s) and inform them of disk space issues.
+                            {t('server.steam_disk_desc')}
                         </p>
                     </>
                 )}

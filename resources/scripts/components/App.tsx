@@ -1,12 +1,8 @@
-// Because of how react-router, react lazy, and signals work with each other
-// the only way to prevent mismatching and weird errors is to import the lib
-// in the root first. The github issue for this is still open. Stupid.
-// https://github.com/preactjs/signals/issues/414
 import GlobalStylesheet from '@/assets/css/GlobalStylesheet';
 import '@/assets/tailwind.css';
 import '@preact/signals-react';
 import { StoreProvider } from 'easy-peasy';
-import { lazy } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Toaster } from 'sonner';
 
@@ -14,6 +10,7 @@ import AuthenticatedRoute from '@/components/elements/AuthenticatedRoute';
 import { NotFound } from '@/components/elements/ScreenBlock';
 import Spinner from '@/components/elements/Spinner';
 
+import { loadTranslations } from '@/lib/i18n';
 import { store } from '@/state';
 import { ServerContext } from '@/state/server';
 import { SiteSettings } from '@/state/settings';
@@ -41,6 +38,7 @@ interface ExtendedWindow extends Window {
 
 const App = () => {
     const { PterodactylUser, SiteConfiguration } = window as ExtendedWindow;
+    const [translationsReady, setTranslationsReady] = useState(false);
     if (PterodactylUser && !store.getState().user.data) {
         store.getActions().user.setUserData({
             uuid: PterodactylUser.uuid,
@@ -56,6 +54,21 @@ const App = () => {
 
     if (!store.getState().settings.data) {
         store.getActions().settings.setSettings(SiteConfiguration!);
+    }
+
+    useEffect(() => {
+        loadTranslations(['auth', 'strings', 'dashboard/account', 'dashboard/index', 'passwords', 'server']).finally(() =>
+            setTranslationsReady(true),
+        );
+    }, []);
+
+    if (!translationsReady) {
+        return (
+            <>
+                <GlobalStylesheet />
+                <Spinner centered size={Spinner.Size.LARGE} />
+            </>
+        );
     }
 
     return (

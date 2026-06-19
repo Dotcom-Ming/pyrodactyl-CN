@@ -11,6 +11,8 @@ import Spinner from '@/components/elements/Spinner';
 import { Dialog, DialogWrapperContext } from '@/components/elements/dialog';
 import { Input } from '@/components/elements/inputs';
 
+import { t } from '@/lib/i18n';
+
 import asDialog from '@/hoc/asDialog';
 
 import enableAccountTwoFactor from '@/api/account/enableAccountTwoFactor';
@@ -75,12 +77,11 @@ const ConfigureTwoFactorForm = ({ onTokens }: Props) => {
             </div>
             <CopyOnClick text={token?.secret}>
                 <p className={'font-mono text-sm text-zinc-100 text-center mt-2'}>
-                    {token?.secret.match(/.{1,4}/g)!.join(' ') || 'Loading...'}
+                    {token?.secret.match(/.{1,4}/g)!.join(' ') || t('strings.loading')}
                 </p>
             </CopyOnClick>
             <p id={'totp-code-description'} className={'mt-6'}>
-                Scan the QR code above using an authenticator app, or enter the secret code above. Then, enter the
-                6-digit code it generates below.
+                {t('strings.scan_qr_code')}
             </p>
             <Input.Text
                 aria-labelledby={'totp-code-description'}
@@ -95,7 +96,7 @@ const ConfigureTwoFactorForm = ({ onTokens }: Props) => {
                 pattern={'\\d{6}'}
             />
             <label htmlFor={'totp-password'} className={'block mt-3'}>
-                Account Password
+                {t('strings.account_password')}
             </label>
             <Input.Text
                 variant={Input.Text.Variants.Loose}
@@ -106,7 +107,7 @@ const ConfigureTwoFactorForm = ({ onTokens }: Props) => {
             />
             <Dialog.Footer>
                 <ActionButton variant='secondary' onClick={close}>
-                    Cancel
+                    {t('strings.cancel')}
                 </ActionButton>
                 {/* <Tooltip
                     disabled={password.length > 0 && value.length === 6}
@@ -123,7 +124,7 @@ const ConfigureTwoFactorForm = ({ onTokens }: Props) => {
                     type={'submit'}
                     form={'enable-totp-form'}
                 >
-                    Enable
+                    {t('strings.enable')}
                 </ActionButton>
                 {/* </Tooltip> */}
             </Dialog.Footer>
@@ -131,7 +132,7 @@ const ConfigureTwoFactorForm = ({ onTokens }: Props) => {
     );
 };
 
-export default asDialog({
-    title: 'Enable Authenticator App',
-    description: "You'll be required to enter a verification code each time you sign in.",
-})(ConfigureTwoFactorForm);
+export default asDialog(() => ({
+    title: t('strings.enable_authenticator_app'),
+    description: t('strings.enable_authenticator_app_desc'),
+}))(ConfigureTwoFactorForm);

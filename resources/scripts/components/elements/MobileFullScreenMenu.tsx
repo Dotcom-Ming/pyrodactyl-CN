@@ -7,6 +7,8 @@ import { getServerNavRoutes } from '@/routers/routes';
 
 import Can from '@/components/elements/Can';
 
+import { t } from '@/lib/i18n';
+
 import { getSubdomainInfo } from '@/api/server/network/subdomain';
 
 import { ServerContext } from '@/state/server';
@@ -26,7 +28,7 @@ const MobileFullScreenMenu = ({ isVisible, onClose, children }: MobileFullScreen
             <button
                 onClick={onClose}
                 className='absolute top-4 right-4 p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200'
-                aria-label='Close menu'
+                aria-label={t('strings.close_menu')}
             >
                 <Xmark width={22} height={22} fill='currentColor' />
             </button>
@@ -79,16 +81,16 @@ export const DashboardMobileMenu = ({ isVisible, onClose }: DashboardMobileMenuP
     return (
         <MobileFullScreenMenu isVisible={isVisible} onClose={onClose}>
             <NavigationItem to='/' icon={House} end onClick={onClose}>
-                Servers
+                {t('strings.servers')}
             </NavigationItem>
             <NavigationItem to='/account/api' icon={AbbrApi} end onClick={onClose}>
-                API Keys
+                {t('server.api_keys')}
             </NavigationItem>
             <NavigationItem to='/account/ssh' icon={Key} end onClick={onClose}>
-                SSH Keys
+                {t('server.ssh_keys')}
             </NavigationItem>
             <NavigationItem to='/account' icon={Gear} end onClick={onClose}>
-                Settings
+                {t('strings.settings')}
             </NavigationItem>
         </MobileFullScreenMenu>
     );

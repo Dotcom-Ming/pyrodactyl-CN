@@ -12,6 +12,7 @@ import ContentBox from '@/components/elements/ContentBox';
 import Field from '@/components/elements/Field';
 
 import CaptchaManager from '@/lib/captcha';
+import { t } from '@/lib/i18n';
 
 import { httpErrorToHuman } from '@/api/http';
 import http from '@/api/http';
@@ -44,11 +45,15 @@ const ForgotPasswordContainer = () => {
         http.post('/auth/password', requestData)
             .then((response) => {
                 resetForm();
-                addFlash({ type: 'success', title: 'Success', message: response.data.status || 'Email sent!' });
+                addFlash({
+                    type: 'success',
+                    title: t('strings.success'),
+                    message: response.data.status || t('passwords.sent'),
+                });
             })
             .catch((error) => {
                 console.error(error);
-                addFlash({ type: 'error', title: 'Error', message: httpErrorToHuman(error) });
+                addFlash({ type: 'error', title: t('strings.error'), message: httpErrorToHuman(error) });
             })
             .finally(() => {
                 setSubmitting(false);
@@ -61,7 +66,7 @@ const ForgotPasswordContainer = () => {
                 onSubmit={handleSubmission}
                 initialValues={{ email: '' }}
                 validationSchema={object().shape({
-                    email: string().email('Enter a valid email address.').required('Email is required.'),
+                    email: string().email(t('auth.validation_email_valid')).required(t('auth.validation_email_required')),
                 })}
             >
                 {({ isSubmitting }) => (
@@ -72,11 +77,11 @@ const ForgotPasswordContainer = () => {
                             </div>
                         </Link>
                         <div aria-hidden className='my-8 bg-[#ffffff33] min-h-[1px]'></div>
-                        <h2 className='text-xl font-extrabold mb-2'>Reset Password</h2>
+                        <h2 className='text-xl font-extrabold mb-2'>{t('auth.forgot_password.label')}</h2>
                         <div className='text-sm mb-6'>
-                            We&apos;ll send you an email with a link to reset your password.
+                            {t('auth.forgot_password.label_help')}
                         </div>
-                        <Field id='email' label={'Email'} name={'email'} type={'email'} />
+                        <Field id='email' label={t('strings.email')} name={'email'} type={'email'} />
 
                         <Captcha
                             className='mt-6'
@@ -84,8 +89,8 @@ const ForgotPasswordContainer = () => {
                                 console.error('Captcha error:', error);
                                 addFlash({
                                     type: 'error',
-                                    title: 'Error',
-                                    message: 'Captcha verification failed. Please try again.',
+                                    title: t('strings.error'),
+                                    message: t('strings.captcha_failed'),
                                 });
                             }}
                         />
@@ -98,7 +103,7 @@ const ForgotPasswordContainer = () => {
                                 isLoading={isSubmitting}
                                 disabled={isSubmitting}
                             >
-                                Send Email
+                                {t('auth.forgot_password.button')}
                             </Button>
                         </div>
 
@@ -110,7 +115,7 @@ const ForgotPasswordContainer = () => {
                                 to='/auth/login'
                                 className='block w-full text-center py-2.5 px-4 text-xs font-medium tracking-wide uppercase text-white hover:text-white/80 transition-colors duration-200 border border-white/20 rounded-full hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30'
                             >
-                                Return to Login
+                                {t('auth.go_to_login')}
                             </Link>
                         </div>
                     </LoginFormContainer>

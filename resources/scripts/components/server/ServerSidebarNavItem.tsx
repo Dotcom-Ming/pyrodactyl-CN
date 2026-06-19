@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 
 import type { FeatureLimitKey, ServerRouteDefinition } from '@/routers/routes';
 
+import { t } from '@/lib/i18n';
+
 import Can from '@/components/elements/Can';
 
 import { getSubdomainInfo } from '@/api/server/network/subdomain';
@@ -21,9 +23,17 @@ interface ServerSidebarNavItemProps {
  * - Feature limit visibility (databases, backups, allocations)
  * - Network feature with subdomain support check
  */
+const navNameKey: Record<string, string> = {
+    Account: 'strings.account',
+    Home: 'strings.home',
+    Settings: 'strings.settings',
+    Databases: 'strings.databases',
+};
+
 const ServerSidebarNavItem = forwardRef<HTMLAnchorElement, ServerSidebarNavItemProps>(
     ({ route, serverId, onClick }, ref) => {
         const { icon: Icon, name, path, permission, featureLimit, end } = route;
+        const displayName = name ? t(navNameKey[name] ?? name) : name;
 
         // Feature limits from server state
         const featureLimits = ServerContext.useStoreState((state) => state.server.data?.featureLimits);
@@ -80,7 +90,7 @@ const ServerSidebarNavItem = forwardRef<HTMLAnchorElement, ServerSidebarNavItemP
                 className='flex flex-row items-center transition-colors duration-200 hover:bg-[#ffffff11] rounded-md'
             >
                 {Icon && <Icon className='ml-3' width={22} height={22} fill='currentColor' />}
-                <p>{name}</p>
+                <p>{displayName}</p>
             </NavLink>
         );
 

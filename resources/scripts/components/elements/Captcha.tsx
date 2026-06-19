@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import CaptchaManager from '@/lib/captcha';
+import { t } from '@/lib/i18n';
 
 interface CaptchaProps {
     onSuccess?: (token: string) => void;
@@ -147,7 +148,7 @@ export default function Captcha({
     return (
         <div className={className}>
             <div ref={containerRef} />
-            {isLoading && <div className='text-sm text-gray-500 mt-2'>Loading captcha...</div>}
+            {isLoading && <div className='text-sm text-gray-500 mt-2'>{t('strings.loading_captcha')}</div>}
             {error && <div className='text-sm text-red-500 mt-2'>{error}</div>}
         </div>
     );

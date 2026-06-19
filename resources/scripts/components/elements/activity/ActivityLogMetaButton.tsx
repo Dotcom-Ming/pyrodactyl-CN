@@ -4,6 +4,7 @@ import { useState } from 'react';
 import ActionButton from '@/components/elements/ActionButton';
 import { Dialog } from '@/components/elements/dialog';
 
+import { t } from '@/lib/i18n';
 import { formatObjectToIdentString } from '@/lib/objects';
 
 const ActivityLogMetaButton = ({ meta }: { meta: Record<string, unknown> }) => {
@@ -25,17 +26,17 @@ const ActivityLogMetaButton = ({ meta }: { meta: Record<string, unknown> }) => {
 
     return (
         <>
-            <Dialog open={open} onClose={() => setOpen(false)} hideCloseIcon title={'Event Metadata'}>
+            <Dialog open={open} onClose={() => setOpen(false)} hideCloseIcon title={t('strings.event_metadata')}>
                 <div className='space-y-4'>
                     <div className='flex items-center justify-between'>
-                        <h4 className='text-sm font-medium text-zinc-300'>Formatted View</h4>
+                        <h4 className='text-sm font-medium text-zinc-300'>{t('strings.formatted_view')}</h4>
                         <ActionButton
                             variant='secondary'
                             onClick={copyToClipboard}
                             className='flex items-center gap-2 text-xs'
                         >
                             <Copy width={22} height={22} />
-                            {copied ? 'Copied!' : 'Copy JSON'}
+                            {copied ? t('strings.copied') : t('strings.copy_json')}
                         </ActionButton>
                     </div>
 
@@ -46,7 +47,7 @@ const ActivityLogMetaButton = ({ meta }: { meta: Record<string, unknown> }) => {
                     </div>
 
                     <div>
-                        <h4 className='text-sm font-medium text-zinc-300 mb-2'>Raw JSON</h4>
+                        <h4 className='text-sm font-medium text-zinc-300 mb-2'>{t('strings.raw_json')}</h4>
                         <div className='bg-zinc-900 rounded-lg p-4 border border-zinc-800 max-h-64 overflow-auto'>
                             <pre className='font-mono text-xs leading-relaxed whitespace-pre-wrap text-zinc-400'>
                                 {metadataJson}
@@ -57,13 +58,13 @@ const ActivityLogMetaButton = ({ meta }: { meta: Record<string, unknown> }) => {
 
                 <Dialog.Footer>
                     <ActionButton variant='secondary' onClick={() => setOpen(false)}>
-                        Close
+                        {t('strings.close')}
                     </ActionButton>
                 </Dialog.Footer>
             </Dialog>
 
             <button
-                aria-label='View additional event metadata'
+                aria-label={t('strings.view_event_metadata')}
                 className='w-6 h-6 rounded text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50 transition-colors duration-150 flex items-center justify-center'
                 onClick={() => setOpen(true)}
             >

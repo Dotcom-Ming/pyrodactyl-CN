@@ -20,8 +20,8 @@ class MailTested extends Notification
     public function toMail(): MailMessage
     {
         return (new MailMessage())
-            ->subject('Pyrodactyl Test Message')
-            ->greeting('Hello ' . $this->user->name . '!')
-            ->line('This is a test of the Pyrodactyl mail system. You\'re good to go!');
+            ->subject(trans('notifications.mail_tested.subject'))
+            ->greeting(trans('notifications.mail_tested.greeting', ['name' => $this->user->name]))
+            ->line(trans('notifications.mail_tested.intro'));
     }
 }

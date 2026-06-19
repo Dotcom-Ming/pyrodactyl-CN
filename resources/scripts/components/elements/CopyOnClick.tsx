@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { toast } from 'sonner';
 
+import { t } from '@/lib/i18n';
+
 interface CopyOnClickProps {
     text: string | number | null | undefined;
     showInNotification?: boolean;
@@ -12,18 +14,10 @@ interface CopyOnClickProps {
 
 const CopyOnClick = ({ text, children, showInNotification }: CopyOnClickProps) => {
     const [copied, setCopied] = useState(false);
-    let truncatedText;
-    if (showInNotification == false) {
-        truncatedText = '';
-    } else {
-        const length = 80;
-        const stringText = String(text);
-        truncatedText = stringText.length > length ? `"${stringText.substring(0, length - 3)}..."` : `"${stringText}"`;
-    }
 
     useEffect(() => {
         if (!copied) return;
-        toast(`Copied ${truncatedText} to clipboard.`);
+        toast(t('strings.copied_to_clipboard'));
 
         const timeout = setTimeout(() => {
             setCopied(false);

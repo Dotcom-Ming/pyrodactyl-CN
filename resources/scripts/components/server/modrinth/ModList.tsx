@@ -4,6 +4,8 @@ import { toast } from 'sonner';
 import ActionButton from '@/components/elements/ActionButton';
 import ContentBox from '@/components/elements/ContentBox';
 
+import { t } from '@/lib/i18n';
+
 import { ModCard } from './ModCard';
 import { ModrinthService, useGlobalStateContext } from './config';
 
@@ -69,9 +71,9 @@ export const ModList = ({ showInstalled = false, showDependencies = false }: Mod
             }
             setHasMore(data.length >= 20);
         } catch (err) {
-            setError('Failed to load mods. Please try again later.');
+            setError(t('server.failed_load_mods'));
             console.error('Mod fetch error:', err);
-            toast.error(err instanceof Error ? err.message : 'Failed to fetch mods');
+            toast.error(err instanceof Error ? err.message : t('server.failed_fetch_mods'));
         } finally {
             setIsLoading(false);
         }
@@ -120,45 +122,6 @@ export const ModList = ({ showInstalled = false, showDependencies = false }: Mod
                     <ModCard key={`${mod.id}-${mod.latest_version}`} mod={mod} />
                 ))}
             </div>
-
-            {/* {hasMore && ( */}
-            {/*     <ActionButton */}
-            {/*         onClick={handleLoadMore} */}
-            {/*         disabled={isLoading} */}
-            {/*         className={`${isLoading */}
-            {/*                 ? 'bg-gray-700 cursor-not-allowed' */}
-            {/*                 : 'bg-blue-600 hover:bg-blue-500 shadow-lg hover:shadow-blue-500/20' */}
-            {/*             } text-white font-medium`} */}
-            {/*     > */}
-            {/*         {isLoading ? ( */}
-            {/*             <span className='inline-flex items-center'> */}
-            {/*                 <svg */}
-            {/*                     className='animate-spin -ml-1 mr-2 h-4 w-4 text-white' */}
-            {/*                     xmlns='http://www.w3.org/2000/svg' */}
-            {/*                     fill='none' */}
-            {/*                     viewBox='0 0 24 24' */}
-            {/*                 > */}
-            {/*                     <circle */}
-            {/*                         className='opacity-25' */}
-            {/*                         cx='12' */}
-            {/*                         cy='12' */}
-            {/*                         r='10' */}
-            {/*                         stroke='currentColor' */}
-            {/*                         strokeWidth='4' */}
-            {/*                     ></circle> */}
-            {/*                     <path */}
-            {/*                         className='opacity-75' */}
-            {/*                         fill='currentColor' */}
-            {/*                         d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z' */}
-            {/*                     ></path> */}
-            {/*                 </svg> */}
-            {/*                 Loading... */}
-            {/*             </span> */}
-            {/*         ) : ( */}
-            {/*             'Load More' */}
-            {/*         )} */}
-            {/*     </ActionButton> */}
-            {/* )} */}
         </div>
     );
 };
@@ -179,6 +142,6 @@ const ErrorDisplay = ({ message }: { message: string }) => (
 
 const EmptyState = () => (
     <ContentBox>
-        <div className='text-gray-400 p-4 text-center'>No mods found matching your criteria</div>
+        <div className='text-gray-400 p-4 text-center'>{t('server.no_mods_found')}</div>
     </ContentBox>
 );

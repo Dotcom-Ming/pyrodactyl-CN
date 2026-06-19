@@ -27,6 +27,7 @@ import { getGlobalDaemonType } from '@/api/server/getServer';
 import { Context as ServerBackupContext } from '@/api/swr/getServerBackups';
 import getServerBackups from '@/api/swr/getServerBackups';
 
+import { t } from '@/lib/i18n';
 import { ApplicationStore } from '@/state';
 import { ServerContext } from '@/state/server';
 
@@ -77,25 +78,20 @@ const ModalContent = ({ ...props }: RequiredModalProps) => {
     const { isSubmitting } = useFormikContext<BackupValues>();
 
     return (
-        <Modal {...props} showSpinnerOverlay={isSubmitting} title='Create server backup'>
+        <Modal {...props} showSpinnerOverlay={isSubmitting} title={t('strings.create_server_backup')}>
             <Form>
                 <FlashMessageRender byKey={'backups:create'} />
                 <Field
                     name={'name'}
-                    label={'Backup name'}
-                    description={'If provided, the name that should be used to reference this backup.'}
+                    label={t('strings.backup_name')}
+                    description={t('strings.backup_name_description')}
                 />
                 <div className={`mt-6 flex flex-col`}>
                     <FormikFieldWrapper
                         className='flex flex-col gap-2'
                         name={'ignored'}
-                        label={'Ignored Files & Directories'}
-                        description={`
-                            Enter the files or folders to ignore while generating this backup. Leave blank to use
-                            the contents of the .pyroignore file in the root of the server directory if present.
-                            Wildcard matching of files and folders is supported in addition to negating a rule by
-                            prefixing the path with an exclamation point.
-                        `}
+                        label={t('strings.ignored_files')}
+                        description={t('strings.ignored_files_description')}
                     >
                         <FormikField
                             as={Textarea}
@@ -109,15 +105,15 @@ const ModalContent = ({ ...props }: RequiredModalProps) => {
                     <div className={`my-6`}>
                         <FormikSwitchV2
                             name={'isLocked'}
-                            label={'Locked'}
-                            description={'Prevents this backup from being deleted until explicitly unlocked.'}
+                            label={t('strings.locked')}
+                            description={t('strings.locked_description')}
                         />
                     </div>
                 </Can>
                 <div className={`flex justify-end mb-6`}>
                     <ActionButton variant='primary' type={'submit'} disabled={isSubmitting}>
                         {isSubmitting && <Spinner size='small' />}
-                        {isSubmitting ? 'Creating backup...' : 'Start backup'}
+                        {isSubmitting ? t('strings.creating_backup') : t('strings.start_backup')}
                     </ActionButton>
                 </div>
             </Form>
@@ -179,12 +175,12 @@ const BackupContainer = () => {
 
     const handleDeleteAll = async () => {
         if (!deleteAllPassword) {
-            toast.error('Password is required to delete all backups.');
+            toast.error(t('strings.password_required_delete'));
             return;
         }
 
         if (hasTwoFactor && !deleteAllTotpCode) {
-            toast.error('Two-factor authentication code is required.');
+            toast.error(t('strings.two_factor_required'));
             return;
         }
 
@@ -192,7 +188,7 @@ const BackupContainer = () => {
 
         try {
             await deleteAllServerBackups(uuid, deleteAllPassword, hasTwoFactor, deleteAllTotpCode);
-            toast.success('All backups and repositories are being deleted. This may take a few minutes.');
+            toast.success(t('strings.all_backups_deleting'));
 
             setDeleteAllModalVisible(false);
             setDeleteAllPassword('');
@@ -239,7 +235,7 @@ const BackupContainer = () => {
             addFlash({
                 key: 'backups:bulk_delete',
                 type: 'error',
-                message: 'Password is required to delete backups.',
+                message: t('strings.password_required_delete'),
             });
             return;
         }
@@ -248,7 +244,7 @@ const BackupContainer = () => {
             addFlash({
                 key: 'backups:bulk_delete',
                 type: 'error',
-                message: 'Two-factor authentication code is required.',
+                message: t('strings.two_factor_required'),
             });
             return;
         }
@@ -294,12 +290,11 @@ const BackupContainer = () => {
 
     if (!backups || (error && isValidating)) {
         return (
-            <ServerContentBlock title={'Backups'}>
+            <ServerContentBlock title={t('strings.backups')}>
                 <FlashMessageRender byKey={'backups'} />
-                <MainPageHeader direction='column' title={'Backups'}>
+                <MainPageHeader direction='column' title={t('strings.backups')}>
                     <p className='text-sm text-neutral-400 leading-relaxed'>
-                        Create and manage server backups to protect your data. Schedule automated backups, download
-                        existing ones, and restore when needed.
+                        {t('strings.backups_description')}
                     </p>
                 </MainPageHeader>
                 <div className='flex items-center justify-center py-12'>
@@ -310,11 +305,11 @@ const BackupContainer = () => {
     }
 
     return (
-        <ServerContentBlock title={'Backups'}>
+        <ServerContentBlock title={t('strings.backups')}>
             <FlashMessageRender byKey={'backups'} />
             <MainPageHeader
                 direction='column'
-                title={'Backups'}
+                title={t('strings.backups')}
                 titleChildren={
                     <Can action={'backup.create'}>
                         <div className='flex flex-col sm:flex-row items-center justify-end gap-4'>
@@ -326,7 +321,7 @@ const BackupContainer = () => {
                                         {backupCount} of {backupLimit} backups
                                     </p>
                                 )}
-                                {backupLimit === 0 && <p className='text-sm text-red-400'>Backups disabled</p>}
+                                {backupLimit === 0 && <p className='text-sm text-red-400'>{t('strings.backups_disabled')}</p>}
 
                                 {/* Storage Usage Display */}
                                 {storage && (
@@ -340,19 +335,19 @@ const BackupContainer = () => {
                                                     <span className='font-medium'>
                                                         {formatStorage(storage.used_mb)}
                                                     </span>{' '}
-                                                    storage used
+                                                    {t('strings.storage_used')}
                                                 </p>
                                                 {(storage.repository_usage_mb > 0 || storage.legacy_usage_mb > 0) &&
                                                     storage.repository_usage_mb > 0 &&
                                                     storage.legacy_usage_mb > 0 && (
                                                         <p className='text-xs text-zinc-400'>
                                                             {storage.repository_usage_mb > 0 &&
-                                                                `${formatStorage(storage.repository_usage_mb)} deduplicated`}
+                                                                `${formatStorage(storage.repository_usage_mb)} ${t('strings.deduplicated')}`}
                                                             {storage.repository_usage_mb > 0 &&
                                                                 storage.legacy_usage_mb > 0 &&
                                                                 ' + '}
                                                             {storage.legacy_usage_mb > 0 &&
-                                                                `${formatStorage(storage.legacy_usage_mb)} legacy`}
+                                                                `${formatStorage(storage.legacy_usage_mb)} ${t('strings.legacy')}`}
                                                         </p>
                                                     )}
                                             </>
@@ -369,7 +364,7 @@ const BackupContainer = () => {
                                                         'used'
                                                     ) : (
                                                         <span className='font-medium'>
-                                                            of {formatStorage(backupStorageLimit)} used
+                                                            {t('strings.of_limit_used', { limit: formatStorage(backupStorageLimit) })}
                                                         </span>
                                                     )}
                                                 </p>
@@ -378,12 +373,12 @@ const BackupContainer = () => {
                                                     storage.legacy_usage_mb > 0 && (
                                                         <p className='text-xs text-zinc-400'>
                                                             {storage.repository_usage_mb > 0 &&
-                                                                `${formatStorage(storage.repository_usage_mb)} deduplicated`}
+                                                                `${formatStorage(storage.repository_usage_mb)} ${t('strings.deduplicated')}`}
                                                             {storage.repository_usage_mb > 0 &&
                                                                 storage.legacy_usage_mb > 0 &&
                                                                 ' + '}
                                                             {storage.legacy_usage_mb > 0 &&
-                                                                `${formatStorage(storage.legacy_usage_mb)} legacy`}
+                                                                `${formatStorage(storage.legacy_usage_mb)} ${t('strings.legacy')}`}
                                                         </p>
                                                     )}
                                             </>
@@ -411,7 +406,7 @@ const BackupContainer = () => {
                                                 d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
                                             />
                                         </svg>
-                                        Delete All Backups
+                                        {t('strings.delete_all_backups')}
                                     </ActionButton>
                                 )}
                                 {(backupLimit === null || backupLimit > backupCount) &&
@@ -421,7 +416,7 @@ const BackupContainer = () => {
                                             onClick={() => setCreateModalVisible(true)}
                                             disabled={hasActiveOperation}
                                         >
-                                            New Backup
+                                            {t('strings.new_backup')}
                                         </ActionButton>
                                     )}
                             </div>
@@ -430,9 +425,7 @@ const BackupContainer = () => {
                 }
             >
                 <p className='text-sm text-neutral-400 leading-relaxed'>
-                    Create and manage server backups to protect your data. Schedule automated backups, download existing
-                    ones, and restore when needed. Backups are deduplicated, meaning unchanged files are only stored
-                    once across all backups
+                    {t('strings.backups_description')}
                 </p>
             </MainPageHeader>
 
@@ -458,15 +451,11 @@ const BackupContainer = () => {
                         setDeleteAllPassword('');
                         setDeleteAllTotpCode('');
                     }}
-                    title='Delete All Backups'
+                    title={t('strings.delete_all_backups_title')}
                 >
                     <div className='space-y-4'>
                         <p className='text-sm text-zinc-300'>
-                            You are about to permanently delete{' '}
-                            <span className='font-medium text-red-400'>
-                                {backupCount} {backupCount === 1 ? 'backup' : 'backups'}
-                            </span>{' '}
-                            and completely destroy the backup repository for this server.
+                            {t('strings.delete_all_warning')}
                         </p>
 
                         <div className='p-4 bg-red-500/10 border border-red-500/20 rounded-lg'>
@@ -485,13 +474,13 @@ const BackupContainer = () => {
                                     />
                                 </svg>
                                 <div className='text-sm'>
-                                    <p className='font-medium text-red-300'>This action cannot be undone</p>
+                                    <p className='font-medium text-red-300'>{t('strings.this_action_cannot_be_undone')}</p>
                                     <ul className='text-red-400 mt-2 space-y-1 list-disc list-inside'>
-                                        <li>All backup data will be permanently deleted</li>
-                                        <li>Locked backups will also be deleted</li>
-                                        <li>The entire backup repository will be destroyed</li>
-                                        <li>This operation may take several minutes to complete</li>
-                                        <li>You will not be able to restore any of these backups</li>
+                                        <li>{t('strings.all_backup_data_deleted')}</li>
+                                        <li>{t('strings.locked_backups_deleted')}</li>
+                                        <li>{t('strings.backup_repository_destroyed')}</li>
+                                        <li>{t('strings.may_take_several_minutes')}</li>
+                                        <li>{t('strings.cannot_restore_backups')}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -500,13 +489,13 @@ const BackupContainer = () => {
                         <div className='space-y-3'>
                             <div>
                                 <label htmlFor='password' className='block text-sm font-medium text-zinc-300 mb-1'>
-                                    Password
+                                    {t('strings.password')}
                                 </label>
                                 <input
                                     id='password'
                                     type='password'
                                     className='w-full px-4 py-2 rounded-lg outline-hidden bg-[#ffffff17] text-sm border border-zinc-700 focus:border-brand'
-                                    placeholder='Enter your password'
+                                    placeholder={t('strings.enter_password')}
                                     value={deleteAllPassword}
                                     onChange={(e) => setDeleteAllPassword(e.target.value)}
                                     disabled={isDeleting}
@@ -516,13 +505,13 @@ const BackupContainer = () => {
                             {hasTwoFactor && (
                                 <div>
                                     <label htmlFor='totp_code' className='block text-sm font-medium text-zinc-300 mb-1'>
-                                        Two-Factor Authentication Code
+                                        {t('strings.two_factor_code')}
                                     </label>
                                     <input
                                         id='totp_code'
                                         type='text'
                                         className='w-full px-4 py-2 rounded-lg outline-hidden bg-[#ffffff17] text-sm border border-zinc-700 focus:border-brand'
-                                        placeholder='6-digit code'
+                                        placeholder={t('strings.six_digit_code')}
                                         maxLength={6}
                                         value={deleteAllTotpCode}
                                         onChange={(e) => setDeleteAllTotpCode(e.target.value.replace(/[^0-9]/g, ''))}
@@ -542,11 +531,11 @@ const BackupContainer = () => {
                                 }}
                                 disabled={isDeleting}
                             >
-                                Cancel
+                                {t('strings.cancel')}
                             </ActionButton>
                             <ActionButton variant='danger' onClick={handleDeleteAll} disabled={isDeleting}>
                                 {isDeleting && <Spinner size='small' />}
-                                {isDeleting ? 'Deleting...' : 'Delete All Backups'}
+                                {isDeleting ? t('strings.deleting_backups') : t('strings.delete_all_backups')}
                             </ActionButton>
                         </div>
                     </div>
@@ -562,16 +551,12 @@ const BackupContainer = () => {
                         setBulkDeletePassword('');
                         setBulkDeleteTotpCode('');
                     }}
-                    title='Delete Selected Backups'
+                    title={t('strings.delete_selected_backups')}
                 >
                     <FlashMessageRender byKey={'backups:bulk_delete'} />
                     <div className='space-y-4'>
                         <p className='text-sm text-zinc-300'>
-                            You are about to permanently delete{' '}
-                            <span className='font-medium text-red-400'>
-                                {selectedBackups.size} backup{selectedBackups.size > 1 ? 's' : ''}
-                            </span>
-                            . This action cannot be undone.
+                            {t('strings.selected_backups_deleted')}
                         </p>
 
                         <div className='p-4 bg-red-500/10 border border-red-500/20 rounded-lg'>
@@ -590,10 +575,9 @@ const BackupContainer = () => {
                                     />
                                 </svg>
                                 <div className='text-sm'>
-                                    <p className='font-medium text-red-300'>Warning</p>
+                                    <p className='font-medium text-red-300'>{t('strings.warning')}</p>
                                     <p className='text-red-400 mt-1'>
-                                        The selected backup files and their snapshots will be permanently deleted. You
-                                        will not be able to restore them.
+                                        {t('strings.selected_backups_deleted')}
                                     </p>
                                 </div>
                             </div>
@@ -602,13 +586,13 @@ const BackupContainer = () => {
                         <div className='space-y-3'>
                             <div>
                                 <label htmlFor='bulk-password' className='block text-sm font-medium text-zinc-300 mb-1'>
-                                    Password
+                                    {t('strings.password')}
                                 </label>
                                 <input
                                     id='bulk-password'
                                     type='password'
                                     className='w-full px-4 py-2 rounded-lg outline-hidden bg-[#ffffff17] text-sm border border-zinc-700 focus:border-brand'
-                                    placeholder='Enter your password'
+                                    placeholder={t('strings.enter_password')}
                                     value={bulkDeletePassword}
                                     onChange={(e) => setBulkDeletePassword(e.target.value)}
                                     disabled={isBulkDeleting}
@@ -618,13 +602,13 @@ const BackupContainer = () => {
                             {hasTwoFactor && (
                                 <div>
                                     <label htmlFor='bulk-totp' className='block text-sm font-medium text-zinc-300 mb-1'>
-                                        Two-Factor Authentication Code
+                                        {t('strings.two_factor_code')}
                                     </label>
                                     <input
                                         id='bulk-totp'
                                         type='text'
                                         className='w-full px-4 py-2 rounded-lg outline-hidden bg-[#ffffff17] text-sm border border-zinc-700 focus:border-brand'
-                                        placeholder='6-digit code'
+                                        placeholder={t('strings.six_digit_code')}
                                         maxLength={6}
                                         value={bulkDeleteTotpCode}
                                         onChange={(e) => setBulkDeleteTotpCode(e.target.value.replace(/[^0-9]/g, ''))}
@@ -644,13 +628,13 @@ const BackupContainer = () => {
                                 }}
                                 disabled={isBulkDeleting}
                             >
-                                Cancel
+                                {t('strings.cancel')}
                             </ActionButton>
                             <ActionButton variant='danger' onClick={handleBulkDelete} disabled={isBulkDeleting}>
                                 {isBulkDeleting && <Spinner size='small' />}
                                 {isBulkDeleting
-                                    ? 'Deleting...'
-                                    : `Delete ${selectedBackups.size} Backup${selectedBackups.size > 1 ? 's' : ''}`}
+                                    ? t('strings.deleting_backups')
+                                    : t('strings.delete_selected_count', { count: selectedBackups.size })}
                             </ActionButton>
                         </div>
                     </div>
@@ -669,12 +653,12 @@ const BackupContainer = () => {
                             />
                         </div>
                         <h3 className='text-lg font-medium text-zinc-200 mb-2'>
-                            {backupLimit === 0 ? 'Backups unavailable' : 'No backups found'}
+                            {backupLimit === 0 ? t('strings.backups_unavailable') : t('strings.no_backups')}
                         </h3>
                         <p className='text-sm text-zinc-400 max-w-sm'>
                             {backupLimit === 0
-                                ? 'Backups cannot be created for this server.'
-                                : 'Your server does not have any backups. Create one to get started.'}
+                                ? t('strings.backups_cannot_be_created')
+                                : t('strings.no_backups_help')}
                         </p>
                     </div>
                 </div>
@@ -694,10 +678,10 @@ const BackupContainer = () => {
                                 <span className='text-sm text-zinc-300'>
                                     {selectedBackups.size > 0 ? (
                                         <>
-                                            <span className='font-medium'>{selectedBackups.size}</span> selected
+                                            <span className='font-medium'>{selectedBackups.size}</span> {t('strings.selected')}
                                         </>
                                     ) : (
-                                        'Select backups'
+                                        t('strings.select_backups')
                                     )}
                                 </span>
                             </div>
@@ -706,11 +690,11 @@ const BackupContainer = () => {
                                 className={`flex items-center gap-3 transition-opacity ${selectedBackups.size > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                             >
                                 <ActionButton variant='secondary' onClick={clearSelection}>
-                                    Clear
+                                    {t('strings.clear')}
                                 </ActionButton>
                                 <Can action='backup.delete'>
                                     <ActionButton variant='danger' onClick={() => setBulkDeleteModalVisible(true)}>
-                                        Delete Selected ({selectedBackups.size})
+                                        {t('strings.delete_selected_count', { count: selectedBackups.size })}
                                     </ActionButton>
                                 </Can>
                             </div>

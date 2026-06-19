@@ -22,14 +22,6 @@ enum Providers: string
         self::DNSIMPLE->value => DNSimpleProvider::class,
     ];
 
-    private const DESCRIPTION_MAP = [
-        self::CLOUDFLARE->value => 'Cloudflare DNS service',
-        self::HETZNER->value => 'Hetzner DNS Console',
-        self::ROUTE53->value => 'AWS Route53 DNS Service',
-        self::DNSIMPLE->value => 'DNSimple Service',
-    ];
-
-
     public static function all(): array
     {
         $result = [];
@@ -47,8 +39,8 @@ enum Providers: string
         $result = [];
         foreach (self::cases() as $case) {
             $result[$case->value] = [
-                "name" => $case->value,
-                "description" => self::DESCRIPTION_MAP[$case->value]
+                'name' => trans("dns.provider_names.{$case->value}"),
+                'description' => trans("dns.providers.{$case->value}"),
             ];
         }
 

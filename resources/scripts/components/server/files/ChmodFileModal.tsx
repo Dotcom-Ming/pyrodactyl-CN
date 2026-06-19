@@ -7,6 +7,7 @@ import Modal, { RequiredModalProps } from '@/components/elements/Modal';
 
 import chmodFiles from '@/api/server/files/chmodFiles';
 
+import { t } from '@/lib/i18n';
 import { ServerContext } from '@/state/server';
 
 import useFileManagerSwr from '@/plugins/useFileManagerSwr';
@@ -59,7 +60,7 @@ const ChmodFileModal = ({ files, ...props }: OwnProps) => {
             {({ isSubmitting }) => (
                 <Modal
                     {...props}
-                    title='Configure permissions'
+                    title={t('strings.configure_permissions')}
                     dismissable={!isSubmitting}
                     showSpinnerOverlay={isSubmitting}
                 >
@@ -70,16 +71,14 @@ const ChmodFileModal = ({ files, ...props }: OwnProps) => {
                                     type={'string'}
                                     id={'file_mode'}
                                     name={'mode'}
-                                    label={'File Mode'}
-                                    description={
-                                        'This is intended for advanced users. You may irreperably damage your server by changing file permissions.'
-                                    }
+                                    label={t('strings.file_mode')}
+                                    description={t('strings.permissions_warning')}
                                     autoFocus
                                 />
                             </div>
                             <div className={`flex justify-end w-full my-6`}>
                                 <ActionButton variant='primary' type='submit'>
-                                    Update
+                                    {t('strings.update')}
                                 </ActionButton>
                             </div>
                         </div>

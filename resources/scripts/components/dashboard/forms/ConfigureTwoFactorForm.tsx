@@ -6,6 +6,8 @@ import RecoveryTokensDialog from '@/components/dashboard/forms/RecoveryTokensDia
 import SetupTOTPDialog from '@/components/dashboard/forms/SetupTOTPDialog';
 import ActionButton from '@/components/elements/ActionButton';
 
+import { t } from '@/lib/i18n';
+
 import { ApplicationStore } from '@/state';
 
 import useFlash from '@/plugins/useFlash';
@@ -34,17 +36,17 @@ const ConfigureTwoFactorForm = () => {
             <DisableTOTPDialog open={visible === 'disable'} onClose={() => setVisible(null)} />
             <p className={`text-sm`}>
                 {isEnabled
-                    ? 'Your account is protected by an authenticator app.'
-                    : 'You have not configured an authenticator app.'}
+                    ? t('dashboard.account.two_factor.enabled')
+                    : t('dashboard.account.two_factor.disabled')}
             </p>
             <div className={`mt-6`}>
                 {isEnabled ? (
                     <ActionButton variant='danger' onClick={() => setVisible('disable')}>
-                        Remove Authenticator App
+                        {t('dashboard.account.two_factor.disable.title')}
                     </ActionButton>
                 ) : (
                     <ActionButton variant='primary' onClick={() => setVisible('enable')}>
-                        Enable Authenticator App
+                        {t('dashboard.account.two_factor.button')}
                     </ActionButton>
                 )}
             </div>

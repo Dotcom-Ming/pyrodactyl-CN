@@ -12,6 +12,7 @@ import TitledGreyBox from '@/components/elements/TitledGreyBox';
 import ReinstallServerBox from '@/components/server/settings/ReinstallServerBox';
 
 import { ip } from '@/lib/formatters';
+import { t } from '@/lib/i18n';
 
 import { ServerContext } from '@/state/server';
 
@@ -25,12 +26,11 @@ const SettingsContainer = () => {
     const sftp = ServerContext.useStoreState((state) => state.server.data!.sftpDetails, isEqual);
 
     return (
-        <ServerContentBlock title={'Settings'}>
+        <ServerContentBlock title={t('strings.settings')}>
             <FlashMessageRender byKey={'settings'} />
-            <MainPageHeader direction='column' title={'Settings'}>
+            <MainPageHeader direction='column' title={t('strings.settings')}>
                 <p className='text-sm text-neutral-400 leading-relaxed'>
-                    Configure your server settings, manage SFTP access, and access debug information. Make changes to
-                    server name and reinstall when needed.
+                    {t('strings.settings_description')}
                 </p>
             </MainPageHeader>
             <Can action={'settings.rename'}>
@@ -43,22 +43,22 @@ const SettingsContainer = () => {
                 <Can action={'settings.reinstall'}>
                     <ReinstallServerBox />
                 </Can>
-                <TitledGreyBox title={'Debug Information'}>
+                <TitledGreyBox title={t('strings.debug_information')}>
                     <div className={`flex items-center justify-between text-sm`}>
-                        <p>Node</p>
+                        <p>{t('strings.node')}</p>
                         <code className={`font-mono bg-zinc-900 rounded-sm py-1 px-2`}>{node}</code>
                     </div>
                     <CopyOnClick text={uuid}>
                         <div className={`flex items-center justify-between mt-2 text-sm`}>
-                            <p>Server ID</p>
+                            <p>{t('strings.server_id')}</p>
                             <code className={`font-mono bg-zinc-900 rounded-sm py-1 px-2`}>{uuid}</code>
                         </div>
                     </CopyOnClick>
                 </TitledGreyBox>
                 <Can action={'file.sftp'}>
-                    <TitledGreyBox title={'SFTP Details'} className={`mb-6 md:mb-10`}>
+                    <TitledGreyBox title={t('strings.sftp_details')} className={`mb-6 md:mb-10`}>
                         <div className={`flex items-center justify-between text-sm`}>
-                            <Label>Server Address</Label>
+                            <Label>{t('strings.server_address')}</Label>
                             <CopyOnClick text={`sftp://${ip(sftp.ip)}:${sftp.port}`}>
                                 <code
                                     className={`font-mono bg-zinc-900 rounded-sm py-1 px-2`}
@@ -66,7 +66,7 @@ const SettingsContainer = () => {
                             </CopyOnClick>
                         </div>
                         <div className={`mt-2 flex items-center justify-between text-sm`}>
-                            <Label>Username</Label>
+                            <Label>{t('strings.username')}</Label>
                             <CopyOnClick text={`${username}.${id}`}>
                                 <code
                                     className={`font-mono bg-zinc-900 rounded-sm py-1 px-2`}
@@ -77,13 +77,13 @@ const SettingsContainer = () => {
                             <div className={`flex-1`}>
                                 <div className={`border-l-4 border-brand p-3`}>
                                     <p className={`text-xs text-zinc-200`}>
-                                        Your SFTP password is the same as the password you use to access this panel.
+                                        {t('strings.sftp_password_info')}
                                     </p>
                                 </div>
                             </div>
                             <div className={`ml-4`}>
                                 <a href={`sftp://${username}.${id}@${ip(sftp.ip)}:${sftp.port}`}>
-                                    <ActionButton variant='secondary'>Launch SFTP</ActionButton>
+                                    <ActionButton variant='secondary'>{t('strings.launch_sftp')}</ActionButton>
                                 </a>
                             </div>
                         </div>

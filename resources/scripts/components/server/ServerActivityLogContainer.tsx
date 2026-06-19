@@ -14,6 +14,8 @@ import PaginationFooter from '@/components/elements/table/PaginationFooter';
 import { ActivityLogFilters } from '@/api/account/activity';
 import { useActivityLogs } from '@/api/server/activity';
 
+import { t } from '@/lib/i18n';
+
 import { useFlashKey } from '@/plugins/useFlash';
 import useLocationHash from '@/plugins/useLocationHash';
 
@@ -151,7 +153,7 @@ const ServerActivityLogContainer = () => {
     }, [error]);
 
     return (
-        <ServerContentBlock title={'Activity Log'}>
+        <ServerContentBlock title={t('server.server_activity_log')}>
             <div className='w-full h-full min-h-full flex-1 flex flex-col px-2 sm:px-0'>
                 <FlashMessageRender byKey={'server:activity'} />
 
@@ -165,17 +167,17 @@ const ServerActivityLogContainer = () => {
                 >
                     <MainPageHeader
                         direction='column'
-                        title={'Activity Log'}
+                        title={t('server.server_activity_log')}
                         titleChildren={
                             <div className='flex gap-2 items-center flex-wrap'>
                                 <ActionButton
                                     variant='secondary'
                                     onClick={() => setShowFilters(!showFilters)}
                                     className='flex items-center gap-2'
-                                    title='Toggle Filters (Ctrl+F)'
+                                    title={t('server.toggle_filters')}
                                 >
                                     <Funnel width={22} height={22} className='w-4 h-4' fill='currentColor' />
-                                    Filters
+                                    {t('server.filters')}
                                     {hasActiveFilters && <span className='w-2 h-2 bg-brand rounded-full'></span>}
                                 </ActionButton>
                                 <ActionButton
@@ -183,17 +185,16 @@ const ServerActivityLogContainer = () => {
                                     onClick={exportLogs}
                                     disabled={!filteredData?.items?.length}
                                     className='flex items-center gap-2'
-                                    title='Export CSV (Ctrl+E)'
+                                    title={t('server.export_csv')}
                                 >
                                     <ArrowDownToLine width={22} height={22} className='w-4 h-4' fill='currentColor' />
-                                    Export
+                                    {t('server.export')}
                                 </ActionButton>
                             </div>
                         }
                     >
                         <p className='text-sm text-neutral-400 leading-relaxed'>
-                            Monitor all server activity and track user actions. Filter events, search for specific
-                            activities, and export logs for audit purposes.
+                            {t('server.server_activity_desc')}
                         </p>
                     </MainPageHeader>
                 </div>
@@ -217,12 +218,12 @@ const ServerActivityLogContainer = () => {
                                         fill='currentColor'
                                     />
                                 </div>
-                                <h3 className='text-base font-semibold text-zinc-100'>Filters</h3>
+                                <h3 className='text-base font-semibold text-zinc-100'>{t('server.filters')}</h3>
                             </div>
 
                             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
                                 <div>
-                                    <label className='block text-sm font-medium text-zinc-300 mb-2'>Search</label>
+                                    <label className='block text-sm font-medium text-zinc-300 mb-2'>{t('server.search')}</label>
                                     <div className='relative'>
                                         <Magnifier
                                             width={22}
@@ -232,7 +233,7 @@ const ServerActivityLogContainer = () => {
                                         />
                                         <Input.Text
                                             type='text'
-                                            placeholder='Search events, IPs, users...'
+                                            placeholder={t('server.search_placeholder')}
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
                                             style={{ paddingLeft: '2.5rem' }}
@@ -241,14 +242,14 @@ const ServerActivityLogContainer = () => {
                                 </div>
 
                                 <div>
-                                    <label className='block text-sm font-medium text-zinc-300 mb-2'>Event Type</label>
+                                    <label className='block text-sm font-medium text-zinc-300 mb-2'>{t('server.event_type')}</label>
                                     <Select
                                         value={selectedEventType}
                                         onChange={(e) => setSelectedEventType(e.target.value)}
                                         className='w-full px-3 py-2 bg-zinc-800 border border-zinc-600 rounded-lg text-zinc-100 focus:border-brand focus:ring-1 focus:ring-brand hover:border-zinc-500 transition-colors duration-150'
                                     >
                                         <option value='' style={{ backgroundColor: '#27272a', color: '#f4f4f5' }}>
-                                            All Events
+                                            {t('server.all_events')}
                                         </option>
                                         {eventTypes.map((type) => (
                                             <option
@@ -263,26 +264,26 @@ const ServerActivityLogContainer = () => {
                                 </div>
 
                                 <div>
-                                    <label className='block text-sm font-medium text-zinc-300 mb-2'>Time Range</label>
+                                    <label className='block text-sm font-medium text-zinc-300 mb-2'>{t('server.time_range')}</label>
                                     <Select
                                         value={dateRange}
                                         onChange={(e) => setDateRange(e.target.value)}
                                         className='w-full px-3 py-2 bg-zinc-800 border border-zinc-600 rounded-lg text-zinc-100 focus:border-brand focus:ring-1 focus:ring-brand hover:border-zinc-500 transition-colors duration-150'
                                     >
                                         <option value='all' style={{ backgroundColor: '#27272a', color: '#f4f4f5' }}>
-                                            All Time
+                                            {t('server.all_time')}
                                         </option>
                                         <option value='1h' style={{ backgroundColor: '#27272a', color: '#f4f4f5' }}>
-                                            Last Hour
+                                            {t('server.last_hour')}
                                         </option>
                                         <option value='24h' style={{ backgroundColor: '#27272a', color: '#f4f4f5' }}>
-                                            Last 24 Hours
+                                            {t('server.last_24_hours')}
                                         </option>
                                         <option value='7d' style={{ backgroundColor: '#27272a', color: '#f4f4f5' }}>
-                                            Last 7 Days
+                                            {t('server.last_7_days')}
                                         </option>
                                         <option value='30d' style={{ backgroundColor: '#27272a', color: '#f4f4f5' }}>
-                                            Last 30 Days
+                                            {t('server.last_30_days')}
                                         </option>
                                     </Select>
                                 </div>
@@ -295,7 +296,7 @@ const ServerActivityLogContainer = () => {
                                             className='flex items-center gap-2 w-full'
                                         >
                                             <Xmark width={22} height={22} className='w-4 h-4' fill='currentColor' />
-                                            Clear All Filters
+                                            {t('server.clear_all_filters')}
                                         </ActionButton>
                                     )}
                                 </div>
@@ -322,10 +323,14 @@ const ServerActivityLogContainer = () => {
                                     fill='currentColor'
                                 />
                             </div>
-                            <h3 className='text-base font-semibold text-zinc-100'>Events</h3>
+                            <h3 className='text-base font-semibold text-zinc-100'>{t('server.activity_events')}</h3>
                             {filteredData?.items && (
                                 <span className='text-sm text-zinc-400'>
-                                    ({filteredData.items.length} {filteredData.items.length === 1 ? 'event' : 'events'})
+                                    (
+                                    {filteredData.items.length === 1
+                                        ? t('server.event_count_one', { count: 1 })
+                                        : t('server.events_count', { count: filteredData.items.length })}
+                                    )
                                 </span>
                             )}
                         </div>
@@ -341,20 +346,20 @@ const ServerActivityLogContainer = () => {
                                     fill='currentColor'
                                 />
                                 <h3 className='text-lg font-semibold text-zinc-300 mb-2'>
-                                    {hasActiveFilters ? 'No Matching Activity' : 'No Server Activity Yet'}
+                                    {hasActiveFilters ? t('server.no_matching_activity') : t('server.no_server_activity_yet')}
                                 </h3>
                                 <p className='text-sm text-zinc-400 mb-4 max-w-lg mx-auto leading-relaxed'>
                                     {hasActiveFilters
-                                        ? "Try adjusting your filters or search terms to find the activity you're looking for."
-                                        : 'Server activity logs will appear here as you manage your server. Start your server or perform actions to see them here.'}
+                                        ? t('server.no_matching_activity_desc')
+                                        : t('server.no_server_activity_desc')}
                                 </p>
                                 {hasActiveFilters && (
                                     <div className='flex gap-2 justify-center'>
                                         <ActionButton variant='secondary' onClick={clearAllFilters}>
-                                            Clear All Filters
+                                            {t('server.clear_all_filters')}
                                         </ActionButton>
                                         <ActionButton variant='secondary' onClick={() => setShowFilters(true)}>
-                                            Adjust Filters
+                                            {t('server.adjust_filters')}
                                         </ActionButton>
                                     </div>
                                 )}

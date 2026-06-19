@@ -73,7 +73,7 @@ class SettingsController extends ClientApiController
     public function dockerImage(SetDockerImageRequest $request, Server $server): JsonResponse
     {
         if (!in_array($request->input('docker_image'), array_values($server->egg->docker_images))) {
-            throw new BadRequestHttpException('The requested Docker image is not allowed for this server.');
+            throw new BadRequestHttpException(trans('exceptions.startup.docker_image_not_allowed'));
         }
 
         $original = $server->image;
@@ -96,7 +96,7 @@ class SettingsController extends ClientApiController
         $defaultImage = $server->getDefaultDockerImage();
 
         if (empty($defaultImage)) {
-            throw new BadRequestHttpException('No default docker image available for this server\'s egg.');
+            throw new BadRequestHttpException(trans('exceptions.startup.no_default_docker_image'));
         }
 
         $server->forceFill(['image' => $defaultImage])->saveOrFail();

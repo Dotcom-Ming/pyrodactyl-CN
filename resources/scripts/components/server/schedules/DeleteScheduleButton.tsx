@@ -7,6 +7,7 @@ import { Dialog } from '@/components/elements/dialog';
 
 import { httpErrorToHuman } from '@/api/http';
 import deleteSchedule from '@/api/server/schedules/deleteSchedule';
+import { t } from '@/lib/i18n';
 
 import { ApplicationStore } from '@/state';
 import { ServerContext } from '@/state/server';
@@ -44,15 +45,15 @@ const DeleteScheduleButton = ({ scheduleId, onDeleted }: Props) => {
             <Dialog.Confirm
                 open={visible}
                 onClose={() => setVisible(false)}
-                title={'Delete Schedule'}
-                confirm={'Delete'}
+                title={t('server.delete_schedule')}
+                confirm={t('strings.delete')}
                 onConfirmed={onDelete}
                 loading={isLoading}
             >
-                All tasks will be removed and any running processes will be terminated.
+                {t('server.delete_schedule_confirm')}
             </Dialog.Confirm>
             <ActionButton variant='danger' className={'flex-1 sm:flex-none'} onClick={() => setVisible(true)}>
-                Delete
+                {t('strings.delete')}
             </ActionButton>
         </>
     );

@@ -16,6 +16,8 @@ import Pagination from '@/components/elements/Pagination';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/elements/Tabs';
 import { PageListContainer } from '@/components/elements/pages/PageList';
 
+import { t } from '@/lib/i18n';
+
 import getServers from '@/api/getServers';
 import { PaginatedResult } from '@/api/http';
 import { Server } from '@/api/server/getServer';
@@ -27,9 +29,9 @@ import { MainPageHeader } from '../elements/MainPageHeader';
 
 const DashboardContainer = () => {
     const getTitle = () => {
-        if (serverViewMode === 'admin-all') return 'All Servers (Admin)';
-        if (serverViewMode === 'all') return 'All Accessible Servers';
-        return 'Your Servers';
+        if (serverViewMode === 'admin-all') return t('strings.all_servers_admin');
+        if (serverViewMode === 'all') return t('strings.all_accessible_servers');
+        return t('strings.your_servers');
     };
 
     const { search } = useLocation();
@@ -83,7 +85,7 @@ const DashboardContainer = () => {
     }, [error]);
 
     return (
-        <PageContentBlock title={'Dashboard'} showFlashKey={'dashboard'}>
+        <PageContentBlock title={t('strings.dashboard')} showFlashKey={'dashboard'}>
             <div className='w-full h-full min-h-full flex-1 flex flex-col px-2 sm:px-0'>
                 <Tabs
                     defaultValue={dashboardDisplayOption}
@@ -117,7 +119,7 @@ const DashboardContainer = () => {
                                                 onSelect={() => setServerViewMode('owner')}
                                                 className={serverViewMode === 'owner' ? 'bg-accent/20' : ''}
                                             >
-                                                Your Servers Only
+                                                {t('strings.your_servers_only')}
                                             </DropdownMenuItem>
 
                                             {rootAdmin && (
@@ -126,7 +128,7 @@ const DashboardContainer = () => {
                                                         onSelect={() => setServerViewMode('admin-all')}
                                                         className={serverViewMode === 'admin-all' ? 'bg-accent/20' : ''}
                                                     >
-                                                        All Servers (Admin)
+                                                        {t('strings.all_servers_admin')}
                                                     </DropdownMenuItem>
                                                 </>
                                             )}
@@ -134,16 +136,16 @@ const DashboardContainer = () => {
                                                 onSelect={() => setServerViewMode('all')}
                                                 className={serverViewMode === 'all' ? 'bg-accent/20' : ''}
                                             >
-                                                All Servers
+                                                {t('strings.all_servers')}
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
 
                                     <TabsList>
-                                        <TabsTrigger aria-label='View servers in a list layout.' value='list'>
+                                        <TabsTrigger aria-label={t('strings.view_servers_list')} value='list'>
                                             <Bars width={18} height={20} color='white' />
                                         </TabsTrigger>
-                                        <TabsTrigger aria-label='View servers in a grid layout.' value='grid'>
+                                        <TabsTrigger aria-label={t('strings.view_servers_grid')} value='grid'>
                                             <LayoutCellsLarge width={20} height={20} color='white' />
                                         </TabsTrigger>
                                     </TabsList>
@@ -188,13 +190,13 @@ const DashboardContainer = () => {
                                                     </div>
                                                     <h3 className='text-lg font-medium text-zinc-200 mb-2'>
                                                         {serverViewMode === 'admin-all'
-                                                            ? 'No other servers found'
-                                                            : 'No servers found'}
+                                                            ? t('strings.no_other_servers_found')
+                                                            : t('strings.no_servers_found')}
                                                     </h3>
                                                     <p className='text-sm text-zinc-400 max-w-sm'>
                                                         {serverViewMode === 'admin-all'
-                                                            ? 'There are no other servers to display.'
-                                                            : 'There are no servers associated with your account.'}
+                                                            ? t('strings.no_other_servers_desc')
+                                                            : t('strings.no_servers_desc')}
                                                     </p>
                                                 </div>
                                             </div>
@@ -233,13 +235,13 @@ const DashboardContainer = () => {
                                                     </div>
                                                     <h3 className='text-lg font-medium text-zinc-200 mb-2'>
                                                         {serverViewMode === 'admin-all'
-                                                            ? 'No other servers found'
-                                                            : 'No servers found'}
+                                                            ? t('strings.no_other_servers_found')
+                                                            : t('strings.no_servers_found')}
                                                     </h3>
                                                     <p className='text-sm text-zinc-400 max-w-sm'>
                                                         {serverViewMode === 'admin-all'
-                                                            ? 'There are no other servers to display.'
-                                                            : 'There are no servers associated with your account.'}
+                                                            ? t('strings.no_other_servers_desc')
+                                                            : t('strings.no_servers_desc')}
                                                     </p>
                                                 </div>
                                             </div>

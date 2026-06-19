@@ -6,11 +6,11 @@
         <div class="col-xs-12">
             <div class="nav-tabs-custom nav-tabs-floating">
                 <ul class="nav nav-tabs">
-                    <li @if($activeTab === 'basic')class="active"@endif><a href="{{ route('admin.settings') }}">General</a></li>
-                    <li @if($activeTab === 'mail')class="active"@endif><a href="{{ route('admin.settings.mail') }}">Mail</a></li>
-                    <li @if($activeTab === 'captcha')class="active"@endif><a href="{{ route('admin.settings.captcha') }}">Captcha</a></li>
-                    <li @if($activeTab === 'domains')class="active"@endif><a href="{{ route('admin.settings.domains.index') }}">Domains</a></li>
-                    <li @if($activeTab === 'advanced')class="active"@endif><a href="{{ route('admin.settings.advanced') }}">Advanced</a></li>
+                    <li @if($activeTab === 'basic')class="active"@endif><a href="{{ route('admin.settings') }}">{{ trans('strings.admin_settings_general') }}</a></li>
+                    <li @if($activeTab === 'mail')class="active"@endif><a href="{{ route('admin.settings.mail') }}">{{ trans('strings.admin_settings_mail') }}</a></li>
+                    <li @if($activeTab === 'captcha')class="active"@endif><a href="{{ route('admin.settings.captcha') }}">{{ trans('strings.admin_settings_captcha') }}</a></li>
+                    <li @if($activeTab === 'domains')class="active"@endif><a href="{{ route('admin.settings.domains.index') }}">{{ trans('strings.admin_settings_domains') }}</a></li>
+                    <li @if($activeTab === 'advanced')class="active"@endif><a href="{{ route('admin.settings.advanced') }}">{{ trans('strings.admin_settings_advanced') }}</a></li>
                 </ul>
             </div>
         </div>

@@ -1,34 +1,34 @@
 @extends('layouts.admin')
 
 @section('title')
-    Application API
+    {{ trans('strings.admin_api_credentials') }}
 @endsection
 
 @section('content-header')
-    <h1>Application API<small>Control access credentials for managing this Panel via the API.</small></h1>
+    <h1>{{ trans('strings.admin_api_credentials') }}<small>{{ trans('strings.admin_api_credentials_desc') }}</small></h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('admin.index') }}">Admin</a></li>
-        <li class="active">Application API</li>
+        <li><a href="{{ route('admin.index') }}">{{ trans('strings.admin') }}</a></li>
+        <li class="active">{{ trans('strings.admin_api_credentials') }}</li>
     </ol>
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-xs-12">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Credentials List</h3>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                    <h3 class="box-title">{{ trans('strings.admin_credentials_list') }}</h3>
                     <div class="box-tools">
-                        <a href="{{ route('admin.api.new') }}" class="btn btn-sm btn-primary">Create New</a>
+                        <a href="{{ route('admin.api.new') }}" class="btn btn-sm btn-primary">{{ trans('strings.admin_create_new') }}</a>
                     </div>
                 </div>
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
                         <tr>
-                            <th>Key</th>
-                            <th>Memo</th>
-                            <th>Last Used</th>
-                            <th>Created</th>
+                            <th>{{ trans('strings.admin_key') }}</th>
+                            <th>{{ trans('strings.admin_memo') }}</th>
+                            <th>{{ trans('strings.admin_last_used') }}</th>
+                            <th>{{ trans('strings.admin_created') }}</th>
                             <th></th>
                         </tr>
                         @foreach($keys as $key)
@@ -66,12 +66,12 @@
                 event.preventDefault();
                 swal({
                     type: 'error',
-                    title: 'Revoke API Key',
-                    text: 'Once this API key is revoked any applications currently using it will stop working.',
+                    title: @json(trans('strings.admin_revoke_api_key')),
+                    text: @json(trans('strings.admin_revoke_api_key_warning')),
                     showCancelButton: true,
                     allowOutsideClick: true,
                     closeOnConfirm: false,
-                    confirmButtonText: 'Revoke',
+                    confirmButtonText: @json(trans('strings.admin_revoke')),
                     confirmButtonColor: '#d9534f',
                     showLoaderOnConfirm: true
                 }, function () {
@@ -82,20 +82,20 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         }
                     }).done(function () {
-                        swal({
-                            type: 'success',
-                            title: '',
-                            text: 'API Key has been revoked.'
-                        });
-                        self.parent().parent().slideUp();
-                    }).fail(function (jqXHR) {
-                        console.error(jqXHR);
-                        swal({
-                            type: 'error',
-                            title: 'Whoops!',
-                            text: 'An error occurred while attempting to revoke this key.'
-                        });
+                    swal({
+                        type: 'success',
+                        title: '',
+                        text: @json(trans('strings.admin_key_revoked'))
                     });
+                    self.parent().parent().slideUp();
+                }).fail(function (jqXHR) {
+                    console.error(jqXHR);
+                    swal({
+                        type: 'error',
+                        title: @json(trans('strings.admin_whoops')),
+                        text: @json(trans('strings.admin_revoke_failed'))
+                    });
+                });
                 });
             });
         });

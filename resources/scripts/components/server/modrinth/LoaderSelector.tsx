@@ -3,6 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Checkbox } from '@/components/elements/CheckboxLabel';
 import Input from '@/components/elements/Input';
 
+import { t } from '@/lib/i18n';
+
 import { ServerContext } from '@/state/server';
 
 import { useGlobalStateContext } from './config';
@@ -85,7 +87,7 @@ export const LoaderSelector = ({ maxVisible = 7, featuredLoaders = DEFAULT_LOADE
     const showCollapseButton = hasMoreLoaders && showAll;
 
     if (loaders.length === 0) {
-        return <p className='text-sm text-gray-500'>No loaders available</p>;
+        return <p className='text-sm text-gray-500'>{t('server.no_loaders_available')}</p>;
     }
 
     return (
@@ -94,7 +96,7 @@ export const LoaderSelector = ({ maxVisible = 7, featuredLoaders = DEFAULT_LOADE
             <div className='relative'>
                 <Input
                     type='text'
-                    placeholder='Search loaders...'
+                    placeholder={t('server.search_loaders')}
                     value={searchQuery}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
                     className='w-full pl-3 pr-8 py-2 text-sm'
@@ -154,7 +156,7 @@ export const LoaderSelector = ({ maxVisible = 7, featuredLoaders = DEFAULT_LOADE
                         className='w-full text-xs text-white hover:text-gray-300 py-2 rounded-md transition-colors duration-150 flex items-center justify-center gap-1.5'
                     >
                         <span className='transform transition-transform duration-200'>▾</span>
-                        Show {featured.length + other.length - maxVisible} more loaders
+                        {t('server.show_all')}
                     </button>
                 </div>
             )}
@@ -166,7 +168,7 @@ export const LoaderSelector = ({ maxVisible = 7, featuredLoaders = DEFAULT_LOADE
                         className='w-full text-xs text-white hover:text-gray-300 py-2 rounded-md transition-colors duration-150 flex items-center justify-center gap-1.5'
                     >
                         <span className='transform transition-transform duration-200 rotate-180'>▾</span>
-                        Show less
+                        {t('server.show_less')}
                     </button>
                 </div>
             )}

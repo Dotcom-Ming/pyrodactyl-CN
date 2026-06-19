@@ -8,6 +8,7 @@ import Modal, { RequiredModalProps } from '@/components/elements/Modal';
 
 import renameFiles from '@/api/server/files/renameFiles';
 
+import { t } from '@/lib/i18n';
 import { ServerContext } from '@/state/server';
 
 import useFileManagerSwr from '@/plugins/useFileManagerSwr';
@@ -65,14 +66,14 @@ const RenameFileModal = ({ files, useMoveTerminology, ...props }: OwnProps) => {
                     {...props}
                     dismissable={!isSubmitting}
                     showSpinnerOverlay={isSubmitting}
-                    title={useMoveTerminology ? 'Moving files/folders' : 'Renaming file/folder'}
+                    title={useMoveTerminology ? t('strings.moving_files') : t('strings.renaming_file')}
                 >
                     <Form className={`w-full`}>
                         <div className='w-full'>
-                            <Field type={'string'} id={'file_name'} name={'name'} label={'File Name'} autoFocus />
+                            <Field type={'string'} id={'file_name'} name={'name'} label={t('strings.file_name')} autoFocus />
                             {useMoveTerminology && (
                                 <p className={`mt-2 text-xs! break-all`}>
-                                    <strong className={`text-sm text-zinc-200`}>New location: </strong>
+                                    <strong className={`text-sm text-zinc-200`}>{t('strings.new_location')}</strong>
                                     <Code>
                                         /root/
                                         <span className={`text-blue-200`}>
@@ -83,7 +84,7 @@ const RenameFileModal = ({ files, useMoveTerminology, ...props }: OwnProps) => {
                             )}
                             <div className={`flex justify-end w-full my-6`}>
                                 <ActionButton variant='primary' type='submit'>
-                                    {useMoveTerminology ? 'Move' : 'Rename'}
+                                    {useMoveTerminology ? t('strings.move') : t('strings.rename')}
                                 </ActionButton>
                             </div>
                         </div>

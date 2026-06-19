@@ -7,6 +7,8 @@ import ActionButton from '@/components/elements/ActionButton';
 import Field from '@/components/elements/Field';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 
+import { t } from '@/lib/i18n';
+
 import { httpErrorToHuman } from '@/api/http';
 
 import { ApplicationStore } from '@/state';
@@ -16,16 +18,16 @@ interface Values {
     password: string;
 }
 
-const schema = Yup.object().shape({
-    email: Yup.string().email().required(),
-    password: Yup.string().required('You must provide your current account password.'),
-});
-
 const UpdateEmailAddressForm = () => {
     const user = useStoreState((state: State<ApplicationStore>) => state.user.data);
     const updateEmail = useStoreActions((state: Actions<ApplicationStore>) => state.user.updateUserEmail);
 
     const { clearFlashes, addFlash } = useStoreActions((actions: Actions<ApplicationStore>) => actions.flashes);
+
+    const schema = Yup.object().shape({
+        email: Yup.string().email(t('auth.validation_email_valid')).required(t('auth.validation_email_required')),
+        password: Yup.string().required(t('strings.current_account_password_required')),
+    });
 
     const submit = (values: Values, { resetForm, setSubmitting }: FormikHelpers<Values>) => {
         clearFlashes('account:email');
@@ -35,14 +37,14 @@ const UpdateEmailAddressForm = () => {
                 addFlash({
                     type: 'success',
                     key: 'account:email',
-                    message: 'Your primary email has been updated.',
+                    message: t('dashboard.account.email.updated'),
                 }),
             )
             .catch((error) =>
                 addFlash({
                     type: 'error',
                     key: 'account:email',
-                    title: 'Error',
+                    title: t('strings.error'),
                     message: httpErrorToHuman(error),
                 }),
             )
@@ -58,13 +60,13 @@ const UpdateEmailAddressForm = () => {
                 <Fragment>
                     <SpinnerOverlay size={'large'} visible={isSubmitting} />
                     <Form className={`m-0`}>
-                        <Field id={'current_email'} type={'email'} name={'email'} label={'Email'} />
+                        <Field id={'current_email'} type={'email'} name={'email'} label={t('strings.email')} />
                         <div className={`mt-6`}>
-                            <Field id={'confirm_password'} type={'password'} name={'password'} label={'Password'} />
+                            <Field id={'confirm_password'} type={'password'} name={'password'} label={t('strings.password')} />
                         </div>
                         <div className={`mt-6`}>
                             <ActionButton variant='primary' disabled={isSubmitting || !isValid}>
-                                Update Email
+                                {t('strings.update_email')}
                             </ActionButton>
                         </div>
                     </Form>

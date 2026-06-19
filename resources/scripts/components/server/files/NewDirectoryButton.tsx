@@ -13,7 +13,7 @@ import asDialog from '@/hoc/asDialog';
 
 import createDirectory from '@/api/server/files/createDirectory';
 
-// import { FileObject } from '@/api/server/files/loadDirectory';
+import { t } from '@/lib/i18n';
 import { ServerContext } from '@/state/server';
 
 import useFileManagerSwr from '@/plugins/useFileManagerSwr';
@@ -23,9 +23,10 @@ interface Values {
     directoryName: string;
 }
 
-const schema = object().shape({
-    directoryName: string().required('A valid directory name must be provided.'),
-});
+const getSchema = () =>
+    object().shape({
+        directoryName: string().required(t('strings.valid_directory_name_required')),
+    });
 
 // removed to prevent linting issues, you're welcome.
 //
@@ -44,9 +45,9 @@ const schema = object().shape({
 //     isEditable: () => false,
 // });
 
-const NewDirectoryDialog = asDialog({
-    title: 'New Folder',
-})(() => {
+const NewDirectoryDialog = asDialog(() => ({
+    title: t('strings.new_folder'),
+}))(() => {
     const uuid = ServerContext.useStoreState((state) => state.server.data!.uuid);
     const directory = ServerContext.useStoreState((state) => state.files.directory);
 
@@ -72,14 +73,14 @@ const NewDirectoryDialog = asDialog({
     };
 
     return (
-        <Formik onSubmit={submit} validationSchema={schema} initialValues={{ directoryName: '' }}>
+        <Formik onSubmit={submit} validationSchema={getSchema()} initialValues={{ directoryName: '' }}>
             {({ submitForm, values }) => (
                 <>
                     <FlashMessageRender byKey='files:directory-modal' />
                     <Form className={`m-0`}>
-                        <Field autoFocus id={'directoryName'} name={'directoryName'} label={'Name'} />
+                        <Field autoFocus id={'directoryName'} name={'directoryName'} label={t('strings.name')} />
                         <p className={`mt-2 text-xs! break-all`}>
-                            <span className={`text-zinc-200`}>This folder will be created as&nbsp;</span>
+                            <span className={`text-zinc-200`}>{t('strings.folder_will_be_created')}&nbsp;</span>
                             <Code>
                                 /root/
                                 <span className={`text-blue-200`}>
@@ -90,10 +91,10 @@ const NewDirectoryDialog = asDialog({
                     </Form>
                     <Dialog.Footer>
                         <ActionButton variant='secondary' className={'w-full sm:w-auto'} onClick={close}>
-                            Cancel
+                            {t('strings.cancel')}
                         </ActionButton>
                         <ActionButton variant='primary' className={'w-full sm:w-auto'} onClick={submitForm}>
-                            Create
+                            {t('strings.create')}
                         </ActionButton>
                     </Dialog.Footer>
                 </>
@@ -109,7 +110,7 @@ const NewDirectoryButton = () => {
         <>
             <NewDirectoryDialog open={open} onClose={setOpen.bind(this, false)} />
             <ActionButton variant='secondary' onClick={setOpen.bind(this, true)}>
-                New Folder
+                {t('strings.new_folder')}
             </ActionButton>
         </>
     );

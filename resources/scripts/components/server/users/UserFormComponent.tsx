@@ -18,6 +18,7 @@ import { Subuser } from '@/state/server/subusers';
 
 import { useDeepCompareMemo } from '@/plugins/useDeepCompareMemo';
 import { usePermissions } from '@/plugins/usePermissions';
+import { t } from '@/lib/i18n';
 
 interface Values {
     email: string;
@@ -120,9 +121,9 @@ const UserFormComponent = ({ subuser, onSuccess, onCancel, flashKey, isSubmittin
                 }
                 validationSchema={object().shape({
                     email: string()
-                        .max(191, 'Email addresses must not exceed 191 characters.')
-                        .email('A valid email address must be provided.')
-                        .required('A valid email address must be provided.'),
+                        .max(191, t('server.validation_email_max'))
+                        .email(t('server.validation_email_valid'))
+                        .required(t('server.validation_email_valid')),
                     permissions: array().of(string()),
                 })}
             >
@@ -140,14 +141,12 @@ const UserFormComponent = ({ subuser, onSuccess, onCancel, flashKey, isSubmittin
                                             className='w-5 h-5 text-brand'
                                         />
                                     </div>
-                                    <h3 className='text-xl font-semibold text-zinc-100'>User Information</h3>
+                                    <h3 className='text-xl font-semibold text-zinc-100'>{t('server.user_information')}</h3>
                                 </div>
                                 <Field
                                     name={'email'}
-                                    label={'Email Address'}
-                                    description={
-                                        'Enter the email address of the user you wish to invite as a subuser for this server.'
-                                    }
+                                    label={t('server.email_address')}
+                                    description={t('server.invite_user_desc')}
                                 />
                             </div>
                         )}
@@ -164,7 +163,7 @@ const UserFormComponent = ({ subuser, onSuccess, onCancel, flashKey, isSubmittin
                                             className='w-5 h-5 text-brand'
                                         />
                                     </div>
-                                    <h3 className='text-xl font-semibold text-zinc-100'>Detailed Permissions</h3>
+                                    <h3 className='text-xl font-semibold text-zinc-100'>{t('server.detailed_permissions')}</h3>
                                 </div>
                                 {canEditUser && (
                                     <button
@@ -183,8 +182,8 @@ const UserFormComponent = ({ subuser, onSuccess, onCancel, flashKey, isSubmittin
                                         className='text-sm px-4 py-2 rounded-lg bg-brand/10 hover:bg-brand/20 text-brand border border-brand/20 hover:border-brand/30 transition-colors font-medium'
                                     >
                                         {editablePermissions.every((p) => values.permissions.includes(p))
-                                            ? 'Deselect All'
-                                            : 'Select All'}
+                                            ? t('server.deselect_all')
+                                            : t('server.select_all')}
                                     </button>
                                 )}
                             </div>
@@ -198,10 +197,10 @@ const UserFormComponent = ({ subuser, onSuccess, onCancel, flashKey, isSubmittin
                                             fill='currentColor'
                                             className='w-5 h-5 text-brand'
                                         />
-                                        <span className='text-sm font-semibold text-brand'>Permission Restriction</span>
+                                        <span className='text-sm font-semibold text-brand'>{t('server.permission_restriction')}</span>
                                     </div>
                                     <p className='text-sm text-zinc-300 leading-relaxed'>
-                                        You can only assign permissions that you currently have access to.
+                                        {t('server.permission_restriction_desc')}
                                     </p>
                                 </div>
                             )}
@@ -266,8 +265,8 @@ const UserFormComponent = ({ subuser, onSuccess, onCancel, flashKey, isSubmittin
                                                         {Object.keys(permissions[key]?.keys ?? {})
                                                             .map((pkey) => `${key}.${pkey}`)
                                                             .every((p) => values.permissions.includes(p))
-                                                            ? 'Deselect All'
-                                                            : 'Select All'}
+                                                            ? t('server.deselect_all')
+                                                            : t('server.select_all')}
                                                     </button>
                                                 )}
                                             </div>
@@ -293,10 +292,10 @@ const UserFormComponent = ({ subuser, onSuccess, onCancel, flashKey, isSubmittin
                         <Can action={subuser ? 'user.update' : 'user.create'}>
                             <div className='flex gap-3 justify-end pt-4 border-t border-[#ffffff12]'>
                                 <ActionButton variant='secondary' type='button' onClick={onCancel}>
-                                    Cancel
+                                    {t('strings.cancel')}
                                 </ActionButton>
                                 <ActionButton variant='primary' type='submit' disabled={isSubmitting}>
-                                    {subuser ? 'Save Changes' : 'Invite User'}
+                                    {subuser ? t('server.save_changes') : t('server.invite_user')}
                                 </ActionButton>
                             </div>
                         </Can>

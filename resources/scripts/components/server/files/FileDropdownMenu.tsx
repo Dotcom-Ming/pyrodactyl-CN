@@ -17,6 +17,7 @@ import deleteFiles from '@/api/server/files/deleteFiles';
 import getFileDownloadUrl from '@/api/server/files/getFileDownloadUrl';
 import { FileObject } from '@/api/server/files/loadDirectory';
 
+import { t } from '@/lib/i18n';
 import { ServerContext } from '@/state/server';
 
 import useFileManagerSwr from '@/plugins/useFileManagerSwr';
@@ -48,11 +49,11 @@ const FileDropdownMenu = ({ file }: { file: FileObject }) => {
 
     const doCopy = () => {
         clearFlashes('files');
-        toast.info('Duplicating...');
+        toast.info(t('strings.duplicating'));
 
         copyFile(uuid, join(directory, file.name))
             .then(() => mutate())
-            .then(() => toast.success('File successfully duplicated.'))
+            .then(() => toast.success(t('strings.file_duplicated')))
             .catch((error) => clearAndAddHttpError({ key: 'files', error }));
     };
 
@@ -69,21 +70,21 @@ const FileDropdownMenu = ({ file }: { file: FileObject }) => {
 
     const doArchive = () => {
         clearFlashes('files');
-        toast.info('Archiving files...');
+        toast.info(t('strings.archiving_files'));
 
         compressFiles(uuid, directory, [file.name])
             .then(() => mutate())
-            .then(() => toast.success('Files successfully archived.'))
+            .then(() => toast.success(t('strings.files_archived')))
             .catch((error) => clearAndAddHttpError({ key: 'files', error }));
     };
 
     const doUnarchive = () => {
         clearFlashes('files');
-        toast.info('Unarchiving files...');
+        toast.info(t('strings.unarchiving_files'));
 
         decompressFiles(uuid, directory, file.name)
             .then(() => mutate())
-            .then(() => toast.success('Files successfully unarchived.'))
+            .then(() => toast.success(t('strings.files_unarchived')))
             .catch((error) => clearAndAddHttpError({ key: 'files', error }));
     };
 
@@ -92,12 +93,12 @@ const FileDropdownMenu = ({ file }: { file: FileObject }) => {
             <Dialog.Confirm
                 open={showConfirmation}
                 onClose={() => setShowConfirmation(false)}
-                title={`Delete ${file.isFile ? 'File' : 'Directory'}`}
-                confirm={'Delete'}
+                title={t('strings.delete_file', { type: file.isFile ? 'File' : 'Directory' })}
+                confirm={t('strings.delete_confirm')}
                 onConfirmed={doDeletion}
             >
-                You will not be able to recover the contents of
-                <span className={'font-semibold text-zinc-50'}> {file.name}</span> once deleted.
+                {t('strings.delete_warning')}
+                <span className={'font-semibold text-zinc-50'}> {file.name}</span>
             </Dialog.Confirm>
             {modal ? (
                 modal === 'chmod' ? (
@@ -121,50 +122,50 @@ const FileDropdownMenu = ({ file }: { file: FileObject }) => {
                 <Can action={'file.update'}>
                     <ContextMenuItem className='flex gap-2' onSelect={() => setModal('rename')}>
                         <PencilToLine className='h-4! w-4!' fill='currentColor' />
-                        <span>Rename</span>
+                        <span>{t('strings.rename')}</span>
                     </ContextMenuItem>
                     <ContextMenuItem className='flex gap-2' onSelect={() => setModal('move')}>
                         <BarsPlay className='h-4! w-4!' fill='currentColor' />
-                        <span>Move</span>
+                        <span>{t('strings.move')}</span>
                     </ContextMenuItem>
                     <ContextMenuItem className='flex gap-2' onSelect={() => setModal('chmod')}>
                         <Shield className='h-4! w-4!' fill='currentColor' />
-                        <span>Permissions</span>
+                        <span>{t('strings.permissions')}</span>
                     </ContextMenuItem>
                 </Can>
                 {file.isFile && (
                     <Can action={'file.create'}>
                         <ContextMenuItem className='flex gap-2' onClick={doCopy}>
                             <Copy className='h-4! w-4!' fill='currentColor' />
-                            <span>Duplicate</span>
+                            <span>{t('strings.duplicate')}</span>
                         </ContextMenuItem>
                     </Can>
                 )}
                 {file.isArchiveType() ? (
                     <Can action={'file.create'}>
-                        <ContextMenuItem className='flex gap-2' onSelect={doUnarchive} title={'Unarchive'}>
+                        <ContextMenuItem className='flex gap-2' onSelect={doUnarchive} title={t('strings.unarchive')}>
                             <FileZipper className='h-4! w-4!' fill='currentColor' />
-                            <span>Unarchive</span>
+                            <span>{t('strings.unarchive')}</span>
                         </ContextMenuItem>
                     </Can>
                 ) : (
                     <Can action={'file.archive'}>
                         <ContextMenuItem className='flex gap-2' onSelect={doArchive}>
                             <FileZipper className='h-4! w-4!' fill='currentColor' />
-                            <span>Archive</span>
+                            <span>{t('strings.archive')}</span>
                         </ContextMenuItem>
                     </Can>
                 )}
                 {file.isFile && (
                     <ContextMenuItem className='flex gap-2' onSelect={doDownload}>
                         <FileArrowDown className='h-4! w-4!' fill='currentColor' />
-                        <span>Download</span>
+                        <span>{t('strings.download')}</span>
                     </ContextMenuItem>
                 )}
                 <Can action={'file.delete'}>
                     <ContextMenuItem className='flex gap-2' onSelect={() => setShowConfirmation(true)}>
                         <TrashBin className='h-4! w-4!' fill='currentColor' />
-                        <span>Delete</span>
+                        <span>{t('strings.delete')}</span>
                     </ContextMenuItem>
                 </Can>
             </ContextMenuContent>

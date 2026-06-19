@@ -234,6 +234,16 @@ class Permission extends Model
      */
     public static function permissions(): Collection
     {
-        return Collection::make(self::$permissions);
+        $groups = trans('server/users.groups');
+        $keys = trans('server/users.keys');
+
+        return Collection::make(self::$permissions)->map(function (array $permission, string $group) use ($groups, $keys) {
+            return [
+                'description' => data_get($groups, $group, $permission['description']),
+                'keys' => Collection::make($permission['keys'])->mapWithKeys(function (string $description, string $key) use ($group, $keys) {
+                    return [$key => data_get($keys, "{$group}.{$key}", $description)];
+                })->all(),
+            ];
+        });
     }
 }

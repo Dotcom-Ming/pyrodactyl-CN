@@ -35,7 +35,7 @@ class Route53Provider implements DnsProviderInterface
     public function testConnection(): bool
     {
         if (!isset($this->client)) {
-            throw DnsProviderException::invalidConfiguration('route53', 'access_key_id or secret_access_key');
+            throw DnsProviderException::invalidConfiguration('route53', 'route53_credentials');
         }
 
         try {
@@ -120,7 +120,7 @@ class Route53Provider implements DnsProviderInterface
                 'domain' => $domain,
                 'name' => $name
             ]);
-            throw DnsProviderException::recordCreationFailed($domain, $name, 'DNS service temporarily unavailable.');
+            throw DnsProviderException::recordCreationFailed($domain, $name, trans('dns.errors.service_unavailable'));
         }
     }
 
@@ -159,7 +159,7 @@ class Route53Provider implements DnsProviderInterface
             $this->client->changeResourceRecordSets($params);
             return true;
         } catch (AwsException $e) {
-            throw DnsProviderException::recordUpdateFailed($domain, $recordId, $e->getAwsErrorMessage());
+            throw DnsProviderException::recordUpdateFailed($domain, [$recordId], $e->getAwsErrorMessage());
         }
     }
 
@@ -254,25 +254,25 @@ class Route53Provider implements DnsProviderInterface
             'access_key_id' => [
                 'type' => 'string',
                 'required' => true,
-                'description' => 'AWS Access Key ID with Route53 permissions',
+                'description' => trans('dns.schema.route53.access_key_id'),
                 'sensitive' => true,
             ],
             'secret_access_key' => [
                 'type' => 'string',
                 'required' => true,
-                'description' => 'AWS Secret Access Key',
+                'description' => trans('dns.schema.route53.secret_access_key'),
                 'sensitive' => true,
             ],
             'hosted_zone_id' => [
                 'type' => 'string',
                 'required' => true,
-                'description' => 'Route53 Hosted Zone ID',
+                'description' => trans('dns.schema.route53.hosted_zone_id'),
                 'sensitive' => false,
             ],
             'region' => [
                 'type' => 'string',
                 'required' => false,
-                'description' => 'AWS Region (default: us-east-1)',
+                'description' => trans('dns.schema.route53.region'),
                 'default' => 'us-east-1',
                 'sensitive' => false,
             ],
@@ -285,7 +285,7 @@ class Route53Provider implements DnsProviderInterface
     public function validateConfiguration(array $config): bool
     {
         if (empty($config['access_key_id']) || empty($config['secret_access_key'])) {
-            throw DnsProviderException::invalidConfiguration('route53', 'access_key_id or secret_access_key');
+            throw DnsProviderException::invalidConfiguration('route53', 'route53_credentials');
         }
 
         return true;
@@ -318,7 +318,7 @@ class Route53Provider implements DnsProviderInterface
                 }
             }
 
-            throw new \Exception("Domain zone not found for: $domain");
+            throw new \Exception(trans('dns.errors.zone_not_found_for_domain', ['domain' => $domain]));
         } catch (AwsException $e) {
             throw DnsProviderException::connectionFailed('route53', $e->getAwsErrorMessage());
         }

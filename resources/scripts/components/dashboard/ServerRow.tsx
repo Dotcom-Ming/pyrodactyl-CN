@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { bytesToString, ip } from '@/lib/formatters';
+import { t } from '@/lib/i18n';
 
 import { Server } from '@/api/server/getServer';
 import getServerResourceUsage, { ServerPowerState, ServerStats } from '@/api/server/getServerResourceUsage';
@@ -142,29 +143,31 @@ const ServerRow = ({ server, className }: { server: Server; className?: string }
                     isSuspended ? (
                         <div className={`flex-1 text-center`}>
                             <span className={`text-red-100 text-xs`}>
-                                {server.status === 'suspended' ? 'Suspended' : 'Connection Error'}
+                                {server.status === 'suspended' ? t('strings.suspended') : t('strings.connection_error')}
                             </span>
                         </div>
                     ) : server.isTransferring || server.status ? (
                         <div className={`flex-1 text-center`}>
                             <span className={`text-zinc-100 text-xs`}>
                                 {server.isTransferring
-                                    ? 'Transferring'
+                                    ? t('strings.transferring')
                                     : server.status === 'installing'
-                                        ? 'Installing'
+                                        ? t('strings.installing')
                                         : server.status === 'restoring_backup'
-                                            ? 'Restoring Backup'
-                                            : 'Unavailable'}
+                                            ? t('strings.restoring_backup')
+                                            : t('strings.unavailable')}
                             </span>
                         </div>
                     ) : (
-                        <div className='text-xs opacity-25'>Sit tight!</div>
+                        <div className='text-xs opacity-25'>{t('strings.sit_tight')}</div>
                     )
                 ) : (
                     <Fragment>
                         <div className={`sm:flex hidden`}>
                             <div className={`flex justify-center gap-2 w-fit`}>
-                                <p className='text-xs text-zinc-400 font-medium w-fit whitespace-nowrap'>CPU</p>
+                                <p className='text-xs text-zinc-400 font-medium w-fit whitespace-nowrap'>
+                                    {t('strings.cpu')}
+                                </p>
                                 <p className='text-xs font-bold w-fit whitespace-nowrap'>
                                     {stats.cpuUsagePercent.toFixed(2)}%
                                 </p>
@@ -172,7 +175,9 @@ const ServerRow = ({ server, className }: { server: Server; className?: string }
                         </div>
                         <div className={`sm:flex hidden`}>
                             <div className={`flex justify-center gap-2 w-fit`}>
-                                <p className='text-xs text-zinc-400 font-medium w-fit whitespace-nowrap'>RAM</p>
+                                <p className='text-xs text-zinc-400 font-medium w-fit whitespace-nowrap'>
+                                    {t('strings.ram')}
+                                </p>
                                 <p className='text-xs font-bold w-fit whitespace-nowrap'>
                                     {bytesToString(stats.memoryUsageInBytes, 0)}
                                 </p>
@@ -180,7 +185,9 @@ const ServerRow = ({ server, className }: { server: Server; className?: string }
                         </div>
                         <div className={`sm:flex hidden`}>
                             <div className={`flex justify-center gap-2 w-fit`}>
-                                <p className='text-xs text-zinc-400 font-medium w-fit whitespace-nowrap'>Storage</p>
+                                <p className='text-xs text-zinc-400 font-medium w-fit whitespace-nowrap'>
+                                    {t('strings.storage')}
+                                </p>
                                 <p className='text-xs font-bold w-fit whitespace-nowrap'>
                                     {bytesToString(stats.diskUsageInBytes, 0)}
                                 </p>

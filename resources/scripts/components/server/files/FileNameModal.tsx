@@ -6,6 +6,7 @@ import ActionButton from '@/components/elements/ActionButton';
 import Field from '@/components/elements/Field';
 import Modal, { RequiredModalProps } from '@/components/elements/Modal';
 
+import { t } from '@/lib/i18n';
 import { ServerContext } from '@/state/server';
 
 type Props = RequiredModalProps & {
@@ -38,19 +39,19 @@ const FileNameModal = ({ onFileNamed, onDismissed, ...props }: Props) => {
                         resetForm();
                         onDismissed();
                     }}
-                    title='New file'
+                    title={t('strings.new_file')}
                     {...props}
                 >
                     <Form className='m-0 w-full flex flex-col gap-4'>
                         <Field
                             id={'fileName'}
                             name={'fileName'}
-                            label={'File Name'}
-                            description={'Enter the name that this file should be saved as.'}
+                            label={t('strings.file_name')}
+                            description={t('strings.enter_file_name')}
                             autoFocus
                         />
                         <div className={`flex justify-end w-full my-4`}>
-                            <ActionButton variant='primary'>Create File</ActionButton>
+                            <ActionButton variant='primary'>{t('strings.create_file')}</ActionButton>
                         </div>
                     </Form>
                 </Modal>

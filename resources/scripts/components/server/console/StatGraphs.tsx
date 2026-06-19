@@ -10,6 +10,8 @@ import { SocketEvent } from '@/components/server/events';
 import { bytesToString } from '@/lib/formatters';
 import { hexToRgba } from '@/lib/helpers';
 
+import { t } from '@/lib/i18n';
+
 import { ServerContext } from '@/state/server';
 
 import useWebsocketEvent from '@/plugins/useWebsocketEvent';
@@ -19,9 +21,9 @@ const StatGraphs = () => {
     const limits = ServerContext.useStoreState((state) => state.server.data!.limits);
     const previous = useRef<Record<'tx' | 'rx', number>>({ tx: -1, rx: -1 });
 
-    const cpu = useChartTickLabel('CPU', limits.cpu, '%', 2);
-    const memory = useChartTickLabel('Memory', limits.memory, 'MiB');
-    const network = useChart('Network', {
+    const cpu = useChartTickLabel(t('strings.cpu'), limits.cpu, '%', 2);
+    const memory = useChartTickLabel(t('strings.ram'), limits.memory, 'MiB');
+    const network = useChart(t('strings.network_activity'), {
         sets: 2,
         options: {
             scales: {
@@ -37,7 +39,7 @@ const StatGraphs = () => {
         callback(opts, index) {
             return {
                 ...opts,
-                label: !index ? 'Network In' : 'Network Out',
+                label: !index ? t('strings.inbound') : t('strings.outbound'),
                 borderColor: !index ? '#facc15' : '#60a5fa',
                 backgroundColor: hexToRgba(!index ? '#facc15' : '#60a5fa', 0.09),
             };
@@ -79,8 +81,8 @@ const StatGraphs = () => {
                         'linear(0,0.01,0.04 1.6%,0.161 3.3%,0.816 9.4%,1.046,1.189 14.4%,1.231,1.254 17%,1.259,1.257 18.6%,1.236,1.194 22.3%,1.057 27%,0.999 29.4%,0.955 32.1%,0.942,0.935 34.9%,0.933,0.939 38.4%,1 47.3%,1.011,1.017 52.6%,1.016 56.4%,1 65.2%,0.996 70.2%,1.001 87.2%,1)',
                 }}
             >
-                <ChartBlock title={'CPU'}>
-                    <Line aria-label='CPU Usage' role='img' {...cpu.props} />
+                <ChartBlock title={t('strings.cpu')}>
+                    <Line aria-label={t('strings.cpu_usage')} role='img' {...cpu.props} />
                 </ChartBlock>
             </div>
             <div
@@ -91,8 +93,8 @@ const StatGraphs = () => {
                         'linear(0,0.01,0.04 1.6%,0.161 3.3%,0.816 9.4%,1.046,1.189 14.4%,1.231,1.254 17%,1.259,1.257 18.6%,1.236,1.194 22.3%,1.057 27%,0.999 29.4%,0.955 32.1%,0.942,0.935 34.9%,0.933,0.939 38.4%,1 47.3%,1.011,1.017 52.6%,1.016 56.4%,1 65.2%,0.996 70.2%,1.001 87.2%,1)',
                 }}
             >
-                <ChartBlock title={'RAM'}>
-                    <Line aria-label='Memory Usage' role='img' {...memory.props} />
+                <ChartBlock title={t('strings.ram')}>
+                    <Line aria-label={t('strings.memory_usage')} role='img' {...memory.props} />
                 </ChartBlock>
             </div>
             <div
@@ -104,7 +106,7 @@ const StatGraphs = () => {
                 }}
             >
                 <ChartBlock
-                    title={'Network Activity'}
+                    title={t('strings.network_activity')}
                     legend={
                         <div className='flex gap-2'>
                             <Tooltip.Root delayDuration={200}>
@@ -124,7 +126,7 @@ const StatGraphs = () => {
                                         className='px-2 py-1 text-sm bg-gray-800 text-gray-100 rounded shadow-lg'
                                         sideOffset={5}
                                     >
-                                        Inbound
+                                        {t('strings.inbound')}
                                         <Tooltip.Arrow className='fill-gray-800' />
                                     </Tooltip.Content>
                                 </Tooltip.Portal>
@@ -147,7 +149,7 @@ const StatGraphs = () => {
                                         className='px-2 py-1 text-sm bg-gray-800 text-gray-100 rounded shadow-lg'
                                         sideOffset={5}
                                     >
-                                        Outbound
+                                        {t('strings.outbound')}
                                         <Tooltip.Arrow className='fill-gray-800' />
                                     </Tooltip.Content>
                                 </Tooltip.Portal>
@@ -155,7 +157,7 @@ const StatGraphs = () => {
                         </div>
                     }
                 >
-                    <Line aria-label='Network Activity. Download and upload activity' role='img' {...network.props} />
+                    <Line aria-label={t('strings.network_activity_aria')} role='img' {...network.props} />
                 </ChartBlock>
             </div>
         </Tooltip.Provider>

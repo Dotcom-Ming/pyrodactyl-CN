@@ -1,5 +1,7 @@
 import clsx from 'clsx';
 
+import { t } from '@/lib/i18n';
+
 import { ServerContext } from '@/state/server';
 
 export const StatusPill = () => {
@@ -26,14 +28,14 @@ export const StatusPill = () => {
             ></div>
             <div className='text-sm font-bold'>
                 {status === 'offline'
-                    ? 'Offline'
+                    ? t('strings.offline')
                     : status === 'running'
-                      ? 'Online'
+                      ? t('strings.online')
                       : status === 'stopping'
-                        ? 'Stopping'
+                        ? t('strings.stopping')
                         : status === 'starting'
-                          ? 'Starting'
-                          : 'Fetching'}
+                          ? t('strings.starting')
+                          : t('strings.fetching')}
             </div>
         </div>
     );

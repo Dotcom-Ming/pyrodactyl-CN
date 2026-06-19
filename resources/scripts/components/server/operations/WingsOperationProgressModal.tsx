@@ -15,6 +15,7 @@ import {
     isCompletedStatus,
     isFailedStatus,
 } from '@/lib/server-operations';
+import { t } from '@/lib/i18n';
 
 import { ServerOperation, useOperationPolling } from '@/api/server/serverOperations';
 
@@ -158,7 +159,7 @@ const WingsOperationProgressModal: React.FC<Props> = ({
                                 fill='currentColor'
                                 className='w-6 h-6 text-red-400'
                             />
-                            <span className='text-red-400 font-semibold text-lg'>Error</span>
+                            <span className='text-red-400 font-semibold text-lg'>{t('strings.error')}</span>
                         </div>
                         <div className='p-4 bg-red-500/10 border border-red-500/20 rounded-lg'>
                             <p className='text-sm text-red-300'>{error}</p>
@@ -179,7 +180,9 @@ const WingsOperationProgressModal: React.FC<Props> = ({
 
                         {/* Message Box */}
                         <div className='p-4 bg-[#ffffff11] border border-[#ffffff12] rounded-lg'>
-                            <p className='text-sm text-zinc-300 text-center'>{operation.message || 'Processing...'}</p>
+                            <p className='text-sm text-zinc-300 text-center'>
+                                {operation.message || t('strings.processing')}
+                            </p>
                         </div>
 
                         {/* Progress Bar for Active Operations */}
@@ -192,7 +195,7 @@ const WingsOperationProgressModal: React.FC<Props> = ({
                                     />
                                 </div>
                                 <p className='text-xs text-zinc-500 text-center'>
-                                    This window will close automatically when complete
+                                    {t('strings.operation_auto_close')}
                                 </p>
                             </div>
                         )}
@@ -205,12 +208,12 @@ const WingsOperationProgressModal: React.FC<Props> = ({
                                         <div className='w-2 h-2 rounded-full bg-white' />
                                     </div>
                                     <p className='text-sm text-green-300 font-medium'>
-                                        Operation completed successfully
+                                        {t('strings.operation_completed')}
                                     </p>
                                 </div>
                                 {autoCloseTimer && (
                                     <p className='text-xs text-green-200 text-center'>
-                                        Closing automatically in 3 seconds
+                                        {t('strings.closing_auto_3')}
                                     </p>
                                 )}
                             </div>
@@ -226,7 +229,7 @@ const WingsOperationProgressModal: React.FC<Props> = ({
                                         fill='currentColor'
                                         className='w-5 h-5 text-red-400'
                                     />
-                                    <p className='text-sm text-red-300 font-medium'>Operation failed</p>
+                                    <p className='text-sm text-red-300 font-medium'>{t('strings.operation_failed')}</p>
                                 </div>
                                 {operation.message && (
                                     <p className='text-xs text-red-200 text-center'>{operation.message}</p>
@@ -238,7 +241,7 @@ const WingsOperationProgressModal: React.FC<Props> = ({
                     /* Loading State */
                     <div className='flex items-center justify-center space-x-3 py-4'>
                         <Spinner size={'small'} />
-                        <span className='text-zinc-400 font-medium'>Initializing...</span>
+                        <span className='text-zinc-400 font-medium'>{t('strings.initializing')}</span>
                     </div>
                 )}
             </div>
@@ -246,10 +249,10 @@ const WingsOperationProgressModal: React.FC<Props> = ({
             {canClose && (
                 <Dialog.Footer>
                     <ActionButton onClick={handleClose} variant='secondary' className='mr-3'>
-                        Cancel
+                        {t('strings.cancel')}
                     </ActionButton>
                     <ActionButton onClick={handleClose} variant='primary'>
-                        {operation?.is_completed ? 'Done' : 'Close'}
+                        {operation?.is_completed ? t('strings.done') : t('strings.close')}
                     </ActionButton>
                 </Dialog.Footer>
             )}

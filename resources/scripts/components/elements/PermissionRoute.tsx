@@ -2,6 +2,8 @@ import type { JSX, ReactNode } from 'react';
 
 import { ServerError } from '@/components/elements/ScreenBlock';
 
+import { t } from '@/lib/i18n';
+
 import { usePermissions } from '@/plugins/usePermissions';
 
 interface Props {
@@ -20,7 +22,7 @@ function PermissionRoute({ children, permission }: Props): JSX.Element {
         return <>{children}</>;
     }
 
-    return <ServerError title='Access Denied' message='You do not have permission to access this page.' />;
+    return <ServerError title={t('strings.access_denied')} message={t('strings.access_denied_desc')} />;
 }
 
 export default PermissionRoute;

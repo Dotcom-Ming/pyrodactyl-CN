@@ -12,6 +12,7 @@ import ScheduleRow from '@/components/server/schedules/ScheduleRow';
 
 import { httpErrorToHuman } from '@/api/http';
 import getServerSchedules from '@/api/server/schedules/getServerSchedules';
+import { t } from '@/lib/i18n';
 
 import { ServerContext } from '@/state/server';
 
@@ -39,22 +40,21 @@ function ScheduleContainer() {
     }, []);
 
     return (
-        <ServerContentBlock title={'Schedules'}>
+        <ServerContentBlock title={t('server.schedules')}>
             <FlashMessageRender byKey={'schedules'} />
             <MainPageHeader
                 direction='column'
-                title={'Schedules'}
+                title={t('server.schedules')}
                 titleChildren={
                     <Can action={'schedule.create'}>
                         <ActionButton variant='primary' onClick={() => setVisible(true)}>
-                            New Schedule
+                            {t('server.new_schedule')}
                         </ActionButton>
                     </Can>
                 }
             >
                 <p className='text-sm text-neutral-400 leading-relaxed'>
-                    Automate server tasks with scheduled commands. Create recurring tasks to manage your server, run
-                    backups, or execute custom commands.
+                    {t('server.schedules_desc')}
                 </p>
             </MainPageHeader>
             <Can action={'schedule.create'}>
@@ -74,10 +74,9 @@ function ScheduleContainer() {
                                         />
                                     </svg>
                                 </div>
-                                <h3 className='text-lg font-medium text-zinc-200 mb-2'>No schedules found</h3>
+                                <h3 className='text-lg font-medium text-zinc-200 mb-2'>{t('server.no_schedules')}</h3>
                                 <p className='text-sm text-zinc-400 max-w-sm'>
-                                    Your server does not have any scheduled tasks. Create one to automate server
-                                    management.
+                                    {t('server.no_schedules_help')}
                                 </p>
                             </div>
                         </div>

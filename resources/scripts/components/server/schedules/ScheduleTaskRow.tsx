@@ -15,6 +15,7 @@ import { Schedule, Task } from '@/api/server/schedules/getServerSchedules';
 import { ServerContext } from '@/state/server';
 
 import useFlash from '@/plugins/useFlash';
+import { t } from '@/lib/i18n';
 
 interface Props {
     schedule: Schedule;
@@ -24,13 +25,13 @@ interface Props {
 const getActionDetails = (action: string): [string, any, boolean?] => {
     switch (action) {
         case 'command':
-            return ['Send Command', Terminal, true];
+            return [t('server.send_command'), Terminal, true];
         case 'power':
-            return ['Send Power Action', Power];
+            return [t('server.send_power_action'), Power];
         case 'backup':
-            return ['Create Backup', CloudArrowUpIn];
+            return [t('server.create_backup'), CloudArrowUpIn];
         default:
-            return ['Unknown Action', CircleQuestion];
+            return [t('server.unknown_action'), CircleQuestion];
     }
 };
 
@@ -80,13 +81,13 @@ const ScheduleTaskRow = ({ schedule, task }: Props) => {
                 onModalDismissed={() => setIsEditing(false)}
             />
             <ConfirmationModal
-                title={'Confirm task deletion'}
-                buttonText={'Delete Task'}
+                title={t('server.confirm_task_deletion')}
+                buttonText={t('server.delete_task')}
                 onConfirmed={onConfirmDeletion}
                 visible={visible}
                 onModalDismissed={() => setVisible(false)}
             >
-                Are you sure you want to delete this task? This action cannot be undone.
+                {t('server.delete_task_confirm')}
             </ConfirmationModal>
             {/* <FontAwesomeIcon icon={icon} className={`text-lg text-white hidden md:block`} /> */}
             {/* <div className={`flex-none sm:flex-1 w-full sm:w-auto overflow-x-auto`}>
@@ -110,11 +111,11 @@ const ScheduleTaskRow = ({ schedule, task }: Props) => {
                 <div className='mr-0 sm:mr-6'>
                     {task.continueOnFailure && (
                         <div className={`px-2 py-1 bg-yellow-500 text-yellow-800 text-sm rounded-full`}>
-                            Continues on Failure
+                            {t('server.continues_on_failure')}
                         </div>
                     )}
                     {task.sequenceId > 1 && task.timeOffset > 0 && (
-                        <div className={`px-2 py-1 bg-zinc-500 text-sm rounded-full`}>{task.timeOffset}s later</div>
+                        <div className={`px-2 py-1 bg-zinc-500 text-sm rounded-full`}>{t('server.offset_later', { offsets: `${task.timeOffset}s` })}</div>
                     )}
                 </div>
                 <Can action={'schedule.update'}>
@@ -123,10 +124,10 @@ const ScheduleTaskRow = ({ schedule, task }: Props) => {
                         size='sm'
                         className='flex flex-row items-center gap-2 ml-auto sm:ml-0'
                         onClick={() => setIsEditing(true)}
-                        aria-label='Edit scheduled task'
+                        aria-label={t('server.edit_task')}
                     >
                         <PencilToLine width={22} height={22} fill='currentColor' />
-                        Edit
+                        {t('strings.edit')}
                     </ActionButton>
                 </Can>
                 <Can action={'schedule.update'}>
@@ -135,10 +136,10 @@ const ScheduleTaskRow = ({ schedule, task }: Props) => {
                         size='sm'
                         onClick={() => setVisible(true)}
                         className='flex items-center gap-2'
-                        aria-label='Delete scheduled task'
+                        aria-label={t('server.delete_task')}
                     >
                         <TrashBin width={22} height={22} fill='currentColor' className='w-4 h-4' />
-                        <span className='hidden sm:inline'>Delete</span>
+                        <span className='hidden sm:inline'>{t('strings.delete')}</span>
                     </ActionButton>
                 </Can>
             </div>

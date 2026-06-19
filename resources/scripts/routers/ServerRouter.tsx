@@ -31,6 +31,8 @@ import TransferListener from '@/components/server/TransferListener';
 import WebsocketHandler from '@/components/server/WebsocketHandler';
 import StatBlock from '@/components/server/console/StatBlock';
 
+import { t } from '@/lib/i18n';
+
 import { httpErrorToHuman } from '@/api/http';
 import http from '@/api/http';
 import { getSubdomainInfo } from '@/api/server/network/subdomain';
@@ -252,7 +254,7 @@ const ServerRouter = () => {
         <Fragment key={'server-router'}>
             {!uuid || !id ? (
                 error ? (
-                    <ServerError title='Something went wrong' message={error} />
+                    <ServerError title={t('strings.something_went_wrong')} message={error} />
                 ) : null
             ) : (
                 <>
@@ -291,14 +293,14 @@ const ServerRouter = () => {
                                     <DropdownMenuContent className='z-99999 select-none relative' sideOffset={8}>
                                         {rootAdmin && (
                                             <DropdownMenuItem onSelect={onSelectManageServer}>
-                                                Manage Server
+                                                {t('strings.manage_server')}
                                                 <span className='ml-2 z-10 rounded-full bg-brand px-2 py-1 text-xs select-none'>
-                                                    Staff
+                                                    {t('strings.staff')}
                                                 </span>
                                             </DropdownMenuItem>
                                         )}
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem onSelect={onTriggerLogout}>Log Out</DropdownMenuItem>
+                                        <DropdownMenuItem onSelect={onTriggerLogout}>{t('strings.logout')}</DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </div>

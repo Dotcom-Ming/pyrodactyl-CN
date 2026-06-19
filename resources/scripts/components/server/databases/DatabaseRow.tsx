@@ -19,6 +19,7 @@ import { httpErrorToHuman } from '@/api/http';
 import deleteServerDatabase from '@/api/server/databases/deleteServerDatabase';
 import { ServerDatabase } from '@/api/server/databases/getServerDatabases';
 
+import { t } from '@/lib/i18n';
 import { ServerContext } from '@/state/server';
 
 import useFlash from '@/plugins/useFlash';
@@ -47,8 +48,8 @@ const DatabaseRow = ({ database }: Props) => {
 
     const schema = object().shape({
         confirm: string()
-            .required('The database name must be provided.')
-            .oneOf([database.name.split('_', 2)[1] || '', database.name], 'The database name must be provided.'),
+            .required(t('server.validation_database_name_required'))
+            .oneOf([database.name.split('_', 2)[1] || '', database.name], t('server.validation_database_name_required')),
     });
 
     const submit = (_: { confirm: string }, { setSubmitting, resetForm }: FormikHelpers<{ confirm: string }>) => {
@@ -83,21 +84,20 @@ const DatabaseRow = ({ database }: Props) => {
                             setVisible(false);
                             resetForm();
                         }}
-                        title='Confirm database deletion'
+                        title={t('strings.confirm_database_deletion')}
                     >
                         <FlashMessageRender byKey={'database:delete'} />
                         <div className='flex flex-col'>
                             <p>
-                                Deleting a database is a permanent action, it cannot be undone. This will permanently
-                                delete the <strong>{database.name}</strong> database and remove all its data.
+                                {t('strings.deleting_database_warning', { name: database.name })}
                             </p>
                             <Form className='mt-6'>
                                 <Field
                                     type={'text'}
                                     id={'confirm_name'}
                                     name={'confirm'}
-                                    label={'Confirm Database Name'}
-                                    description={'Enter the database name to confirm deletion.'}
+                                    label={t('strings.confirm_database_name')}
+                                    description={t('strings.enter_database_name')}
                                 />
                                 <ActionButton
                                     variant='danger'
@@ -106,7 +106,7 @@ const DatabaseRow = ({ database }: Props) => {
                                     disabled={!isValid || isSubmitting}
                                 >
                                     {isSubmitting && <Spinner size='small' />}
-                                    {isSubmitting ? 'Deleting...' : 'Delete Database'}
+                                    {isSubmitting ? t('strings.deleting') : t('strings.delete_database')}
                                 </ActionButton>
                             </Form>
                         </div>
@@ -116,7 +116,7 @@ const DatabaseRow = ({ database }: Props) => {
 
             <Modal
                 visible={connectionVisible}
-                title='Database connection details'
+                title={t('strings.database_connection_details')}
                 closeButton={true}
                 onDismissed={() => setConnectionVisible(false)}
             >
@@ -124,26 +124,26 @@ const DatabaseRow = ({ database }: Props) => {
                 <div className='flex flex-col min-w-full gap-4'>
                     <div className='grid gap-4 sm:grid-cols-2 min-w-full'>
                         <div className='flex flex-col'>
-                            <Label>Endpoint</Label>
+                            <Label>{t('strings.endpoint')}</Label>
                             <CopyOnClick text={database.connectionString}>
                                 <Input type={'text'} readOnly value={database.connectionString} />
                             </CopyOnClick>
                         </div>
                         <div className='flex flex-col'>
-                            <Label>Connections from</Label>
+                            <Label>{t('strings.connections_from')}</Label>
                             <CopyOnClick text={database.allowConnectionsFrom}>
                                 <Input type={'text'} readOnly value={database.allowConnectionsFrom} />
                             </CopyOnClick>
                         </div>
                         <div className='flex flex-col'>
-                            <Label>Username</Label>
+                            <Label>{t('strings.username')}</Label>
                             <CopyOnClick text={database.username}>
                                 <Input type={'text'} readOnly value={database.username} />
                             </CopyOnClick>
                         </div>
                         <Can action={'database.view_password'}>
                             <div className='flex flex-col'>
-                                <Label>Password</Label>
+                                <Label>{t('strings.password')}</Label>
                                 <div className='flex flex-row min-w-full gap-2'>
                                     <CopyOnClick text={database.password} showInNotification={false}>
                                         <Input
@@ -162,7 +162,7 @@ const DatabaseRow = ({ database }: Props) => {
                     </div>
                     <div className='flex flex-col'>
                         <div className='flex flex-row gap-2 align-middle items-center'>
-                            <Label>JDBC Connection String</Label>
+                            <Label>{t('strings.jdbc_connection_string')}</Label>
                         </div>
                         <CopyOnClick text={jdbcConnectionString} showInNotification={false}>
                             <Input type={'password'} readOnly value={jdbcConnectionString} />
@@ -187,19 +187,25 @@ const DatabaseRow = ({ database }: Props) => {
 
                         <div className='grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm'>
                             <div>
-                                <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>Endpoint</p>
+                                <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>
+                                    {t('strings.endpoint')}
+                                </p>
                                 <CopyOnClick text={database.connectionString}>
                                     <p className='text-zinc-300 font-mono truncate'>{database.connectionString}</p>
                                 </CopyOnClick>
                             </div>
                             <div>
-                                <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>From</p>
+                                <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>
+                                    {t('strings.connections_from')}
+                                </p>
                                 <CopyOnClick text={database.allowConnectionsFrom}>
                                     <p className='text-zinc-300 font-mono truncate'>{database.allowConnectionsFrom}</p>
                                 </CopyOnClick>
                             </div>
                             <div>
-                                <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>Username</p>
+                                <p className='text-xs text-zinc-500 uppercase tracking-wide mb-1'>
+                                    {t('strings.username')}
+                                </p>
                                 <CopyOnClick text={database.username}>
                                     <p className='text-zinc-300 font-mono truncate'>{database.username}</p>
                                 </CopyOnClick>
@@ -215,7 +221,7 @@ const DatabaseRow = ({ database }: Props) => {
                             className='flex items-center gap-2'
                         >
                             <Eye fill='currentColor' className='w-4 h-4' />
-                            <span className='hidden sm:inline'>Details</span>
+                            <span className='hidden sm:inline'>{t('strings.details')}</span>
                         </ActionButton>
                         <Can action={'database.delete'}>
                             <ActionButton
@@ -225,7 +231,7 @@ const DatabaseRow = ({ database }: Props) => {
                                 className='flex items-center gap-2'
                             >
                                 <TrashBin fill='currentColor' className='w-4 h-4' />
-                                <span className='hidden sm:inline'>Delete</span>
+                                <span className='hidden sm:inline'>{t('strings.delete')}</span>
                             </ActionButton>
                         </Can>
                     </div>

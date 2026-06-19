@@ -8,6 +8,8 @@ import Field from '@/components/elements/Field';
 import Spinner from '@/components/elements/Spinner';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 
+import { t } from '@/lib/i18n';
+
 import updateAccountPassword from '@/api/account/updateAccountPassword';
 import { httpErrorToHuman } from '@/api/http';
 
@@ -19,18 +21,6 @@ interface Values {
     confirmPassword: string;
 }
 
-const schema = Yup.object().shape({
-    current: Yup.string().min(1).required('You must provide your current account password.'),
-    password: Yup.string().min(8).required(),
-    confirmPassword: Yup.string().test(
-        'password',
-        'Password confirmation does not match the password you entered.',
-        function (value) {
-            return value === this.parent.password;
-        },
-    ),
-});
-
 const UpdatePasswordForm = () => {
     const user = useStoreState((state: State<ApplicationStore>) => state.user.data);
     const { clearFlashes, addFlash } = useStoreActions((actions: Actions<ApplicationStore>) => actions.flashes);
@@ -38,6 +28,14 @@ const UpdatePasswordForm = () => {
     if (!user) {
         return null;
     }
+
+    const schema = Yup.object().shape({
+        current: Yup.string().min(1).required(t('strings.current_account_password_required')),
+        password: Yup.string().min(8).required(),
+        confirmPassword: Yup.string().test('password', t('strings.password_confirmation_mismatch'), function (value) {
+            return value === this.parent.password;
+        }),
+    });
 
     const submit = (values: Values, { setSubmitting }: FormikHelpers<Values>) => {
         clearFlashes('account:password');
@@ -50,7 +48,7 @@ const UpdatePasswordForm = () => {
                 addFlash({
                     key: 'account:password',
                     type: 'error',
-                    title: 'Error',
+                    title: t('strings.error'),
                     message: httpErrorToHuman(error),
                 }),
             )
@@ -72,17 +70,15 @@ const UpdatePasswordForm = () => {
                                 id={'current_password'}
                                 type={'password'}
                                 name={'current'}
-                                label={'Current Password'}
+                                label={t('strings.current_password')}
                             />
                             <div className={`mt-6`}>
                                 <Field
                                     id={'new_password'}
                                     type={'password'}
                                     name={'password'}
-                                    label={'New Password'}
-                                    description={
-                                        'Your new password should be at least 8 characters in length and unique to this website.'
-                                    }
+                                    label={t('strings.new_password')}
+                                    description={t('dashboard.account.password.requirements')}
                                 />
                             </div>
                             <div className={`mt-6`}>
@@ -90,13 +86,13 @@ const UpdatePasswordForm = () => {
                                     id={'confirm_new_password'}
                                     type={'password'}
                                     name={'confirmPassword'}
-                                    label={'Confirm New Password'}
+                                    label={t('strings.confirm_password')}
                                 />
                             </div>
                             <div className={`mt-6`}>
                                 <ActionButton variant='primary' disabled={isSubmitting || !isValid}>
                                     {isSubmitting && <Spinner size='small' />}
-                                    {isSubmitting ? 'Updating...' : 'Update Password'}
+                                    {isSubmitting ? t('strings.updating') : t('strings.update_password')}
                                 </ActionButton>
                             </div>
                         </Form>

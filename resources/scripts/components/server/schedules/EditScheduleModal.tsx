@@ -22,6 +22,7 @@ import { Schedule } from '@/api/server/schedules/getServerSchedules';
 import { ServerContext } from '@/state/server';
 
 import useFlash from '@/plugins/useFlash';
+import { t } from '@/lib/i18n';
 
 interface Props {
     schedule?: Schedule;
@@ -144,7 +145,7 @@ const EditScheduleModal = ({ schedule }: Props) => {
     }, [serverTimezone]);
 
     useEffect(() => {
-        setPropOverrides({ title: schedule ? 'Edit schedule' : 'Create new schedule' });
+        setPropOverrides({ title: schedule ? t('server.edit_schedule') : t('server.create_new_schedule') });
     }, []);
 
     useEffect(() => {
@@ -211,15 +212,15 @@ const EditScheduleModal = ({ schedule }: Props) => {
                         <FlashMessageRender byKey={'schedule:edit'} />
                         <Field
                             name={'name'}
-                            label={'Schedule name'}
-                            description={'A human readable identifier for this schedule.'}
+                            label={t('server.schedule_name')}
+                            description={t('server.schedule_name_desc')}
                         />
                         <div className={`grid grid-cols-2 sm:grid-cols-5 gap-4 mt-6`}>
-                            <Field name={'minute'} label={'Minute'} />
-                            <Field name={'hour'} label={'Hour'} />
-                            <Field name={'dayOfWeek'} label={'Day of week'} />
-                            <Field name={'dayOfMonth'} label={'Day of month'} />
-                            <Field name={'month'} label={'Month'} />
+                            <Field name={'minute'} label={t('server.minute')} />
+                            <Field name={'hour'} label={t('server.hour')} />
+                            <Field name={'dayOfWeek'} label={t('server.day_week')} />
+                            <Field name={'dayOfMonth'} label={t('server.day_month')} />
+                            <Field name={'month'} label={t('server.month')} />
                         </div>
 
                         <div className={`mt-3 p-3 rounded-lg bg-zinc-800/50 border border-zinc-700/50`}>
@@ -227,8 +228,7 @@ const EditScheduleModal = ({ schedule }: Props) => {
                         </div>
 
                         <p className={`text-zinc-400 text-xs mt-2`}>
-                            The schedule system uses Cronjob syntax when defining when tasks should begin running. Use
-                            the fields above to specify when these tasks should begin running.
+                            {t('server.cron_desc')}
                         </p>
 
                         {timezoneInfo.isDifferent && (
@@ -241,19 +241,19 @@ const EditScheduleModal = ({ schedule }: Props) => {
                                         className={'text-blue-400 mt-0.5 flex-shrink-0 h-5 w-5'}
                                     />
                                     <div className={'text-sm'}>
-                                        <p className={'text-blue-100 font-medium mb-1'}>Timezone Information</p>
+                                        <p className={'text-blue-100 font-medium mb-1'}>{t('server.timezone_info')}</p>
                                         <p className={'text-blue-200/80 text-xs mb-2'}>
-                                            Times shown here are configured for the server timezone.
+                                            {t('server.timezone_server_desc')}
                                             {timezoneInfo.difference !== 'same time' && (
                                                 <span className={'text-blue-100 font-medium'}>
                                                     {' '}
-                                                    The server is {timezoneInfo.difference} your timezone.
+                                                    {t('server.timezone_diff', { difference: timezoneInfo.difference })}
                                                 </span>
                                             )}
                                         </p>
                                         <div className={'mt-2 text-xs space-y-1'}>
                                             <div className={'text-blue-200/60'}>
-                                                Your timezone:
+                                                {t('server.your_timezone')}
                                                 <span className={'font-mono'}>
                                                     {' '}
                                                     {formatTimezoneDisplay(
@@ -263,7 +263,7 @@ const EditScheduleModal = ({ schedule }: Props) => {
                                                 </span>
                                             </div>
                                             <div className={'text-blue-200/60'}>
-                                                Server timezone:
+                                                {t('server.server_timezone')}
                                                 <span className={'font-mono'}>
                                                     {' '}
                                                     {formatTimezoneDisplay(
@@ -281,8 +281,8 @@ const EditScheduleModal = ({ schedule }: Props) => {
                         <div className='gap-3 my-6 flex flex-col'>
                             <a href='https://crontab.guru/' target='_blank' rel='noreferrer'>
                                 <ItemContainer
-                                    description={'Online editor for cron schedule experessions.'}
-                                    title={'Crontab Guru'}
+                                    description={t('server.crontab_guru_desc')}
+                                    title={t('server.crontab_guru')}
                                     // defaultChecked={showCheatsheet}
                                     // onChange={() => setShowCheetsheet((s) => !s)}
                                     labelClasses='cursor-pointer'
@@ -299,13 +299,13 @@ const EditScheduleModal = ({ schedule }: Props) => {
                         )} */}
                             <FormikSwitchV2
                                 name={'onlyWhenOnline'}
-                                description={'Only execute this schedule when the server is running.'}
-                                label={'Only When Server Is Online'}
+                                description={t('server.only_when_online')}
+                                label={t('server.only_when_server_online')}
                             />
                             <FormikSwitchV2
                                 name={'enabled'}
-                                description={'This schedule will be executed automatically if enabled.'}
-                                label={'Schedule Enabled'}
+                                description={t('server.schedule_enabled_desc')}
+                                label={t('server.schedule_enabled')}
                             />
                         </div>
                         <div className={`mb-6 text-right`}>
@@ -315,7 +315,7 @@ const EditScheduleModal = ({ schedule }: Props) => {
                                 type={'submit'}
                                 disabled={isSubmitting}
                             >
-                                {schedule ? 'Save changes' : 'Create schedule'}
+                                {schedule ? t('server.save_changes_btn') : t('server.create_schedule_btn')}
                             </ActionButton>
                         </div>
                     </Form>

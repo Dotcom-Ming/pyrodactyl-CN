@@ -4,6 +4,8 @@ import { useContext } from 'react';
 import FlashMessageRender from '@/components/FlashMessageRender';
 import CopyOnClick from '@/components/elements/CopyOnClick';
 
+import { t } from '@/lib/i18n';
+
 import asModal from '@/hoc/asModal';
 
 import ActionButton from '../elements/ActionButton';
@@ -22,8 +24,7 @@ const ApiKeyModal = ({ apiKey }: Props) => {
 
             {/* Modal Header */}
             <p className='text-sm text-white-600 mt-2'>
-                The API key you have requested is shown below. Please store it in a safe place, as it will not be shown
-                again.
+                {t('strings.api_key_shown_once')}
             </p>
 
             {/* API Key Display Section */}
@@ -41,7 +42,7 @@ const ApiKeyModal = ({ apiKey }: Props) => {
             {/* Action Buttons */}
             <div className='flex justify-end space-x-4'>
                 <ActionButton type='button' onClick={() => dismiss()} variant='danger' className='flex items-center'>
-                    Close
+                    {t('strings.close')}
                 </ActionButton>
             </div>
         </div>
@@ -50,8 +51,8 @@ const ApiKeyModal = ({ apiKey }: Props) => {
 
 ApiKeyModal.displayName = 'ApiKeyModal';
 
-export default asModal<Props>({
-    title: 'Your API Key',
+export default asModal<Props>(() => ({
+    title: t('strings.your_api_key'),
     closeOnEscape: true, // Allows closing the modal by pressing Escape
     closeOnBackground: true, // Allows closing by clicking outside the modal
-})(ApiKeyModal);
+}))(ApiKeyModal);

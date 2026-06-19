@@ -12,6 +12,8 @@ import { ServerContext } from '@/state/server';
 
 import useWebsocketEvent from '@/plugins/useWebsocketEvent';
 
+import { t } from '@/lib/i18n';
+
 type Stats = Record<'memory' | 'cpu' | 'disk' | 'uptime' | 'rx' | 'tx', number>;
 
 // const getBackgroundColor = (value: number, max: number | null): string | undefined => {
@@ -118,7 +120,7 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
                         'linear(0,0.01,0.04 1.6%,0.161 3.3%,0.816 9.4%,1.046,1.189 14.4%,1.231,1.254 17%,1.259,1.257 18.6%,1.236,1.194 22.3%,1.057 27%,0.999 29.4%,0.955 32.1%,0.942,0.935 34.9%,0.933,0.939 38.4%,1 47.3%,1.011,1.017 52.6%,1.016 56.4%,1 65.2%,0.996 70.2%,1.001 87.2%,1)',
                 }}
             >
-                <StatBlock title={'IP Address'} copyOnClick={displayAddress}>
+                <StatBlock title={t('strings.ip')} copyOnClick={displayAddress}>
                     {displayAddress}
                 </StatBlock>
             </div>
@@ -130,9 +132,9 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
                         'linear(0,0.01,0.04 1.6%,0.161 3.3%,0.816 9.4%,1.046,1.189 14.4%,1.231,1.254 17%,1.259,1.257 18.6%,1.236,1.194 22.3%,1.057 27%,0.999 29.4%,0.955 32.1%,0.942,0.935 34.9%,0.933,0.939 38.4%,1 47.3%,1.011,1.017 52.6%,1.016 56.4%,1 65.2%,0.996 70.2%,1.001 87.2%,1)',
                 }}
             >
-                <StatBlock title={'CPU'}>
+                <StatBlock title={t('strings.cpu')}>
                     {status === 'offline' ? (
-                        <span className={'text-zinc-400'}>Offline</span>
+                        <span className={'text-zinc-400'}>{t('strings.offline')}</span>
                     ) : (
                         <Limit limit={textLimits.cpu}>{stats.cpu.toFixed(2)}%</Limit>
                     )}
@@ -146,9 +148,9 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
                         'linear(0,0.01,0.04 1.6%,0.161 3.3%,0.816 9.4%,1.046,1.189 14.4%,1.231,1.254 17%,1.259,1.257 18.6%,1.236,1.194 22.3%,1.057 27%,0.999 29.4%,0.955 32.1%,0.942,0.935 34.9%,0.933,0.939 38.4%,1 47.3%,1.011,1.017 52.6%,1.016 56.4%,1 65.2%,0.996 70.2%,1.001 87.2%,1)',
                 }}
             >
-                <StatBlock title={'RAM'}>
+                <StatBlock title={t('strings.ram')}>
                     {status === 'offline' ? (
-                        <span className={'text-zinc-400'}>Offline</span>
+                        <span className={'text-zinc-400'}>{t('strings.offline')}</span>
                     ) : (
                         <Limit limit={textLimits.memory}>{bytesToString(stats.memory)}</Limit>
                     )}
@@ -162,7 +164,7 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
                         'linear(0,0.01,0.04 1.6%,0.161 3.3%,0.816 9.4%,1.046,1.189 14.4%,1.231,1.254 17%,1.259,1.257 18.6%,1.236,1.194 22.3%,1.057 27%,0.999 29.4%,0.955 32.1%,0.942,0.935 34.9%,0.933,0.939 38.4%,1 47.3%,1.011,1.017 52.6%,1.016 56.4%,1 65.2%,0.996 70.2%,1.001 87.2%,1)',
                 }}
             >
-                <StatBlock title={'Storage'}>
+                <StatBlock title={t('strings.storage')}>
                     <Limit limit={textLimits.disk}>{bytesToString(stats.disk)}</Limit>
                 </StatBlock>
             </div>

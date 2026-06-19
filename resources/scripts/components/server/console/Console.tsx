@@ -10,6 +10,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 import { SocketEvent, SocketRequest } from '@/components/server/events';
 
+import { t } from '@/lib/i18n';
+
 import { ServerContext } from '@/state/server';
 
 import useEventListener from '@/plugins/useEventListener';
@@ -78,7 +80,7 @@ const Console = () => {
         switch (status) {
             // Sent by either the source or target node if a failure occurs.
             case 'failure':
-                terminal.writeln(TERMINAL_PRELUDE + 'Transfer has failed.\u001b[0m');
+                terminal.writeln(TERMINAL_PRELUDE + `${t('strings.transfer_failed')}\u001b[0m`);
                 return;
         }
     };
@@ -89,7 +91,7 @@ const Console = () => {
         );
 
     const handlePowerChangeEvent = (state: string) =>
-        terminal.writeln(TERMINAL_PRELUDE + 'Server marked as ' + state + '...\u001b[0m');
+        terminal.writeln(TERMINAL_PRELUDE + t('strings.server_marked_as', { state }) + '\u001b[0m');
 
     const handleCommandKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'ArrowUp') {
@@ -215,8 +217,8 @@ const Console = () => {
                         <input
                             className='w-full bg-transparent px-3 py-2.5 sm:px-4 sm:py-3 font-mono text-xs sm:text-sm text-zinc-100 placeholder-zinc-500 border-0 outline-none focus:ring-0 focus:outline-none focus:bg-[#1a1a1a] transition-colors duration-150'
                             type='text'
-                            placeholder='Enter a command...'
-                            aria-label='Console command input.'
+                            placeholder={t('strings.console_command_placeholder')}
+                            aria-label={t('strings.console_command_input')}
                             disabled={!instance || !connected}
                             onKeyDown={handleCommandKeyDown}
                             autoCorrect='off'

@@ -66,7 +66,7 @@
       </a>
       <nav class="navbar navbar-static-top">
         <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-          <span class="sr-only">Toggle navigation</span>
+          <span class="sr-only">{{ trans('strings.admin_toggle_nav') }}</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -81,11 +81,11 @@
             </li>
             <li>
             <li><a href="{{ route('index') }}" data-toggle="tooltip" data-placement="bottom"
-                title="Exit Admin Control"><i class="fa fa-server"></i></a></li>
+                title="{{ trans('strings.admin_exit') }}"><i class="fa fa-server"></i></a></li>
             </li>
             <li>
             <li><a href="{{ route('auth.logout') }}" id="logoutButton" data-toggle="tooltip" data-placement="bottom"
-                title="Logout"><i class="fa fa-sign-out"></i></a></li>
+                title="{{ trans('strings.admin_logout') }}"><i class="fa fa-sign-out"></i></a></li>
             </li>
           </ul>
         </div>
@@ -94,57 +94,57 @@
     <aside class="main-sidebar">
       <section class="sidebar">
         <ul class="sidebar-menu">
-          <li class="header">BASIC ADMINISTRATION</li>
+          <li class="header">{{ trans('strings.admin_basic_administration') }}</li>
           <li class="{{ Route::currentRouteName() !== 'admin.index' ?: 'active' }}">
             <a href="{{ route('admin.index') }}">
-              <i class="bi bi-house-fill"></i> <span>Overview</span>
+              <i class="bi bi-house-fill"></i> <span>{{ trans('strings.admin_overview') }}</span>
             </a>
           </li>
           <li class="{{ !starts_with(Route::currentRouteName(), 'admin.settings') ?: 'active' }}">
             <a href="{{ route('admin.settings')}}">
-              <i class="bi bi-gear-fill"></i> <span>Settings</span>
+              <i class="bi bi-gear-fill"></i> <span>{{ trans('strings.admin_settings') }}</span>
             </a>
           </li>
           <li class="{{ !starts_with(Route::currentRouteName(), 'admin.api') ?: 'active' }}">
             <a href="{{ route('admin.api.index')}}">
-              <i class="bi bi-globe"></i> <span>Application API</span>
+              <i class="bi bi-globe"></i> <span>{{ trans('strings.admin_application_api') }}</span>
             </a>
           </li>
-          <li class="header">MANAGEMENT</li>
+          <li class="header">{{ trans('strings.admin_management') }}</li>
           <li class="{{ !starts_with(Route::currentRouteName(), 'admin.databases') ?: 'active' }}">
             <a href="{{ route('admin.databases') }}">
-              <i class="bi bi-database-fill"></i> <span>Databases</span>
+              <i class="bi bi-database-fill"></i> <span>{{ trans('strings.admin_databases') }}</span>
             </a>
           </li>
           <li class="{{ !starts_with(Route::currentRouteName(), 'admin.locations') ?: 'active' }}">
             <a href="{{ route('admin.locations') }}">
-              <i class="bi bi-globe-americas"></i> <span>Locations</span>
+              <i class="bi bi-globe-americas"></i> <span>{{ trans('strings.admin_locations') }}</span>
             </a>
           </li>
           <li class="{{ !starts_with(Route::currentRouteName(), 'admin.nodes') ?: 'active' }}">
             <a href="{{ route('admin.nodes') }}">
-              <i class="bi bi-hdd-fill"></i> <span>Nodes</span>
+              <i class="bi bi-hdd-fill"></i> <span>{{ trans('strings.admin_nodes') }}</span>
             </a>
           </li>
           <li class="{{ !starts_with(Route::currentRouteName(), 'admin.servers') ?: 'active' }}">
             <a href="{{ route('admin.servers') }}">
-              <i class="bi bi-hdd-stack-fill"></i> <span>Servers</span>
+              <i class="bi bi-hdd-stack-fill"></i> <span>{{ trans('strings.admin_servers') }}</span>
             </a>
           </li>
           <li class="{{ !starts_with(Route::currentRouteName(), 'admin.users') ?: 'active' }}">
             <a href="{{ route('admin.users') }}">
-              <i class="bi bi-people-fill"></i> <span>Users</span>
+              <i class="bi bi-people-fill"></i> <span>{{ trans('strings.admin_users') }}</span>
             </a>
           </li>
-          <li class="header">SERVICE MANAGEMENT</li>
+          <li class="header">{{ trans('strings.admin_service_management') }}</li>
           <li class="{{ !starts_with(Route::currentRouteName(), 'admin.mounts') ?: 'active' }}">
             <a href="{{ route('admin.mounts') }}">
-              <i class="bi bi-magic"></i> <span>Mounts</span>
+              <i class="bi bi-magic"></i> <span>{{ trans('strings.admin_mounts') }}</span>
             </a>
           </li>
           <li class="{{ !starts_with(Route::currentRouteName(), 'admin.nests') ?: 'active' }}">
             <a href="{{ route('admin.nests') }}">
-              <i class="bi bi-egg-fill"></i> <span>Nests</span>
+              <i class="bi bi-egg-fill"></i> <span>{{ trans('strings.admin_nests') }}</span>
             </a>
           </li>
         </ul>
@@ -210,12 +210,12 @@
 
         var that = this;
         swal({
-          title: 'Do you want to log out?',
+          title: @json(trans('strings.admin_logout_confirm')),
           type: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#d9534f',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Log out'
+          confirmButtonText: @json(trans('strings.admin_logout'))
         }, function () {
           $.ajax({
             type: 'POST',

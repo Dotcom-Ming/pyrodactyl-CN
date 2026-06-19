@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import ScheduleCronRow from '@/components/server/schedules/ScheduleCronRow';
 
 import { Schedule } from '@/api/server/schedules/getServerSchedules';
+import { t } from '@/lib/i18n';
 
 const ScheduleRow = ({ schedule }: { schedule: Schedule }) => (
     <>
@@ -15,7 +16,7 @@ const ScheduleRow = ({ schedule }: { schedule: Schedule }) => (
                         <p>{schedule.name}</p>
                     </div>
                     <p className={`text-xs text-zinc-400`}>
-                        Last run at: {schedule.lastRunAt ? format(schedule.lastRunAt, "MMM do 'at' h:mma") : 'N/A'}
+                        {t('server.last_run_at')} {schedule.lastRunAt ? format(schedule.lastRunAt, "MMM do 'at' h:mma") : 'N/A'}
                     </p>
                 </div>
             </div>
@@ -23,7 +24,7 @@ const ScheduleRow = ({ schedule }: { schedule: Schedule }) => (
         <ScheduleCronRow cron={schedule.cron} />
         <div className='flex-none w-20 sm:ml-2 flex items-center align-middle justify-center'>
             <p className='rounded-full px-2 py-px text-xs uppercase bg-neutral-600 text-white'>
-                {schedule.isProcessing ? 'Processing' : schedule.isActive ? 'Active' : 'Inactive'}
+                {schedule.isProcessing ? t('server.processing') : schedule.isActive ? t('server.active') : t('server.inactive')}
             </p>
         </div>
     </>

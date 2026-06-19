@@ -8,6 +8,7 @@ import ServerContentBlock from '@/components/elements/ServerContentBlock';
 import UserFormComponent from '@/components/server/users/UserFormComponent';
 
 import { ServerContext } from '@/state/server';
+import { t } from '@/lib/i18n';
 
 const CreateUserContainer = () => {
     const navigate = useNavigate();
@@ -24,8 +25,8 @@ const CreateUserContainer = () => {
     };
 
     return (
-        <ServerContentBlock title={'Create User'}>
-            <MainPageHeader title={'Create New User'}>
+        <ServerContentBlock title={t('server.create_user')}>
+            <MainPageHeader title={t('server.create_new_user')}>
                 <ActionButton
                     variant='secondary'
                     onClick={() => navigate(`/server/${serverId}/users`)}
@@ -33,7 +34,7 @@ const CreateUserContainer = () => {
                     disabled={isSubmitting}
                 >
                     <ChevronLeft width={22} height={22} fill='currentColor' />
-                    Back to Users
+                    {t('server.back_to_users')}
                 </ActionButton>
             </MainPageHeader>
 

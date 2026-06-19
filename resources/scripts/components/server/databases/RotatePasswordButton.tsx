@@ -9,6 +9,7 @@ import { httpErrorToHuman } from '@/api/http';
 import { ServerDatabase } from '@/api/server/databases/getServerDatabases';
 import rotateDatabasePassword from '@/api/server/databases/rotateDatabasePassword';
 
+import { t } from '@/lib/i18n';
 import { ApplicationStore } from '@/state';
 import { ServerContext } from '@/state/server';
 
@@ -37,7 +38,7 @@ const RotatePasswordButton = ({
                 console.error(error);
                 addFlash({
                     type: 'error',
-                    title: 'Error',
+                    title: t('strings.error_title'),
                     message: httpErrorToHuman(error),
                     key: 'database-connection-modal',
                 });

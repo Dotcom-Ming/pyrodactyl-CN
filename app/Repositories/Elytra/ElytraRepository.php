@@ -137,7 +137,7 @@ class ElytraRepository
      *
      * @throws DaemonConnectionException
      */
-    public function updateJob(string $jobId, string $status, int $progress = 0, string $message = '', array $result = null): array
+    public function updateJob(string $jobId, string $status, int $progress = 0, string $message = '', ?array $result = null): array
     {
         Assert::isInstanceOf($this->server, Server::class);
 

@@ -7,6 +7,8 @@ import Field from '@/components/elements/Field';
 import Modal from '@/components/elements/Modal';
 import { SocketEvent, SocketRequest } from '@/components/server/events';
 
+import { t } from '@/lib/i18n';
+
 import updateStartupVariable from '@/api/server/updateStartupVariable';
 
 import { ServerContext } from '@/state/server';
@@ -75,26 +77,22 @@ const GSLTokenModalFeature = () => {
                 onDismissed={() => setVisible(false)}
                 closeOnBackground={false}
                 showSpinnerOverlay={loading}
-                title='Invalid GSL token!'
+                title={t('server.gsl_token_required')}
             >
                 <FlashMessageRender key={'feature:gslToken'} />
                 <Form>
-                    <p>It seems like your Gameserver Login Token (GSL token) is invalid or has expired.</p>
-                    <p className={`mt-3`}>
-                        You can either generate a new one and enter it below or leave the field blank to remove it
-                        completely.
-                    </p>
+                    <p>{t('server.gsl_token_desc')}</p>
                     <div className={`sm:flex items-center mt-6`}>
                         <Field
                             name={'gslToken'}
-                            label={'GSL Token'}
+                            label={t('server.gsl_token')}
                             description={'Visit https://steamcommunity.com/dev/managegameservers to generate a token.'}
                             autoFocus
                         />
                     </div>
                     <div className={`my-6 sm:flex items-center justify-end`}>
                         <ActionButton variant='primary' type={'submit'}>
-                            Update GSL Token
+                            {t('server.save_gsl_token')}
                         </ActionButton>
                     </div>
                 </Form>

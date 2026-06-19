@@ -15,6 +15,8 @@ import Modal from '@/components/elements/Modal';
 import Spinner from '@/components/elements/Spinner';
 import { SocketEvent, SocketRequest } from '@/components/server/events';
 
+import { t } from '@/lib/i18n';
+
 import setSelectedDockerImage from '@/api/server/setSelectedDockerImage';
 import getServerStartup from '@/api/swr/getServerStartup';
 
@@ -87,13 +89,12 @@ const JavaVersionModalFeature = () => {
             onDismissed={() => setVisible(false)}
             closeOnBackground={false}
             showSpinnerOverlay={loading}
-            title='Unsupported Java Version'
+            title={t('server.unsupported_java')}
         >
             <div className='flex flex-col gap-4 w-full h-full'>
                 {/*<FlashMessageRender key={'feature:javaVersion'} />*/}
                 <p>
-                    This server is currently running an unsupported version of Java and cannot be started. Please select
-                    a supported version from the list below to continue starting the server.
+                    {t('server.unsupported_java_desc')}
                 </p>
                 <div className={`mt-6 flex flex-row justify-end items-center gap-3 my-4`}>
                     <Can action={'startup.docker-image'}>
@@ -109,7 +110,7 @@ const JavaVersionModalFeature = () => {
                                         .pop()
                                         ?.split('_')
                                         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                                        .join(' ') || 'Select a version'}
+                                        .join(' ') || t('server.select_java_version')}
                                     {dropDownOpen ? (
                                         <ChevronUp fill={'currentColor'} className={`ml-2 w-[16px] h-[16px]`} />
                                     ) : (
@@ -134,7 +135,7 @@ const JavaVersionModalFeature = () => {
                     </Button> */}
                     <Can action={'startup.docker-image'}>
                         <ActionButton variant='primary' onClick={updateJava} className={`w-full sm:w-auto`}>
-                            Update
+                            {t('server.apply_java_change')}
                         </ActionButton>
                     </Can>
                 </div>

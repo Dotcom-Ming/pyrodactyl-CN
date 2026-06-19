@@ -8,6 +8,7 @@ import { Dialog, DialogWrapperContext } from '@/components/elements/dialog';
 
 import asDialog from '@/hoc/asDialog';
 
+import { t } from '@/lib/i18n';
 import { ServerContext } from '@/state/server';
 
 // TODO: Make it more pretty
@@ -92,7 +93,7 @@ const FileUploadList = () => {
                                     className='px-2 py-1 text-sm bg-gray-800 text-red-400 rounded shadow-lg z-9999'
                                     sideOffset={5}
                                 >
-                                    Cancel
+                                    {t('strings.cancel')}
                                     <Tooltip.Arrow className='fill-gray-800' />
                                 </Tooltip.Content>
                             </Tooltip.Portal>
@@ -101,10 +102,10 @@ const FileUploadList = () => {
                 ))}
                 <Dialog.Footer>
                     <ActionButton variant='danger' onClick={() => clearFileUploads()}>
-                        Cancel Uploads
+                        {t('strings.cancel_uploads')}
                     </ActionButton>
                     <ActionButton variant='secondary' onClick={close}>
-                        Close
+                        {t('strings.close')}
                     </ActionButton>
                 </Dialog.Footer>
             </div>
@@ -112,10 +113,10 @@ const FileUploadList = () => {
     );
 };
 
-const FileUploadListDialog = asDialog({
-    title: 'File Uploads',
-    description: 'The following files are being uploaded to your server.',
-})(FileUploadList);
+const FileUploadListDialog = asDialog(() => ({
+    title: t('strings.file_uploads'),
+    description: t('strings.file_uploads_description'),
+}))(FileUploadList);
 
 const FileManagerStatus = () => {
     const [open, setOpen] = useState(false);

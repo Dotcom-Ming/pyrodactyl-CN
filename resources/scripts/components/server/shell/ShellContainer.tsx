@@ -20,6 +20,8 @@ import TitledGreyBox from '@/components/elements/TitledGreyBox';
 import OperationProgressModal from '@/components/server/operations/OperationProgressModal';
 import WingsOperationProgressModal from '@/components/server/operations/WingsOperationProgressModal';
 
+import { t } from '@/lib/i18n';
+
 import { httpErrorToHuman } from '@/api/http';
 import getNests from '@/api/nests/getNests';
 import applyEggChange from '@/api/server/applyEggChange';
@@ -549,7 +551,7 @@ const SoftwareContainer = () => {
                 });
             }
 
-            toast.success('Software change operation started successfully');
+            toast.success(t('server.software_change_started'));
 
             resetFlow();
         } catch (error) {
@@ -568,17 +570,17 @@ const SoftwareContainer = () => {
 
     const handleOperationComplete = (operation: ServerOperation) => {
         if (operation.is_completed) {
-            toast.success('Your software configuration has been applied successfully');
+            toast.success(t('server.software_change_success'));
 
             // Refresh server data to reflect changes
             mutate();
         } else if (operation.has_failed) {
-            toast.error(operation.message || 'The software configuration change failed');
+            toast.error(operation.message || t('server.software_change_failed'));
         }
     };
 
     const handleOperationError = (error: Error) => {
-        toast.error(error.message || 'An error occurred while monitoring the operation');
+        toast.error(error.message || t('server.operation_error'));
     };
 
     const closeOperationModal = () => {
@@ -627,7 +629,7 @@ const SoftwareContainer = () => {
     };
 
     const renderOverview = () => (
-        <TitledGreyBox title='Current Software'>
+        <TitledGreyBox title={t('server.current_software')}>
             <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
                 <div className='flex items-center gap-3 sm:gap-4 min-w-0 flex-1'>
                     <div className='w-10 h-10 sm:w-12 sm:h-12 bg-[#ffffff11] rounded-lg flex items-center justify-center flex-shrink-0'>
@@ -641,7 +643,7 @@ const SoftwareContainer = () => {
                     <div className='min-w-0 flex-1'>
                         {currentEggName ? (
                             currentEggName.includes(blank_egg_prefix) ? (
-                                <p className='text-amber-400 font-medium text-sm sm:text-base'>No software selected</p>
+                                <p className='text-amber-400 font-medium text-sm sm:text-base'>{t('server.no_software_selected')}</p>
                             ) : (
                                 <p className='text-neutral-200 font-medium text-sm sm:text-base truncate'>
                                     {currentEggName}
@@ -650,11 +652,11 @@ const SoftwareContainer = () => {
                         ) : (
                             <div className='flex items-center gap-2'>
                                 <Spinner size='small' />
-                                <span className='text-neutral-400 text-sm'>Loading...</span>
+                                <span className='text-neutral-400 text-sm'>{t('server.loading')}</span>
                             </div>
                         )}
                         <p className='text-xs sm:text-sm text-neutral-400 leading-relaxed'>
-                            Manage your server&apos;s game or software configuration
+                            {t('server.manage_software_desc')}
                         </p>
                     </div>
                 </div>
@@ -674,7 +676,7 @@ const SoftwareContainer = () => {
                         disabled={isLoading}
                     >
                         {isLoading && <Spinner size='small' />}
-                        Change Software
+                        {t('server.change_software')}
                     </ActionButton>
                 </div>
             </div>
@@ -682,9 +684,9 @@ const SoftwareContainer = () => {
     );
 
     const renderGameSelection = () => (
-        <TitledGreyBox title='Select Category'>
+        <TitledGreyBox title={t('server.select_category')}>
             <div className='space-y-4'>
-                <p className='text-sm text-neutral-400'>Choose the type of game or software you want to run</p>
+                <p className='text-sm text-neutral-400'>{t('server.select_category_desc')}</p>
 
                 <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4'>
                     {nests?.map((nest) =>
@@ -720,15 +722,15 @@ const SoftwareContainer = () => {
     );
 
     const renderSoftwareSelection = () => (
-        <TitledGreyBox title={`Select Software - ${selectedNest?.attributes.name}`}>
+        <TitledGreyBox title={`${t('server.select_software')} - ${selectedNest?.attributes.name}`}>
             <div className='space-y-4'>
-                <p className='text-sm text-neutral-400'>Choose the specific software version for your server</p>
+                <p className='text-sm text-neutral-400'>{t('server.select_software_desc')}</p>
 
                 {isLoading ? (
                     <div className='flex items-center justify-center py-16'>
                         <div className='flex flex-col items-center text-center'>
                             <Spinner size='large' />
-                            <p className='text-neutral-400 mt-4'>Loading software options...</p>
+                            <p className='text-neutral-400 mt-4'>{t('server.loading_software_options')}</p>
                         </div>
                     </div>
                 ) : (
@@ -760,14 +762,14 @@ const SoftwareContainer = () => {
                         onClick={() => setCurrentStep('select-game')}
                         className='w-full sm:w-auto'
                     >
-                        Back to Games
+                        {t('server.back_to_games')}
                     </ActionButton>
                     <ActionButton
                         variant='secondary'
                         onClick={() => setCurrentStep('overview')}
                         className='w-full sm:w-auto'
                     >
-                        Cancel
+                        {t('strings.cancel')}
                     </ActionButton>
                 </div>
             </div>
@@ -776,43 +778,43 @@ const SoftwareContainer = () => {
 
     const renderConfiguration = () => (
         <div className='space-y-6'>
-            <TitledGreyBox title={`Configure ${selectedEgg?.attributes.name}`}>
+            <TitledGreyBox title={`${t('server.configure')} ${selectedEgg?.attributes.name}`}>
                 {eggPreview && (
                     <div className='space-y-6'>
                         {/* Software Configuration */}
                         <div className='space-y-4'>
-                            <h3 className='text-lg font-semibold text-neutral-200'>Software Configuration</h3>
+                            <h3 className='text-lg font-semibold text-neutral-200'>{t('server.software_configuration')}</h3>
                             <div className='grid grid-cols-1 xl:grid-cols-2 gap-4'>
                                 <div>
                                     <label className='text-sm font-medium text-neutral-300 block mb-2'>
-                                        Startup Command
+                                        {t('server.startup_command_label')}
                                     </label>
                                     <textarea
                                         value={customStartup}
                                         onChange={(e) => setCustomStartup(e.target.value)}
-                                        placeholder='Enter custom startup command...'
+                                        placeholder={t('server.enter_startup_command')}
                                         rows={3}
                                         className='w-full px-3 py-2 bg-[#ffffff08] border border-[#ffffff12] rounded-lg text-sm text-neutral-200 placeholder:text-neutral-500 focus:outline-none focus:border-brand transition-colors font-mono resize-none'
                                     />
                                     <p className='text-xs text-neutral-400 mt-1'>
-                                        Use variables like{' '}
+                                        {t('server.use_variables_hint')}{' '}
                                         {eggPreview.variables
                                             .map((v) => `{{${v.env_variable}}}`)
                                             .slice(0, 3)
                                             .join(', ')}
-                                        {eggPreview.variables.length > 3 && ', etc.'}
+                                        {eggPreview.variables.length > 3 && `, ${t('server.etc')}`}
                                     </p>
                                 </div>
                                 <div>
                                     <label className='text-sm font-medium text-neutral-300 block mb-2'>
-                                        Docker Image
+                                        {t('server.docker_image')}
                                     </label>
                                     {eggPreview.docker_images && Object.keys(eggPreview.docker_images).length > 1 ? (
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
                                                 <button className='w-full px-3 py-2 bg-[#ffffff08] border border-[#ffffff12] rounded-lg text-sm text-neutral-200 focus:outline-none focus:border-brand transition-colors text-left flex items-center justify-between hover:border-[#ffffff20]'>
                                                     <span className='truncate'>
-                                                        {selectedDockerImage || 'Select image...'}
+                                                        {selectedDockerImage || t('server.select_image')}
                                                     </span>
                                                     <svg
                                                         className='w-4 h-4 text-neutral-400 flex-shrink-0'
@@ -851,11 +853,11 @@ const SoftwareContainer = () => {
                                     ) : (
                                         <div className='w-full px-3 py-2 bg-[#ffffff08] border border-[#ffffff12] rounded-lg text-sm text-neutral-200'>
                                             {(eggPreview.docker_images && Object.keys(eggPreview.docker_images)[0]) ||
-                                                'Default Image'}
+                                                t('server.default_image')}
                                         </div>
                                     )}
                                     <p className='text-xs text-neutral-400 mt-1'>
-                                        Container runtime environment for your server
+                                        {t('server.docker_image_desc')}
                                     </p>
                                 </div>
                             </div>
@@ -864,7 +866,7 @@ const SoftwareContainer = () => {
                         {/* Environment Variables */}
                         {eggPreview.variables.length > 0 && (
                             <div className='space-y-4'>
-                                <h3 className='text-lg font-semibold text-neutral-200'>Environment Variables</h3>
+                                <h3 className='text-lg font-semibold text-neutral-200'>{t('server.environment_variables')}</h3>
                                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
                                     {eggPreview.variables.map((variable) => (
                                         <div key={variable.env_variable} className='space-y-3'>
@@ -873,7 +875,7 @@ const SoftwareContainer = () => {
                                                     {variable.name}
                                                     {!variable.user_editable && (
                                                         <span className='ml-2 px-2 py-0.5 text-xs bg-amber-500/20 text-amber-400 rounded'>
-                                                            Read-only
+                                                            {t('server.read_only')}
                                                         </span>
                                                     )}
                                                     {variable.user_editable && variable.rules.includes('required') && (
@@ -902,7 +904,7 @@ const SoftwareContainer = () => {
                                                         onChange={(e) =>
                                                             handleVariableChange(variable.env_variable, e.target.value)
                                                         }
-                                                        placeholder={variable.default_value || 'Enter value...'}
+                                                        placeholder={variable.default_value || t('server.enter_value')}
                                                         className={`w-full px-3 py-2 bg-[#ffffff08] border rounded-lg text-sm text-neutral-200 placeholder:text-neutral-500 focus:outline-none transition-colors ${variableErrors[variable.env_variable]
                                                             ? 'border-red-500 focus:border-red-500'
                                                             : 'border-[#ffffff12] focus:border-brand'
@@ -918,7 +920,7 @@ const SoftwareContainer = () => {
                                                 <div className='w-full px-3 py-2 bg-[#ffffff04] border border-[#ffffff08] rounded-lg text-sm text-neutral-300 font-mono'>
                                                     {pendingVariables[variable.env_variable] ||
                                                         variable.default_value ||
-                                                        'Not set'}
+                                                        t('server.not_set')}
                                                 </div>
                                             )}
 
@@ -927,7 +929,7 @@ const SoftwareContainer = () => {
                                                     {variable.env_variable}
                                                 </span>
                                                 {variable.rules && (
-                                                    <span className='text-neutral-500'>Rules: {variable.rules}</span>
+                                                    <span className='text-neutral-500'>{t('server.rules')}: {variable.rules}</span>
                                                 )}
                                             </div>
                                         </div>
@@ -938,20 +940,20 @@ const SoftwareContainer = () => {
 
                         {/* Safety Options */}
                         <div className='space-y-4'>
-                            <h3 className='text-lg font-semibold text-neutral-200'>Safety Options</h3>
+                            <h3 className='text-lg font-semibold text-neutral-200'>{t('server.safety_options')}</h3>
                             <div className='space-y-3'>
                                 <div className='flex items-center justify-between p-4 bg-[#ffffff08] border border-[#ffffff12] rounded-lg hover:border-[#ffffff20] transition-colors'>
                                     <div className='flex-1 min-w-0 pr-4'>
                                         <label className='text-sm font-medium text-neutral-200 block mb-1'>
-                                            Create Backup
+                                            {t('server.create_backup')}
                                         </label>
                                         <p className='text-xs text-neutral-400 leading-relaxed'>
                                             {backupLimit !== 0 &&
                                                 (backupLimit === null || (backups?.backupCount || 0) < backupLimit)
-                                                ? 'Automatically create a backup before applying changes'
+                                                ? t('server.auto_backup_desc')
                                                 : backupLimit === 0
-                                                    ? 'Backups are disabled for this server'
-                                                    : 'Backup limit reached'}
+                                                    ? t('server.backups_disabled')
+                                                    : t('server.backup_limit_reached')}
                                         </p>
                                     </div>
                                     <div className='flex-shrink-0'>
@@ -969,10 +971,10 @@ const SoftwareContainer = () => {
                                 <div className='flex items-center justify-between p-4 bg-[#ffffff08] border border-[#ffffff12] rounded-lg hover:border-[#ffffff20] transition-colors'>
                                     <div className='flex-1 min-w-0 pr-4'>
                                         <label className='text-sm font-medium text-neutral-200 block mb-1'>
-                                            Wipe Files
+                                            {t('server.wipe_files')}
                                         </label>
                                         <p className='text-xs text-neutral-400 leading-relaxed'>
-                                            Delete all files before installing new software
+                                            {t('server.wipe_files_desc')}
                                         </p>
                                     </div>
                                     <div className='flex-shrink-0'>
@@ -990,7 +992,7 @@ const SoftwareContainer = () => {
                         onClick={() => setCurrentStep('select-software')}
                         className='w-full sm:w-auto'
                     >
-                        Back to Software
+                        {t('server.back_to_software')}
                     </ActionButton>
                     <ActionButton
                         variant='primary'
@@ -999,7 +1001,7 @@ const SoftwareContainer = () => {
                         className='w-full sm:w-auto'
                     >
                         {isLoading && <Spinner size='small' />}
-                        Review Changes
+                        {t('server.review_changes')}
                     </ActionButton>
                 </div>
             </TitledGreyBox>
@@ -1008,31 +1010,31 @@ const SoftwareContainer = () => {
 
     const renderReview = () => (
         <div className='space-y-6'>
-            <TitledGreyBox title='Review Changes'>
+            <TitledGreyBox title={t('server.review_changes')}>
                 {selectedEgg && eggPreview && (
                     <div className='space-y-6'>
                         {/* Summary */}
                         <div className='p-4 bg-[#ffffff08] border border-[#ffffff12] rounded-lg'>
-                            <h3 className='text-lg font-semibold text-neutral-200 mb-4'>Change Summary</h3>
+                            <h3 className='text-lg font-semibold text-neutral-200 mb-4'>{t('server.change_summary')}</h3>
                             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
                                 <div>
-                                    <span className='text-neutral-400'>From:</span>
+                                    <span className='text-neutral-400'>{t('server.from_label')}</span>
                                     <div className='text-neutral-200 font-medium'>
-                                        {currentEggName || 'No software'}
+                                        {currentEggName || t('server.no_software')}
                                     </div>
                                 </div>
                                 <div>
-                                    <span className='text-neutral-400'>To:</span>
+                                    <span className='text-neutral-400'>{t('server.to_label')}</span>
                                     <div className='text-brand font-medium'>{selectedEgg.attributes.name}</div>
                                 </div>
                                 <div>
-                                    <span className='text-neutral-400'>Category:</span>
+                                    <span className='text-neutral-400'>{t('server.category_label')}</span>
                                     <div className='text-neutral-200 font-medium'>{selectedNest?.attributes.name}</div>
                                 </div>
                                 <div>
-                                    <span className='text-neutral-400'>Docker Image:</span>
+                                    <span className='text-neutral-400'>{t('server.docker_image_label')}</span>
                                     <div className='text-neutral-200 font-medium'>
-                                        {selectedDockerImage || 'Default'}
+                                        {selectedDockerImage || t('server.default_image')}
                                     </div>
                                 </div>
                             </div>
@@ -1040,18 +1042,18 @@ const SoftwareContainer = () => {
 
                         {/* Startup Command Review */}
                         <div className='p-4 bg-[#ffffff08] border border-[#ffffff12] rounded-lg'>
-                            <h3 className='text-lg font-semibold text-neutral-200 mb-4'>Startup Configuration</h3>
+                            <h3 className='text-lg font-semibold text-neutral-200 mb-4'>{t('server.startup_configuration')}</h3>
                             <div className='space-y-3'>
                                 <div>
-                                    <span className='text-neutral-400 text-sm'>Startup Command:</span>
+                                    <span className='text-neutral-400 text-sm'>{t('server.startup_command_label')}:</span>
                                     <div className='mt-1 p-3 bg-[#ffffff08] border border-[#ffffff12] rounded-lg font-mono text-sm text-neutral-200 whitespace-pre-wrap'>
                                         {customStartup || eggPreview.egg.startup}
                                     </div>
                                 </div>
                                 <div>
-                                    <span className='text-neutral-400 text-sm'>Docker Image:</span>
+                                    <span className='text-neutral-400 text-sm'>{t('server.docker_image')}:</span>
                                     <div className='mt-1 p-3 bg-[#ffffff08] border border-[#ffffff12] rounded-lg text-sm text-neutral-200'>
-                                        {selectedDockerImage || 'Default Image'}
+                                        {selectedDockerImage || t('server.default_image')}
                                     </div>
                                 </div>
                             </div>
@@ -1060,7 +1062,7 @@ const SoftwareContainer = () => {
                         {/* Configuration Review */}
                         {eggPreview.variables.length > 0 && (
                             <div className='p-4 bg-[#ffffff08] border border-[#ffffff12] rounded-lg'>
-                                <h3 className='text-lg font-semibold text-neutral-200 mb-4'>Variable Configuration</h3>
+                                <h3 className='text-lg font-semibold text-neutral-200 mb-4'>{t('server.variable_configuration')}</h3>
                                 <div className='space-y-2'>
                                     {eggPreview.variables.map((variable) => (
                                         <div
@@ -1076,7 +1078,7 @@ const SoftwareContainer = () => {
                                             <div className='text-brand font-mono text-sm'>
                                                 {pendingVariables[variable.env_variable] ||
                                                     variable.default_value ||
-                                                    'Not set'}
+                                                    t('server.not_set')}
                                             </div>
                                         </div>
                                     ))}
@@ -1086,18 +1088,18 @@ const SoftwareContainer = () => {
 
                         {/* Safety Options Review */}
                         <div className='p-4 bg-[#ffffff08] border border-[#ffffff12] rounded-lg'>
-                            <h3 className='text-lg font-semibold text-neutral-200 mb-4'>Safety Options</h3>
+                            <h3 className='text-lg font-semibold text-neutral-200 mb-4'>{t('server.safety_options')}</h3>
                             <div className='space-y-2'>
                                 <div className='flex justify-between items-center py-2 px-3 bg-[#ffffff08] rounded-lg'>
-                                    <span className='text-neutral-200'>Create Backup</span>
+                                    <span className='text-neutral-200'>{t('server.create_backup')}</span>
                                     <span className={shouldBackup ? 'text-green-400' : 'text-neutral-400'}>
-                                        {shouldBackup ? 'Yes' : 'No'}
+                                        {shouldBackup ? t('server.yes_label') : t('server.no_label')}
                                     </span>
                                 </div>
                                 <div className='flex justify-between items-center py-2 px-3 bg-[#ffffff08] rounded-lg'>
-                                    <span className='text-neutral-200'>Wipe Files</span>
+                                    <span className='text-neutral-200'>{t('server.wipe_files')}</span>
                                     <span className={shouldWipe ? 'text-amber-400' : 'text-neutral-400'}>
-                                        {shouldWipe ? 'Yes' : 'No'}
+                                        {shouldWipe ? t('server.yes_label') : t('server.no_label')}
                                     </span>
                                 </div>
                             </div>
@@ -1128,8 +1130,8 @@ const SoftwareContainer = () => {
                                                         }`}
                                                 >
                                                     {warning.type === 'subdomain_incompatible'
-                                                        ? 'Subdomain Will Be Deleted'
-                                                        : 'Warning'}
+                                                        ? t('server.subdomain_will_be_deleted')
+                                                        : t('strings.warning')}
                                                 </h4>
                                                 <p className='text-sm text-neutral-300'>{warning.message}</p>
                                             </div>
@@ -1149,14 +1151,14 @@ const SoftwareContainer = () => {
                                     className='w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5'
                                 />
                                 <div>
-                                    <h4 className='text-amber-400 font-semibold mb-2'>This will:</h4>
+                                    <h4 className='text-amber-400 font-semibold mb-2'>{t('server.this_will')}</h4>
                                     <ul className='text-sm text-neutral-300'>
-                                        <li>• Stop and reinstall your server</li>
-                                        <li>• Take several minutes to complete</li>
-                                        <li>• Modify and remove some files</li>
+                                        <li>• {t('server.stop_reinstall_server')}</li>
+                                        <li>• {t('server.take_several_minutes')}</li>
+                                        <li>• {t('server.modify_remove_files')}</li>
                                     </ul>
                                     <span className='text-sm font-bold mt-4'>
-                                        Please ensure you have backups of important data before proceeding.
+                                        {t('server.ensure_backups')}
                                     </span>
                                 </div>
                             </div>
@@ -1170,7 +1172,7 @@ const SoftwareContainer = () => {
                         onClick={() => setCurrentStep('configure')}
                         className='w-full sm:w-auto'
                     >
-                        Back to Configure
+                        {t('server.back_to_configure')}
                     </ActionButton>
                     <ActionButton
                         variant='primary'
@@ -1179,7 +1181,7 @@ const SoftwareContainer = () => {
                         className='w-full sm:w-auto'
                     >
                         {isLoading && <Spinner size='small' />}
-                        Apply Changes
+                        {t('server.apply_changes')}
                     </ActionButton>
                 </div>
             </TitledGreyBox>
@@ -1189,11 +1191,11 @@ const SoftwareContainer = () => {
     // Show loading state if server data is not available
     if (!serverData) {
         return (
-            <ServerContentBlock title='Software Management'>
+            <ServerContentBlock title={t('server.software_management')}>
                 <div className='flex items-center justify-center h-64'>
                     <div className='flex flex-col items-center text-center'>
                         <Spinner size='large' />
-                        <p className='text-neutral-400 mt-4'>Loading server information...</p>
+                        <p className='text-neutral-400 mt-4'>{t('server.loading_server_info')}</p>
                     </div>
                 </div>
             </ServerContentBlock>
@@ -1205,7 +1207,7 @@ const SoftwareContainer = () => {
                 <OperationProgressModal
                     visible={showOperationModal}
                     operationId={currentOperationId}
-                    operationType='Software Change'
+                    operationType={t('server.software_change')}
                     onClose={closeOperationModal}
                     onComplete={handleOperationComplete}
                     onError={handleOperationError}
@@ -1217,7 +1219,7 @@ const SoftwareContainer = () => {
                 <WingsOperationProgressModal
                     visible={showOperationModal}
                     operationId={currentOperationId}
-                    operationType='Software Change'
+                    operationType={t('server.software_change')}
                     onClose={closeOperationModal}
                     onComplete={handleOperationComplete}
                     onError={handleOperationError}
@@ -1227,11 +1229,11 @@ const SoftwareContainer = () => {
         return <div>Could not find Operation Modal for this daemon: Using ${daemonType}</div>;
     }
     return (
-        <ServerContentBlock title='Software Management'>
+        <ServerContentBlock title={t('server.software_management')}>
             <div className='space-y-6'>
-                <MainPageHeader direction='column' title='Software Management'>
+                <MainPageHeader direction='column' title={t('server.software_management')}>
                     <p className='text-neutral-400 leading-relaxed'>
-                        Change your server&apos;s game or software with our guided configuration wizard
+                        {t('server.software_management_desc')}
                     </p>
                 </MainPageHeader>
 
@@ -1243,11 +1245,7 @@ const SoftwareContainer = () => {
                                 {currentStep.replace('-', ' ')}
                             </span>
                             <span className='text-sm text-neutral-400'>
-                                Step{' '}
-                                {['overview', 'select-game', 'select-software', 'configure', 'review'].indexOf(
-                                    currentStep,
-                                )}{' '}
-                                of 4
+                                {t('server.step_of', { step: ['overview', 'select-game', 'select-software', 'configure', 'review'].indexOf(currentStep) })}
                             </span>
                         </div>
                         <div className='w-full bg-[#ffffff12] rounded-full h-2'>
@@ -1271,8 +1269,8 @@ const SoftwareContainer = () => {
 
             {/* Wipe Files Confirmation Modal */}
             <ConfirmationModal
-                title='Wipe All Files Without Backup?'
-                buttonText={wipeCountdown > 0 ? `Yes, Wipe Files (${wipeCountdown}s)` : 'Yes, Wipe Files'}
+                title={t('server.wipe_all_without_backup')}
+                buttonText={wipeCountdown > 0 ? `${t('server.yes_wipe_files')} (${wipeCountdown}s)` : t('server.yes_wipe_files')}
                 visible={showWipeConfirmation}
                 onConfirmed={handleWipeConfirm}
                 onModalDismissed={() => setShowWipeConfirmation(false)}
@@ -1288,27 +1286,23 @@ const SoftwareContainer = () => {
                             className='w-5 h-5 text-red-400 flex-shrink-0 mt-0.5'
                         />
                         <div>
-                            <h4 className='text-red-400 font-semibold mb-2'>DANGER: No Backup Selected</h4>
-                            <p className='text-sm text-neutral-300'>
-                                You have chosen to wipe all files <strong>without creating a backup</strong>. This
-                                action will <strong>permanently delete ALL files</strong> on your server and cannot be
-                                undone.
-                            </p>
+                            <h4 className='text-red-400 font-semibold mb-2'>{t('server.danger_no_backup')}</h4>
+                            <p className='text-sm text-neutral-300' dangerouslySetInnerHTML={{ __html: t('server.wipe_no_backup_warning') }} />
                         </div>
                     </div>
                     <div className='text-sm text-neutral-300 space-y-2'>
                         <p>
-                            <strong>What will happen:</strong>
+                            <strong>{t('server.what_will_happen')}</strong>
                         </p>
                         <ul className='list-disc list-inside space-y-1 ml-4'>
-                            <li>All server files will be permanently deleted</li>
-                            <li>Your server will be stopped and reinstalled</li>
-                            <li>Any custom configurations or data will be lost</li>
-                            <li>This action cannot be reversed</li>
+                            <li>{t('server.all_files_deleted')}</li>
+                            <li>{t('server.server_reinstalled')}</li>
+                            <li>{t('server.config_lost')}</li>
+                            <li>{t('server.action_irreversible')}</li>
                         </ul>
                     </div>
                     <p className='text-sm text-neutral-300'>
-                        Are you absolutely sure you want to proceed without a backup?
+                        {t('server.proceed_without_backup')}
                     </p>
                 </div>
             </ConfirmationModal>

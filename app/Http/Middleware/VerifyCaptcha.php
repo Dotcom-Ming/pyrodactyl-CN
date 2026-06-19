@@ -54,7 +54,7 @@ class VerifyCaptcha
                 'field_name' => $fieldName,
                 'request_data' => $request->all(),
             ]);
-            throw new DisplayException('Please complete the captcha verification.');
+            throw new DisplayException(trans('exceptions.captcha.required'));
         }
 
         // Verify the captcha response
@@ -72,7 +72,7 @@ class VerifyCaptcha
         
         if (!$verificationResult) {
             Log::warning('Captcha verification failed - verification returned false');
-            throw new DisplayException('Captcha verification failed. Please try again.');
+            throw new DisplayException(trans('exceptions.captcha.failed'));
         }
 
         Log::info('Captcha verification successful - proceeding with request');

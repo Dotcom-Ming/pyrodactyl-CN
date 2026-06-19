@@ -10,6 +10,7 @@ import RenameFileModal from '@/components/server/files/RenameFileModal';
 import compressFiles from '@/api/server/files/compressFiles';
 import deleteFiles from '@/api/server/files/deleteFiles';
 
+import { t } from '@/lib/i18n';
 import { ServerContext } from '@/state/server';
 
 import useFileManagerSwr from '@/plugins/useFileManagerSwr';
@@ -36,7 +37,7 @@ const MassActionsBar = () => {
     const onClickCompress = () => {
         setLoading(true);
         clearFlashes('files');
-        setLoadingMessage('Archiving files...');
+        setLoadingMessage(t('strings.archiving'));
 
         compressFiles(uuid, directory, selectedFiles)
             .then(() => mutate())
@@ -49,7 +50,7 @@ const MassActionsBar = () => {
         setLoading(true);
         setShowConfirm(false);
         clearFlashes('files');
-        setLoadingMessage('Deleting files...');
+        setLoadingMessage(t('strings.deleting'));
 
         deleteFiles(uuid, directory, selectedFiles)
             .then(async () => {
@@ -70,22 +71,21 @@ const MassActionsBar = () => {
                     {loadingMessage}
                 </SpinnerOverlay>
                 <Dialog.Confirm
-                    title={'Delete Files'}
+                    title={t('strings.delete_files')}
                     open={showConfirm}
-                    confirm={'Delete'}
+                    confirm={t('strings.delete_confirm')}
                     onClose={() => setShowConfirm(false)}
                     onConfirmed={onClickConfirmDeletion}
                     loading={loading}
                 >
                     <p className={'mb-2'}>
-                        Are you sure you want to delete&nbsp;
-                        <span className={'font-semibold text-zinc-50'}>{selectedFiles.length} files</span>? This is a
-                        permanent action and the files cannot be recovered.
+                        {t('strings.delete_files_confirm')}&nbsp;
+                        <span className={'font-semibold text-zinc-50'}>{selectedFiles.length} files</span>
                     </p>
                     {selectedFiles.slice(0, 15).map((file) => (
                         <li key={file}>{file}</li>
                     ))}
-                    {selectedFiles.length > 15 && <li>and {selectedFiles.length - 15} others</li>}
+                    {selectedFiles.length > 15 && <li>{t('strings.and_others', { count: selectedFiles.length - 15 })}</li>}
                 </Dialog.Confirm>
                 {showMove && (
                     <RenameFileModal
@@ -105,15 +105,15 @@ const MassActionsBar = () => {
                         <div className={`flex items-center space-x-4 pointer-events-auto rounded-sm p-4 bg-black/50`}>
                             <ActionButton onClick={() => setShowMove(true)} disabled={loading}>
                                 {loading && loadingMessage.includes('Moving') && <Spinner size='small' />}
-                                Move
+                                {t('strings.move')}
                             </ActionButton>
                             <ActionButton onClick={onClickCompress} disabled={loading}>
                                 {loading && loadingMessage.includes('Archiving') && <Spinner size='small' />}
-                                Archive
+                                {t('strings.archive')}
                             </ActionButton>
                             <ActionButton variant='danger' onClick={() => setShowConfirm(true)} disabled={loading}>
                                 {loading && loadingMessage.includes('Deleting') && <Spinner size='small' />}
-                                Delete
+                                {t('strings.delete')}
                             </ActionButton>
                         </div>
                     </div>

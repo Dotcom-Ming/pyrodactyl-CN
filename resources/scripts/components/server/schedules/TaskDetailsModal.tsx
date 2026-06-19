@@ -21,6 +21,7 @@ import { Schedule, Task } from '@/api/server/schedules/getServerSchedules';
 import { ServerContext } from '@/state/server';
 
 import useFlash from '@/plugins/useFlash';
+import { t } from '@/lib/i18n';
 
 // TODO: Port modern dropdowns to Formik and integrate them
 // import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '@/components/elements/DropdownMenu';
@@ -47,20 +48,21 @@ interface Values {
     continueOnFailure: boolean;
 }
 
-const schema = object().shape({
-    action: string().required().oneOf(['command', 'power', 'backup']),
-    payload: string().when('action', {
-        is: (v) => v !== 'backup',
-        then: () => string().required('A task payload must be provided.'),
-        otherwise: () => string(),
-    }),
-    continueOnFailure: boolean(),
-    timeOffset: number()
-        .typeError('The time offset must be a valid number between 0 and 900.')
-        .required('A time offset value must be provided.')
-        .min(0, 'The time offset must be at least 0 seconds.')
-        .max(900, 'The time offset must be less than 900 seconds.'),
-});
+const getSchema = () =>
+    object().shape({
+        action: string().required().oneOf(['command', 'power', 'backup']),
+        payload: string().when('action', {
+            is: (v) => v !== 'backup',
+            then: () => string().required(t('server.validation_task_payload_required')),
+            otherwise: () => string(),
+        }),
+        continueOnFailure: boolean(),
+        timeOffset: number()
+            .typeError(t('server.validation_time_offset_number'))
+            .required(t('server.validation_time_offset_required'))
+            .min(0, t('server.validation_time_offset_min'))
+            .max(900, t('server.validation_time_offset_max')),
+    });
 
 const ActionListener = () => {
     const [{ value }, { initialValue: initialAction }] = useField<string>('action');
@@ -94,7 +96,7 @@ const TaskDetailsModal = ({ schedule, task }: Props) => {
     }, []);
 
     useEffect(() => {
-        setPropOverrides({ title: task ? 'Edit Task' : 'Create Task' });
+        setPropOverrides({ title: task ? t('server.edit_task') : t('server.create_task') });
     }, []);
 
     const submit = (values: Values, { setSubmitting }: FormikHelpers<Values>) => {
@@ -102,7 +104,7 @@ const TaskDetailsModal = ({ schedule, task }: Props) => {
         if (backupLimit === 0 && values.action === 'backup') {
             setSubmitting(false);
             addError({
-                message: "A backup task cannot be created when the server's backup limit is set to 0.",
+                message: t('server.backup_task_limit_zero'),
                 key: 'schedule:task',
             });
         } else {
@@ -128,7 +130,7 @@ const TaskDetailsModal = ({ schedule, task }: Props) => {
         <div className='min-w-full'>
             <Formik
                 onSubmit={submit}
-                validationSchema={schema}
+                validationSchema={getSchema()}
                 initialValues={{
                     action: task?.action || 'command',
                     payload: task?.payload || '',
@@ -141,7 +143,7 @@ const TaskDetailsModal = ({ schedule, task }: Props) => {
                         <FlashMessageRender byKey={'schedule:task'} />
                         <div className={`flex flex-col gap-3`}>
                             <div>
-                                <Label>Action</Label>
+                                <Label>{t('server.action_label')}</Label>
                                 <ActionListener />
                                 <FormikFieldWrapper name={'action'}>
                                     <FormikField
@@ -150,13 +152,13 @@ const TaskDetailsModal = ({ schedule, task }: Props) => {
                                         name={'action'}
                                     >
                                         <option className='bg-black' value={'command'}>
-                                            Send command
+                                            {t('server.send_command_option')}
                                         </option>
                                         <option className='bg-black' value={'power'}>
-                                            Power
+                                            {t('server.power_option')}
                                         </option>
                                         <option className='bg-black' value={'backup'}>
-                                            Create backup
+                                            {t('server.create_backup_option')}
                                         </option>
                                     </FormikField>
                                 </FormikFieldWrapper>
@@ -164,17 +166,15 @@ const TaskDetailsModal = ({ schedule, task }: Props) => {
                             <div>
                                 <Field
                                     name={'timeOffset'}
-                                    label={'Time offset (in seconds)'}
-                                    description={
-                                        'The amount of time to wait after the previous task executes before running this one. If this is the first task on a schedule this will not be applied.'
-                                    }
+                                    label={t('server.time_offset')}
+                                    description={t('server.time_offset_desc')}
                                 />
                             </div>
                         </div>
                         <div className={`my-6`}>
                             {values.action === 'command' ? (
                                 <div>
-                                    <Label>Payload</Label>
+                                    <Label>{t('server.payload')}</Label>
                                     <FormikFieldWrapper name={'payload'}>
                                         <FormikField
                                             className='w-full rounded-xl p-2 bg-[#ffffff11]'
@@ -186,7 +186,7 @@ const TaskDetailsModal = ({ schedule, task }: Props) => {
                                 </div>
                             ) : values.action === 'power' ? (
                                 <div>
-                                    <Label>Payload</Label>
+                                    <Label>{t('server.payload')}</Label>
                                     <FormikFieldWrapper name={'payload'}>
                                         <FormikField
                                             className='px-4 py-2 bg-[#ffffff11] rounded-lg min-w-full'
@@ -194,28 +194,26 @@ const TaskDetailsModal = ({ schedule, task }: Props) => {
                                             name={'payload'}
                                         >
                                             <option className='bg-black' value={'start'}>
-                                                Start the server
+                                                {t('server.start_server')}
                                             </option>
                                             <option className='bg-black' value={'restart'}>
-                                                Restart the server
+                                                {t('server.restart_server')}
                                             </option>
                                             <option className='bg-black' value={'stop'}>
-                                                Stop the server
+                                                {t('server.stop_server')}
                                             </option>
                                             <option className='bg-black' value={'kill'}>
-                                                Terminate the server
+                                                {t('server.terminate_server')}
                                             </option>
                                         </FormikField>
                                     </FormikFieldWrapper>
                                 </div>
                             ) : (
                                 <div>
-                                    <Label>Ignored files (optional)</Label>
+                                    <Label>{t('server.ignored_files_optional')}</Label>
                                     <FormikFieldWrapper
                                         name={'payload'}
-                                        description={
-                                            'Include the files and folders to be excluded in this backup. By default, the contents of your .pyroignore file will be used. If you have reached your backup limit, the oldest backup will be rotated.'
-                                        }
+                                        description={t('server.ignored_files_desc')}
                                     >
                                         <FormikField
                                             className='w-full rounded-2xl bg-[#ffffff11]'
@@ -229,12 +227,12 @@ const TaskDetailsModal = ({ schedule, task }: Props) => {
                         </div>
                         <FormikSwitchV2
                             name={'continueOnFailure'}
-                            description={'Future tasks will be run if this task fails.'}
-                            label={'Continue on Failure'}
+                            description={t('server.continue_on_failure_desc')}
+                            label={t('server.continue_on_failure')}
                         />
                         <div className={`flex justify-end my-6`}>
                             <ActionButton variant='primary' type={'submit'} disabled={isSubmitting}>
-                                {task ? 'Save Changes' : 'Create Task'}
+                                {task ? t('server.save_changes') : t('server.create_task')}
                             </ActionButton>
                         </div>
                     </Form>

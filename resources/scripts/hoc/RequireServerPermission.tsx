@@ -1,5 +1,6 @@
 import Can from '@/components/elements/Can';
 import { ServerError } from '@/components/elements/ScreenBlock';
+import { t } from '@/lib/i18n';
 
 export interface RequireServerPermissionProps {
     permissions: string | string[];
@@ -11,7 +12,7 @@ const RequireServerPermission: React.FC<RequireServerPermissionProps> = ({ child
         <Can
             action={permissions}
             renderOnError={
-                <ServerError title={'Access Denied'} message={'You do not have permission to access this page.'} />
+                <ServerError title={t('strings.access_denied')} message={t('strings.access_denied_desc')} />
             }
         >
             {children}

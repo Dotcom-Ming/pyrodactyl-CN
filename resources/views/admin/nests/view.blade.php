@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
 @section('title')
-    Nests &rarr; {{ $nest->name }}
+    {{ trans('strings.admin_nests') }} &rarr; {{ $nest->name }}
 @endsection
 
 @section('content-header')
     <h1>{{ $nest->name }}<small>{{ str_limit($nest->description, 50) }}</small></h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('admin.index') }}">Admin</a></li>
-        <li><a href="{{ route('admin.nests') }}">Nests</a></li>
+        <li><a href="{{ route('admin.index') }}">{{ trans('strings.admin') }}</a></li>
+        <li><a href="{{ route('admin.nests') }}">{{ trans('strings.admin_nests') }}</a></li>
         <li class="active">{{ $nest->name }}</li>
     </ol>
 @endsection
@@ -20,14 +20,14 @@
             <div class="box">
                 <div class="box-body">
                     <div class="form-group">
-                        <label class="control-label">Name <span class="field-required"></span></label>
+                        <label class="control-label">{{ trans('strings.admin_name') }} <span class="field-required"></span></label>
                         <div>
                             <input type="text" name="name" class="form-control" value="{{ $nest->name }}" />
-                            <p class="text-muted"><small>This should be a descriptive category name that encompasses all of the options within the service.</small></p>
+                            <p class="text-muted"><small>{{ trans('strings.admin_nest_name_options_desc') }}</small></p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Description</label>
+                        <label class="control-label">{{ trans('strings.admin_description') }}</label>
                         <div>
                             <textarea name="description" class="form-control" rows="7">{{ $nest->description }}</textarea>
                         </div>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="box-footer">
                     {!! csrf_field() !!}
-                    <button type="submit" name="_method" value="PATCH" class="btn btn-primary btn-sm pull-right">Save</button>
+                    <button type="submit" name="_method" value="PATCH" class="btn btn-primary btn-sm pull-right">{{ trans('strings.admin_save') }}</button>
                     <button id="deleteButton" type="submit" name="_method" value="DELETE" class="btn btn-sm btn-danger muted muted-hover"><i class="fa fa-trash-o"></i></button>
                 </div>
             </div>
@@ -45,24 +45,24 @@
         <div class="box">
             <div class="box-body">
                 <div class="form-group">
-                    <label class="control-label">Nest ID</label>
+                    <label class="control-label">{{ trans('strings.admin_nest_id') }}</label>
                     <div>
                         <input type="text" readonly class="form-control" value="{{ $nest->id }}" />
-                        <p class="text-muted small">A unique ID used for identification of this nest internally and through the API.</p>
+                        <p class="text-muted small">{{ trans('strings.admin_nest_id_desc') }}</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Author</label>
+                    <label class="control-label">{{ trans('strings.admin_author') }}</label>
                     <div>
                         <input type="text" readonly class="form-control" value="{{ $nest->author }}" />
-                        <p class="text-muted small">The author of this service option. Please direct questions and issues to them unless this is an official option authored by <code>support@pterodactyl.io</code>.</p>
+                        <p class="text-muted small">{!! trans('strings.admin_author_desc') !!}</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">UUID</label>
-                    <div>
-                        <input type="text" readonly class="form-control" value="{{ $nest->uuid }}" />
-                        <p class="text-muted small">A UUID that all servers using this option are assigned for identification purposes.</p>
+                        <label class="control-label">UUID</label>
+                        <div>
+                            <input type="text" readonly class="form-control" value="{{ $nest->uuid }}" />
+                        <p class="text-muted small">{{ trans('strings.admin_uuid_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -73,15 +73,15 @@
     <div class="col-xs-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">Nest Eggs</h3>
+                <h3 class="box-title">{{ trans('strings.admin_nest_eggs') }}</h3>
             </div>
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover">
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th class="text-center">Servers</th>
+                        <th>{{ trans('strings.admin_name') }}</th>
+                        <th>{{ trans('strings.admin_description') }}</th>
+                        <th class="text-center">{{ trans('strings.admin_servers') }}</th>
                         <th class="text-center"></th>
                     </tr>
                     @foreach($nest->eggs as $egg)
@@ -98,7 +98,7 @@
                 </table>
             </div>
             <div class="box-footer">
-                <a href="{{ route('admin.nests.egg.new') }}"><button class="btn btn-success btn-sm pull-right">New Egg</button></a>
+                <a href="{{ route('admin.nests.egg.new') }}"><button class="btn btn-success btn-sm pull-right">{{ trans('strings.admin_new_egg') }}</button></a>
             </div>
         </div>
     </div>
@@ -109,7 +109,7 @@
     @parent
     <script>
         $('#deleteButton').on('mouseenter', function (event) {
-            $(this).find('i').html(' Delete Nest');
+            $(this).find('i').html(' ' + @json(trans('strings.admin_delete_nest')));
         }).on('mouseleave', function (event) {
             $(this).find('i').html('');
         });

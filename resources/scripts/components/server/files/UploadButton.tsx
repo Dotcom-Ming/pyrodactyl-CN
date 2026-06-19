@@ -7,6 +7,7 @@ import FadeTransition from '@/components/elements/transitions/FadeTransition';
 
 import getFileUploadUrl from '@/api/server/files/getFileUploadUrl';
 
+import { t } from '@/lib/i18n';
 import { ServerContext } from '@/state/server';
 
 import useEventListener from '@/plugins/useEventListener';
@@ -61,7 +62,7 @@ const UploadButton = () => {
         clearAndAddHttpError();
         const list = Array.from(files);
         if (list.some((file) => !file.size || (!file.type && file.size === 4096))) {
-            return addError('Folder uploads are not supported at this time.', 'Error');
+            return addError(t('strings.folder_uploads_not_supported'), t('strings.error_title'));
         }
 
         const uploads = list.map((file) => {
@@ -147,7 +148,7 @@ const UploadButton = () => {
                                     'flex-1 text-lg font-bold tracking-tight text-center truncate w-full relative px-4'
                                 }
                             >
-                                Upload to {name}
+                                {t('strings.upload_to', { name })}
                             </h1>
                         </div>
                     </div>
@@ -171,7 +172,7 @@ const UploadButton = () => {
                 variant='secondary'
                 onClick={() => fileUploadInput.current && fileUploadInput.current.click()}
             >
-                Upload
+                {t('strings.upload')}
             </ActionButton>
         </>
     );
